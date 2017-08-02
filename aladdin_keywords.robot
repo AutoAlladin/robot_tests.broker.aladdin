@@ -677,9 +677,8 @@ Get Param By Id
     \    Return From Keyword If    '${pp['code']}'=='${m}'    ${pp['value']}
 
 Get Info Award
-    [Arguments]    @{arguments}
+    [Arguments]    ${arguments[0]}    ${arguments[1]}
     Comment    #***Award***
-    Log To Console    ${arguments}
     Comment    Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    xpath=.//*[@id='createOrUpdateProcuringParticipantNegotiation_0_0']/div/div/div[1]/div[1]/h4
     Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
@@ -715,7 +714,7 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
-    [Arguments]    @{arguments}
+    [Arguments]    ${arguments[0]}    ${arguments[1]}
     Sleep    60
     Reload Page
     Run Keyword And Return If    '${role}'=='viewer'    Full Click    id=results-tab
