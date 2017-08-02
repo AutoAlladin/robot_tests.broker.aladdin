@@ -503,15 +503,15 @@ ${n_c}            ${0}
 
 Завантажити документ в ставку
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=openLotDocuments_technicalSpecifications_0
     Run Keyword And Ignore Error    Full Click    id=openDocuments_biddingDocuments
-    Run Keyword And Ignore Error    Choose File    id=bidDocInput_biddingDocuments    ${arguments[0]}
-    Run Keyword And Ignore Error    Choose File    bidLotDocInputBtn_technicalSpecifications_0    ${arguments[0]}
+    Run Keyword And Ignore Error    Choose File    id=bidDocInput_biddingDocuments    ${arguments[1]}
+    Run Keyword And Ignore Error    Choose File    bidLotDocInputBtn_technicalSpecifications_0    ${arguments[1]}
     Capture Page Screenshot
     Run Keyword And Ignore Error    Full Click    id=submitBid
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
