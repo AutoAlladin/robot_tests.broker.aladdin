@@ -244,8 +244,8 @@ Load document
 
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
-    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Load Tender    ${url}:92/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
+    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -562,9 +562,9 @@ Add Enum
 
 Sync
     [Arguments]    ${uaid}    ${api}
-    Execute Javascript    $.get('${api}:92/api/sync/purchase/tenderID/tenderID=${uaid}');
+    Execute Javascript    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
     ${guid}=    Execute Javascript    return $.get('publish/SearchTenderById?tenderId=${uaid}&guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf')
-    Log To Console    $.get('${api}:92/api/sync/purchase/tenderID/tenderID=${uaid}');
+    Log To Console    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
 
 Get OtherDK
     [Arguments]    ${item}
@@ -679,7 +679,6 @@ Get Param By Id
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     #***Award***
-    Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    xpath=.//*[@id='createOrUpdateProcuringParticipantNegotiation_0_0']/div/div/div[1]/div[1]/h4
     Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
     Run Keyword And Return If    '${arguments[0]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
@@ -687,7 +686,7 @@ Get Info Award
     ${awardIsVAT}=    Execute Javascript    return $('#procuringParticipantsIsVAT_0_0').text();
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    Convert To Boolean    ${awardIsVAT}
     #***Award Suppliers(identifier/contactPoint/address)***
-    Comment    Full Click    id=participants-tab
+    Full Click    id=participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].name'    Get Field Text    id=procuringParticipantsIdentifierLegalName_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.id'    Get Field Text    id=procuringParticipantsIdentifierCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.scheme'    Get Field Text    id=procuringParticipantsIdentifierScheme_0_0
@@ -701,17 +700,10 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
-    #***Contracts***
-    Sleep    60
-    Reload Page
-    Comment    Full Click    id=results-tab
-    Wait Until Element Is Visible    id=tab-content-3
-    Sleep    10
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
