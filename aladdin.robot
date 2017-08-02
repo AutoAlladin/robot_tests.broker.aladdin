@@ -752,3 +752,11 @@ ${n_c}            ${0}
     Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
+
+Підтвердити постачальник
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Full Click    processing-tab
+    Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
+    Full Click    //button[contains(@id,'awardAcceptDecision')]
