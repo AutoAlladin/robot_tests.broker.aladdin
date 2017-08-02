@@ -118,7 +118,7 @@ ${n_c}            ${0}
     Switch Browser    1
     Reload Page
 
-aladdin.Отримати інформацію із тендера
+Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
@@ -195,7 +195,7 @@ aladdin.Отримати інформацію із тендера
     #Execute Javascript    return $('#purchaseDirectoryCauseCause').text();
     [Return]    ${field_value}
 
-aladdin.Задати запитання на тендер
+Задати запитання на тендер
     [Arguments]    ${username}    ${tender_uaid}    ${question}
     [Documentation]    Задає питання question від імені користувача username в тендері tender_uaid
     Close All Browsers
@@ -209,18 +209,18 @@ aladdin.Задати запитання на тендер
     Input Text    name=Description    ${question.data.description}
     Full Click    id=confirm_creationForm
 
-aladdin.Подати цінову пропозицію
+Подати цінову пропозицію
     [Arguments]    ${username}    ${tender_uaid}    ${bid}    ${to_id}    ${params}
     [Documentation]    Створює нову ставку в тендері tender_uaid
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
-    Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
     Run Keyword If    '${msg[0]}'!='FAIL'    Add Bid Lot    ${bid}    ${to_id}    ${params}
 
-aladdin.Змінити цінову пропозицію
+Змінити цінову пропозицію
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
     [Documentation]    Змінює поле fieldname (сума, неціновий показник тощо) в раніше створеній ставці в тендері tender_uaid
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
@@ -544,7 +544,7 @@ aladdin.Отримати посилання на аукціон для гляд�
     [Arguments]    ${username}    @{arguments}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
-    Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
+    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
     ${url}=    Get Element Attribute    //a[@id='auctionUrl']@href
     [Return]    ${url}
 
@@ -630,7 +630,7 @@ aladdin.Створити вимогу про виправлення умов л�
     [Arguments]    ${username}    @{arguments}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
-    Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
+    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -743,9 +743,9 @@ aladdin.Створити вимогу про виправлення визнач
 
 aladdin.Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
-    Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[1]}
+    Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
