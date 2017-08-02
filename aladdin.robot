@@ -234,7 +234,7 @@ ${n_c}            ${0}
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
 
-aladdin.Створити постачальника, додати документацію і підтвердити його
+Створити постачальника, додати документацію і підтвердити його
     [Arguments]    ${username}    ${ua_id}    ${s}    ${filepath}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${idd}=    Get Location
@@ -309,7 +309,7 @@ aladdin.Створити постачальника, додати докумен
     #publish
     Publish tender/negotiation
 
-aladdin.Отримати інформацію із предмету
+Отримати інформацію із предмету
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=procurement-subject-tab
@@ -335,7 +335,7 @@ aladdin.Отримати інформацію із предмету
     Run Keyword And Return If    '${arguments[2]}'==' additionalClassifications[0].id'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassCode')]
     Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].description'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectOtherClassTitle')]
 
-aladdin.Отримати інформацію із лоту
+Отримати інформацію із лоту
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Wait Until Element Is Enabled    id=view-lots-tab
@@ -353,7 +353,7 @@ aladdin.Отримати інформацію із лоту
     Run Keyword And Return If    '${arguments[2]}'=='value.valueAddedTaxIncluded'    Get Tru PDV    purchaseIsVAT@isvat
     [Return]    ${field_value}
 
-aladdin.Отримати інформацію із нецінового показника
+Отримати інформацію із нецінового показника
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=features-tab
@@ -365,7 +365,7 @@ aladdin.Отримати інформацію із нецінового пока
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../div/div/div[contains(@id,'featureDescription')]
     Run Keyword And Return If    '${arguments[2]}'=='featureOf'    Get Element Attribute    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../../../../../..@itemid
 
-aladdin.Завантажити документ в лот
+Завантажити документ в лот
     [Arguments]    ${username}    ${file}    ${ua_id}    ${lot_id}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
@@ -375,7 +375,7 @@ aladdin.Завантажити документ в лот
     Full Click    id=movePurchaseView
     Publish tender
 
-aladdin.Змінити лот
+Змінити лот
     [Arguments]    ${username}    ${ua_id}    ${lot_id}    ${field_name}    ${field_value}
     Aladdin.Оновити сторінку з тендером    ${username}    ${ua_id}
     Full Click    id=purchaseEdit
@@ -389,7 +389,7 @@ aladdin.Змінити лот
     Full Click    id=movePurchaseView
     Publish tender
 
-aladdin.Додати неціновий показник на предмет
+Додати неціновий показник на предмет
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
@@ -403,7 +403,7 @@ aladdin.Додати неціновий показник на предмет
     Full Click    id=movePurchaseView
     Publish tender
 
-aladdin.Видалити неціновий показник
+Видалити неціновий показник
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
@@ -416,7 +416,7 @@ aladdin.Видалити неціновий показник
     Full Click    id=movePurchaseView
     Publish tender
 
-aladdin.Створити вимогу про виправлення умов закупівлі
+Створити вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
@@ -435,14 +435,14 @@ aladdin.Створити вимогу про виправлення умов з�
     Log To Console    new tender claim ${cg}
     Return From Keyword    ${cg}
 
-aladdin.Отримати інформацію із запитання
+Отримати інформацію із запитання
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[@id='questionTitle_0'][contains(.,'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
-aladdin.Підтвердити підписання контракту
+Підтвердити підписання контракту
     [Arguments]    ${username}    ${command}    @{arguments}
     ${guid}=    Get Text    id=purchaseGuid
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
@@ -464,7 +464,7 @@ aladdin.Підтвердити підписання контракту
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
 
-aladdin.Відповісти на запитання
+Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=questions-tab
@@ -474,13 +474,13 @@ aladdin.Відповісти на запитання
     Input Text    xpath=//textarea[@ng-model='element.answer']    ${arguments[1].data.answer}
     Full Click    xpath=//div[contains(text(),'${arguments[2]}')]/../../../..//button[@id='save_answer']
 
-aladdin.Отримати інформацію із документа
+Отримати інформацію із документа
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
 
-aladdin.Отримати документ
+Отримати документ
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
@@ -490,7 +490,7 @@ aladdin.Отримати документ
     sleep    3
     Return From Keyword    ${title}
 
-aladdin.Отримати інформацію із пропозиції
+Отримати інформацію із пропозиції
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
@@ -500,7 +500,7 @@ aladdin.Отримати інформацію із пропозиції
     Run Keyword And Return If    '${arguments[1]}'=='lotValues[0].value.amount'    Get Field Amount    id=lotAmount_0
     Run Keyword And Return If    '${arguments[1]}'=='status'    Get Field Text    id=bidStatusName_0
 
-aladdin.Завантажити документ в ставку
+Завантажити документ в ставку
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
@@ -516,7 +516,7 @@ aladdin.Завантажити документ в ставку
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
 
-aladdin.Змінити документ в ставці
+Змінити документ в ставці
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
@@ -532,7 +532,7 @@ aladdin.Змінити документ в ставці
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
 
-aladdin.Отримати посилання на аукціон для учасника
+Отримати посилання на аукціон для учасника
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${rrr}=    Get Location
@@ -540,7 +540,7 @@ aladdin.Отримати посилання на аукціон для учас�
     Return From Keyword    ${rrr}
     [Return]    ${rrr}
 
-aladdin.Отримати посилання на аукціон для глядача
+Отримати посилання на аукціон для глядача
     [Arguments]    ${username}    @{arguments}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
@@ -548,7 +548,7 @@ aladdin.Отримати посилання на аукціон для гляд�
     ${url}=    Get Element Attribute    //a[@id='auctionUrl']@href
     [Return]    ${url}
 
-aladdin.Додати неціновий показник на лот
+Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
@@ -559,14 +559,14 @@ aladdin.Додати неціновий показник на лот
     Full Click    id=movePurchaseView
     Publish tender
 
-aladdin.Отримати документ до лоту
+Отримати документ до лоту
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
-aladdin.Відповісти на вимогу про виправлення умов закупівлі
+Відповісти на вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
@@ -580,7 +580,7 @@ aladdin.Відповісти на вимогу про виправлення у�
     Log To Console    ${guid} \ ${arguments[2].data.resolutionType}
     Return From Keyword    '${arguments[2].data.resolutionType}'=='declined'
 
-aladdin.Задати запитання на лот
+Задати запитання на лот
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=questions-tab
@@ -593,7 +593,7 @@ aladdin.Задати запитання на лот
     Input Text    name=Description    ${arguments[2].data.description}
     Full Click    id=confirm_creationForm
 
-aladdin.Задати запитання на предмет
+Задати запитання на предмет
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=questions-tab
@@ -606,7 +606,7 @@ aladdin.Задати запитання на предмет
     Input Text    name=Description    ${arguments[2]}.data.description}
     Full Click    id=confirm_creationForm
 
-aladdin.Отримати інформацію із скарги
+Отримати інформацію із скарги
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
@@ -618,7 +618,7 @@ aladdin.Отримати інформацію із скарги
     Run Keyword And Return If    '${arguments[2]}'=='satisfied'    Get Satisfied    ${guid}
     Run Keyword And Return If    '${arguments[2]}'=='cancellationReason'    Get Field Text    complaintCancellationReason_${guid}
 
-aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі
+Підтвердити вирішення вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
@@ -626,7 +626,7 @@ aladdin.Підтвердити вирішення вимоги про випра
     Run Keyword If    ${arguments[2].data.satisfied}==${False}    Full Click    complaintNo_${guid}
     Log To Console    ${guid} satisfied ${arguments[2].data.satisfied}
 
-aladdin.Створити вимогу про виправлення умов лоту
+Створити вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
@@ -649,11 +649,11 @@ aladdin.Створити вимогу про виправлення умов л�
     Log To Console    new lot claim ${cg}
     Return From Keyword    ${cg}
 
-aladdin.Підтвердити вирішення вимоги про виправлення умов лоту
+Підтвердити вирішення вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
+    Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
 
-aladdin.Створити чернетку вимоги про виправлення умов закупівлі
+Створити чернетку вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
@@ -671,7 +671,7 @@ aladdin.Створити чернетку вимоги про виправлен
     Log To Console    new draft claim ${cg}
     Return From Keyword    ${cg}
 
-aladdin.Створити чернетку вимоги про виправлення умов лоту
+Створити чернетку вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
@@ -692,7 +692,7 @@ aladdin.Створити чернетку вимоги про виправлен
     Return From Keyword    ${cg}
     [Teardown]
 
-aladdin.Скасувати вимогу про виправлення умов закупівлі
+Скасувати вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
@@ -703,15 +703,15 @@ aladdin.Скасувати вимогу про виправлення умов �
     Log To Console    cansel claim ${guid}
     [Teardown]
 
-aladdin.Скасувати вимогу про виправлення умов лоту
+Скасувати вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
-aladdin.Відповісти на вимогу про виправлення умов лоту
+Відповісти на вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    aladdin.Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
-aladdin.Змінити документацію в ставці
+Змінити документацію в ставці
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
@@ -727,21 +727,21 @@ aladdin.Змінити документацію в ставці
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
 
-aladdin.Відповісти на вимогу про виправлення визначення переможця
+Відповісти на вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    aladdin.Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
-aladdin.Отримати інформацію із документа до скарги
+Отримати інформацію із документа до скарги
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Run Keyword And Return If    '${arguments[3]}'=='title'    Get Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
 
-aladdin.Створити вимогу про виправлення визначення переможця
+Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
-aladdin.Завантажити документ рішення кваліфікаційної комісії
+Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    processing-tab
