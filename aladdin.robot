@@ -182,7 +182,7 @@ ${n_c}            ${0}
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
     #***Awards***
-    Get Info Award    ${arguments}
+    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     Get Info Contract    ${arguments}
     #***Comment***
@@ -236,7 +236,7 @@ ${n_c}            ${0}
 
 Створити постачальника, додати документацію і підтвердити його
     [Arguments]    ${username}    ${ua_id}    ${s}    ${filepath}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${idd}=    Get Location
     ${idd}=    Fetch From Left    ${idd}    \#/info-purchase
     ${id}=    Fetch From Right    ${idd}    /

@@ -678,8 +678,9 @@ Get Param By Id
 
 Get Info Award
     [Arguments]    @{arguments}
-    #***Award***
-    Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    xpath=.//*[@id='createOrUpdateProcuringParticipantNegotiation_0_0']/div/div/div[1]/div[1]/h4
+    Comment    #***Award***
+    Log To Console    ${arguments}
+    Comment    Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    xpath=.//*[@id='createOrUpdateProcuringParticipantNegotiation_0_0']/div/div/div[1]/div[1]/h4
     Run Keyword And Return If    '${arguments[0]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
     Run Keyword And Return If    '${arguments[0]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
