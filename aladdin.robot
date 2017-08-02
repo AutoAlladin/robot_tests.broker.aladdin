@@ -182,9 +182,9 @@ ${n_c}            ${0}
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
     #***Awards***
-    Get Info Award    ${arguments}
+    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
-    Get Info Contract    ${arguments}
+    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Comment***
     Comment    Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.'    Get Field Amount    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
     Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'
@@ -564,7 +564,7 @@ ${n_c}            ${0}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding"][contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
