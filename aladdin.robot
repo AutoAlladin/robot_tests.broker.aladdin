@@ -15,11 +15,13 @@ ${js}             ${EMPTY}
 ${log_enabled}    ${EMPTY}
 ${start_date}     ${EMPTY}
 ${n_c}            ${0}
+${apiUrl}         ${EMPTY}
 
 *** Keywords ***
 Підготувати клієнт для користувача
     [Arguments]    ${username}
     [Documentation]    Відкриває переглядач на потрібній сторінці, готує api wrapper тощо
+    Set Suite Variable    ${apiUrl}    http://192.168.95.153:92
     ${user}=    Get From Dictionary    ${USERS.users}    ${username}
     Comment    Open Browser    ${user.homepage}    ${user.browser}    desired_capabilities=nativeEvents:false
     ${chrome options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
@@ -98,8 +100,8 @@ ${n_c}            ${0}
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
     ${guid}=    Get Text    id=purchaseGuid
-    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Load Tender    ${api}:92/api/sync/purchases/${guid}
+    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    90
+    Load Tender    ${apiUrl}/api/sync/purchases/${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -114,14 +116,14 @@ ${n_c}            ${0}
     Run Keyword If    ${fai}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${fai}    Set Suite Variable    ${n_c}    ${1}
     ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Load Tender    ${url}:92/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
     Switch Browser    1
     Reload Page
 
 aladdin.Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    #Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     #***Purchase***
     Run Keyword And Return If    '${arguments[1]}'=='tenderID'    Get Field Text    id=purchaseProzorroId
     Run Keyword And Return If    '${arguments[1]}'=='status'    Get Tender Status
@@ -174,17 +176,21 @@ aladdin.Отримати інформацію із тендера
     Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
     Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
     #***Documents***
-    Comment    Full Click    id=documents-tab
-    Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName0')]
+    Full Click    id=documents-tab
+    Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    id=docFileName0
     #***Questions***
     Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
     #***Awards***
-    Get Info Award    ${arguments}
+    ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
+    Log To Console    'Award-'${awardInfo}
+    Run Keyword And Return If    ${awardInfo}=='awards[0]' AND ${role}=='viewer'    Get Info Award    ${arguments}
     #***Contracts***
-    Get Info Contract    ${arguments}
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
+    Log To Console    'Contract-'${contractInfo}
+    Run Keyword And Return If    ${contractInfo}=='contracts[0]' AND ${role}=='viewer'    Get Info Contract    ${arguments}
     #***Comment***
     Comment    Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.'    Get Field Amount    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
     Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'
