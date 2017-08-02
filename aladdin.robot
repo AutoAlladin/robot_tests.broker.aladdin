@@ -424,6 +424,7 @@ ${n_c}            ${0}
     Full Click    id=add_claim
     ${data}=    Set Variable    ${arguments[1].data}
     Wait Until Page Contains Element    save_claim    60
+    Wait Until Element Is Visible    add_claim_select_type    60
     Select From List By Value    add_claim_select_type    0
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
@@ -636,6 +637,7 @@ ${n_c}            ${0}
     Full Click    id=add_claim
     ${data}=    Set Variable    ${arguments[1].data}
     Wait Until Page Contains Element    save_claim    60
+    Wait Until Element Is Visible    add_claim_select_type    60
     Select From List By Value    add_claim_select_type    1
     ${label}=    Get Text    //option[contains(@label,'${arguments[2]}')]
     Select From List By Label    LotsAddOptions    ${label}
