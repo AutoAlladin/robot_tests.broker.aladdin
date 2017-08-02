@@ -55,7 +55,7 @@ ${dkkp_id}        ${EMPTY}
 Открытые торги с публикацией на англ
     [Arguments]    ${tender}
     Full Click    ${locator_button_create}
-    Full Click    ${locator_biddingEng_create}
+    Full Click    id=url_create_purchase_3
     Info OpenEng    ${tender}
     ${ttt}=    Get From Dictionary    ${tender.data}    items
     ${item}=    Set Variable    ${ttt[0]}
