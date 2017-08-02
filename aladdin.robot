@@ -653,7 +653,7 @@ ${n_c}            ${0}
 
 Підтвердити вирішення вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
 
 Створити чернетку вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
@@ -707,11 +707,11 @@ ${n_c}            ${0}
 
 Скасувати вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
 Відповісти на вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
 Змінити документацію в ставці
     [Arguments]    ${username}    @{arguments}
@@ -731,7 +731,7 @@ ${n_c}            ${0}
 
 Відповісти на вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Відповісти на вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
 Отримати інформацію із документа до скарги
     [Arguments]    ${username}    @{arguments}
@@ -741,11 +741,12 @@ ${n_c}            ${0}
 
 Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[0]}
