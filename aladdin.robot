@@ -349,6 +349,7 @@ ${apiUrl}         ${EMPTY}
 
 Отримати інформацію із нецінового показника
     [Arguments]    ${username}    @{arguments}
+    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=features-tab
     Wait Until Element Is Enabled    id=features
@@ -432,6 +433,7 @@ ${apiUrl}         ${EMPTY}
 
 Отримати інформацію із запитання
     [Arguments]    ${username}    @{arguments}
+    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[@id='questionTitle_0'][contains(.,'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
@@ -487,9 +489,9 @@ ${apiUrl}         ${EMPTY}
 
 Отримати інформацію із пропозиції
     [Arguments]    ${username}    @{arguments}
+    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
-    sleep    5
     Run Keyword And Ignore Error    Full Click    id=openLotForm_0
     Run Keyword And Return If    '${arguments[1]}'=='value.amount'    Get Field Amount    id=bidAmount
     Run Keyword And Return If    '${arguments[1]}'=='lotValues[0].value.amount'    Get Field Amount    id=lotAmount_0
