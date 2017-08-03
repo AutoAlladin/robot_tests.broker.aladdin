@@ -450,14 +450,22 @@ ${apiUrl}         ${EMPTY}
     sleep    2
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/test.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
-    ${signed}=    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Дочекатись дати закінчення періоду подання скарг    aladdin_Owner
-    Input Text    id=processingContractDateSigned    ${signed}
+    ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    Comment    Input Text    id=processingContractDateSigned    ${signed}
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    Click Element    id=processingContractDateSigned
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    5
     Click Element    id=processingContractStartDate
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    10
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
+    sleep    5
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
 
 Відповісти на запитання
