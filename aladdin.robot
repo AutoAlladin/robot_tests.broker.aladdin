@@ -190,17 +190,8 @@ ${apiUrl}         ${EMPTY}
     Log To Console    'Award-'${awardInfo}
     Run Keyword And Return If    ${awardInfo}=='awards[0]' AND ${role}=='viewer'    Get Info Award    ${arguments}
     #***Contracts***
-    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Log To Console    'Contract-'${contractInfo}
-    Run Keyword And Return If    ${contractInfo}=='contracts[0]' AND ${role}=='viewer'    Get Info Contract    ${arguments}
-    #***Comment***
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.'    Get Field Amount    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer_')]
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Text
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='lots[0].value.valueAddedTaxIncluded'    Get Field Text    id=purchaseIsVAT
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    id=questionTitle_0
-    #Execute Javascript    return $('#purchaseDirectoryCauseCause').text();
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
+    Run Keyword If    '${contractInfo}'=='contracts'    Run Keyword And Return If    '${role}'=='viewer'    Get Info Contract    ${arguments}
     [Return]    ${field_value}
 
 Задати запитання на тендер
