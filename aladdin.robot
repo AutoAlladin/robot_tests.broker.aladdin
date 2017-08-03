@@ -180,14 +180,13 @@ ${apiUrl}         ${EMPTY}
     Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
     #***Awards***
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
-    Run Keyword And Return If    '${awardInfo}'=='awards[0]'    \    \    Get Info Award    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
-    Run Keyword And Return If    '${contractInfo}'=='contracts'    \    \    Get Info Contract    ${arguments}
+    Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
     [Return]    ${field_value}
 
 Задати запитання на тендер
