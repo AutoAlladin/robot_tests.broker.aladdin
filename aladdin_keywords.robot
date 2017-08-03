@@ -686,7 +686,7 @@ Get Info Award
     ${awardIsVAT}=    Execute Javascript    return $('#procuringParticipantsIsVAT_0_0').text();
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    Convert To Boolean    ${awardIsVAT}
     #***Award Suppliers(identifier/contactPoint/address)***
-    Full Click    id=participants-tab
+    Run Keyword And Return If    '${role}'=='viewer'    Full Click    id=participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].name'    Get Field Text    id=procuringParticipantsIdentifierLegalName_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.id'    Get Field Text    id=procuringParticipantsIdentifierCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.scheme'    Get Field Text    id=procuringParticipantsIdentifierScheme_0_0

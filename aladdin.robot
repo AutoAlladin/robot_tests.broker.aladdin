@@ -176,7 +176,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
     Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
     #***Documents***
-    Full Click    id=documents-tab
+    Run Keyword And Return If    '${role}'=='viewer'    Full Click    id=documents-tab
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    id=docFileName0
     #***Questions***
     Reload Page
@@ -457,7 +457,7 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
