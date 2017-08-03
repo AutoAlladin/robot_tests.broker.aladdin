@@ -54,6 +54,7 @@ Get Field Date
     ${tz}=    Get Local TZ
     ${startDate}=    Set Variable    ${startDate}.000000+0${tz}:00
     Return From Keyword    ${startDate}
+    #
 
 Set Field tenderPeriod.endDate
     [Arguments]    ${value}

@@ -87,7 +87,7 @@ ${dkkp_id}        ${EMPTY}
 
 Add Item
     [Arguments]    ${item}    ${d}    ${d_lot}
-    #Клик доб позицию
+    #Клик доб позицию f
     Full Click    ${locator_add_item_button}${d_lot}
     Full Click    ${locator_item_description}${d}
     #Название предмета закупки
