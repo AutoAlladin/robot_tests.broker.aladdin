@@ -686,7 +686,7 @@ Get Info Award
     ${awardIsVAT}=    Execute Javascript    return $('#procuringParticipantsIsVAT_0_0').text();
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    Convert To Boolean    ${awardIsVAT}
     #***Award Suppliers(identifier/contactPoint/address)***
-    Full Click    id=participants-tab
+    Run Keyword If    '${role}'=='viewer'    Full Click    id=participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].name'    Get Field Text    id=procuringParticipantsIdentifierLegalName_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.id'    Get Field Text    id=procuringParticipantsIdentifierCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.scheme'    Get Field Text    id=procuringParticipantsIdentifierScheme_0_0
@@ -701,9 +701,15 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
+    #***Contracts***
+    Sleep    60
+    Reload Page
+    Comment    Full Click    id=results-tab
+    Wait Until Element Is Visible    id=tab-content-3
+    Sleep    10
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}

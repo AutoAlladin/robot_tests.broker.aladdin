@@ -186,3 +186,8 @@ Open Claim Form
     Full Click    openComplaintForm_${guid}
     Wait Until Element Is Enabled    complaintStatus_${guid}
     [Return]    ${guid}
+
+Get Bid Status
+    [Arguments]    ${ggg}
+    ${txt}=    Get Text    ${ggg}
+    Return From Keyword If    'Подана'=='${txt}'    invalid
