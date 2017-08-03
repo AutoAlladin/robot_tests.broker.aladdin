@@ -41,12 +41,14 @@ ${apiUrl}         ${EMPTY}
     ${tender_data}=    Set Variable    ${arguments[0]}
     Run Keyword If    '${role}'!='viewer'    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
     Run Keyword If    '${role}'=='viewer'    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
+    Comment    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Апс солюшн
     Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Тестовая компания    id=11111111
     Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=м. Київ    streetAddress=ул. 2я тестовая    postalCode=12312
     Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Тестовый Закупщик    telephone=+380504597894    url=http://192.168.80.169:90/Profile#/company
     ${items}=    Get From Dictionary    ${tender_data.data}    items
     ${item}=    Get From List    ${items}    0
     : FOR    ${en}    IN    @{items}
+    \    Comment    Set To Dictionary    ${en.deliveryAddress}    region    м. Київ
     \    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${en}    additionalClassifications
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Log To Console    ${en.additionalClassifications[0].id}
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Set To Dictionary    ${en.additionalClassifications[0]}    id=7242    description=Монтажники електронного устаткування
@@ -106,6 +108,7 @@ ${apiUrl}         ${EMPTY}
     [Documentation]    Оновлює інформацію на сторінці, якщо відкрита сторінка з тендером, інакше переходить на сторінку з тендером tender_uaid
     ${q}=    Evaluate    ${n_c}+${1}
     Set Suite Variable    ${n_c}    ${q}
+    Log To Console    n_c ${n_c}
     ${fai}=    Evaluate    ${n_c}>4
     Run Keyword If    ${fai}    Close All Browsers
     Run Keyword If    ${fai}    Aladdin.Підготувати клієнт для користувача    ${username}
@@ -173,16 +176,19 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
     Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
     #***Documents***
-    Full Click    id=documents-tab
+    Run Keyword And Return If    '${role}'=='viewer'    Full Click    id=documents-tab
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    id=docFileName0
     #***Questions***
     Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
-    #***Awards***
-    ${awardInfo}=    Get Substring    ${arguments[1]}    0    6
-    Run Keyword If    '${awardInfo}'=='awards'    Run Keyword And Return If    '${role}'=='viewer'    Get Info Award    ${arguments}
+    Comment    #***Awards***
+    Get Info Award    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
+    Log To Console    'Award-'${awardInfo}
+    Run Keyword And Return If    ${awardInfo}=='awards[0]' AND ${role}=='viewer'    Get Info Award    ${arguments}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
     Run Keyword If    '${contractInfo}'=='contracts'    Run Keyword And Return If    '${role}'=='viewer'    Get Info Contract    ${arguments}
@@ -229,7 +235,7 @@ ${apiUrl}         ${EMPTY}
 
 Створити постачальника, додати документацію і підтвердити його
     [Arguments]    ${username}    ${ua_id}    ${s}    ${filepath}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${idd}=    Get Location
     ${idd}=    Fetch From Left    ${idd}    \#/info-purchase
     ${id}=    Fetch From Right    ${idd}    /
@@ -437,26 +443,27 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
-    [Arguments]    ${username}    ${command}    @{arguments}
+    [Arguments]    ${username}    @{arguments}
     ${guid}=    Get Text    id=purchaseGuid
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/test.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    666
-    Comment    ${signed}=    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    ${signed}=    Get Time    NOW + 1h
+    ${signed}=    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    Дочекатись дати закінчення періоду подання скарг    aladdin
+    Comment    ${signed}=    Get Time    NOW + 1h
     Input Text    id=processingContractDateSigned    ${signed}
     Click Element    id=processingContractStartDate
     Click Element    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
+    Click Button    xpath=.//*[contains(@id,'saveContract_')]
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
