@@ -184,6 +184,7 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
     Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
@@ -458,14 +459,15 @@ ${apiUrl}         ${EMPTY}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    5
+    sleep    15
     Click Element    id=processingContractStartDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    15
     Click Element    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    10
+    sleep    15
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    sleep    5
+    sleep    15
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
 
 Відповісти на запитання
