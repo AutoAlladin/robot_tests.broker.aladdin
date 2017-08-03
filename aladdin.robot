@@ -147,8 +147,6 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='value.amount'    Get Field Amount    xpath=.//*[@id='purchaseBudget']
     Run Keyword And Return If    '${arguments[1]}'=='value.currency'    Get Field Text    ${locator_purchaseCurrency_viewer}
     Run Keyword And Return If    '${arguments[1]}'=='value.valueAddedTaxIncluded'    View.Conv to Boolean    xpath=.//*[@ng-if='purchase.purchase.isVAT']
-    Run Keyword And Return If    '${arguments[1]}'=='value.valueAddedTaxIncluded'    Get Element Attribute    ${locator_purchaseIsVAT_viewer}
-    Run Keyword And Return If    '${arguments[1]}'=='minimalStep.amount'    Get Field Amount    id=Lot-1-MinStep
     Run Keyword And Return If    '${arguments[1]}'=='minimalStep.amount'    Get Field Amount    id=minStepValue
     #***Purchase ProcuringEntity(identifier/contactPoint/address)***
     Run Keyword And Return If    '${arguments[1]}'=='procuringEntity.name'    Get Field Text    id=identifierName
@@ -183,15 +181,13 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
-    Comment    #***Awards***
-    Get Info Award    ${arguments[0]}    ${arguments[1]}
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    #***Awards***
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
-    Log To Console    'Award-'${awardInfo}
-    Run Keyword And Return If    ${awardInfo}=='awards[0]' AND ${role}=='viewer'    Get Info Award    ${arguments}
+    Log To Console    Award- ${awardInfo}
+    Run Keyword And Return If    '${awardInfo}'=='awards[0]'    \    \    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
-    Run Keyword If    '${contractInfo}'=='contracts'    Run Keyword And Return If    '${role}'=='viewer'    Get Info Contract    ${arguments}
+    Run Keyword And Return If    '${contractInfo}'=='contracts'    \    \    Get Info Contract    ${arguments}
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -452,13 +448,12 @@ ${apiUrl}         ${EMPTY}
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/test.txt
+    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot...aladdib/
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    666
     ${signed}=    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Дочекатись дати закінчення періоду подання скарг    aladdin
-    Comment    ${signed}=    Get Time    NOW + 1h
     Input Text    id=processingContractDateSigned    ${signed}
     Click Element    id=processingContractStartDate
     Click Element    id=processingContractEndDate
