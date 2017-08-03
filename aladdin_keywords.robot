@@ -37,7 +37,7 @@ ${dkkp_id}        ${EMPTY}
 Открытые торги с публикацией на укр
     [Arguments]    ${tender}
     Full Click    ${locator_button_create}
-    Full Click    url_create_purchase_2
+    Full Click    //a[@href='/Purchase/Create/AboveThresholdUA']
     Info OpenUA    ${tender}
     Full Click    id=next_step
     Add Lot    1    ${tender.data.lots[0]}
