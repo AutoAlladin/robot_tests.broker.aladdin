@@ -375,7 +375,7 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
     Full Click    id=lots-tab
-    Full Click    xpath=//h4[contains(text(),'${lot_id}')]/../../div/a/i[@class='fa fa-pencil']/..
+    Full Click    //h4[contains(.,'${lot_id}')]/../../../..//a[contains(@id,'editLot')]
     Run Keyword If    '${field_name}'=='value.amount'    Set Field Amount    id=lotBudget_1    ${field_value}
     Full Click    xpath=.//*[@id='divLotControllerEdit']//button[@class='btn btn-success']
     Full Click    id=basicInfo-tab
