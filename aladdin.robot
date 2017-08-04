@@ -572,7 +572,8 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    id=docFileName1
+    Comment    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding"][contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
