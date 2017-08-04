@@ -184,6 +184,7 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
     Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
@@ -450,14 +451,23 @@ ${apiUrl}         ${EMPTY}
     sleep    2
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/test.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
-    ${signed}=    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Дочекатись дати закінчення періоду подання скарг    aladdin_Owner
-    Input Text    id=processingContractDateSigned    ${signed}
+    ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    Comment    Input Text    id=processingContractDateSigned    ${signed}
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    Click Element    id=processingContractDateSigned
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    15
     Click Element    id=processingContractStartDate
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    15
     Click Element    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    15
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
+    sleep    15
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
 
 Відповісти на запитання
@@ -744,18 +754,14 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
-    Wait Until Page Contains Element    //file-category-upload
     Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
-    #
 
-Підтвердити постачальника
+Підтвердити постачальник
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //button[contains(@id,'awardAcceptDecision')]
-    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
-    Full Click    //button[@ng-show='showBtnAcceptDecision']
