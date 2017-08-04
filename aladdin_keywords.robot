@@ -144,7 +144,6 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания

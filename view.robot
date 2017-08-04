@@ -97,20 +97,21 @@ Get Tru PDV
     Return From Keyword If    '${txt}'!='true'    ${False}
 
 Get Tender Status
+    Reload Page
     ${status}=    Execute Javascript    return $('#purchaseStatus').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    draft
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
-    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
+    Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    pending
     Run Keyword If    '${status}'=='2'    Return From Keyword    active
 
 Get Field question.answer
-    [Arguments]    ${www}
+    [Arguments]    ${x}
     Full Click    id=questions-tab
     Wait Until Page Contains    ${x}    60
     ${txt}=    Get Text    xpath=//div[contains(text(),'${x}')]
@@ -127,14 +128,20 @@ Get Field Amount for latitude
 
 Get Field Doc
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    documents-tab
     Full Click    documents-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    5
+    ${doc_name}=    Get Text    ${idd}
+    Return From Keyword    ${doc_name}
 
 Get Field Doc for paticipant
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    info-purchase-tab
     Full Click    info-purchase-tab
     Full Click    participants-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    15
+    ${name_doc_part}=    Get Text    ${idd}
+    Return From Keyword    ${name_doc_part}
 
 Get Claim Status
     [Arguments]    ${_id}
@@ -146,6 +153,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Чернетка'    draft
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
+    Return From Keyword If    '${text}'=='Задоволено'    resolved
 
 Get Answer Status
     [Arguments]    ${_id}
@@ -182,3 +190,9 @@ Get Bid Status
     [Arguments]    ${aladdin_bid_status}
     ${txt}=    Get Text    ${aladdin_bid_status}
     Return From Keyword If    'Подана'=='${txt}'    invalid
+
+Get qualification status
+    [Arguments]    ${_id}
+    Full Click    prequalification-tab
+    ${status}=    Get Text    ${_id}
+    Return From Keyword If    '${status}'=='Очікування рішення'    pending
