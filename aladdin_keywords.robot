@@ -677,7 +677,7 @@ Get Param By Id
     \    Return From Keyword If    '${pp['code']}'=='${m}'    ${pp['value']}
 
 Get Info Award
-    [Arguments]    @{arguments}
+    [Arguments]    ${arguments[0]}    ${arguments[1]}
     #***Award***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
