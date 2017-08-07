@@ -187,8 +187,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
-    ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
-    Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
+    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     [Return]    ${field_value}
 
 Задати запитання на тендер
