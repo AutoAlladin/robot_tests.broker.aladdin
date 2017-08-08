@@ -638,8 +638,8 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    40
-    Wait Until Element Is Enabled    ${lc}    40
+    Wait Until Page Contains Element    ${lc}    15
+    Wait Until Element Is Enabled    ${lc}    15
     Wait Until Element Is Visible    ${lc}    10
     aniwait
     Click Element    ${lc}
