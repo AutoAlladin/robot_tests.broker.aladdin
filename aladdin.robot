@@ -553,7 +553,8 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
-    ${url}=    Get Element Attribute    //a[@id='auctionUrl']@href
+    Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl']@href
+    Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='purchaseUrlOwner_0']@href
     [Return]    ${url}
 
 Додати неціновий показник на лот
@@ -571,7 +572,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
