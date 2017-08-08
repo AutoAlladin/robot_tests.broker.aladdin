@@ -185,7 +185,6 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
@@ -447,11 +446,9 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
