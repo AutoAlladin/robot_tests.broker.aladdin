@@ -1,6 +1,6 @@
 from setuptools import setup
 
-broker_name = 'aps'
+broker_name = 'aladdin'
 pkg_name = 'robot_tests.broker.{}'.format(broker_name)
 
 setup(name=pkg_name,
