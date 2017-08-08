@@ -679,14 +679,17 @@ Get Param By Id
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     #***Award***
+    Run Keyword If    '${role}'=='viewer'    Full Click    info-purchase-tab
+    Run Keyword If    '${role}'=='viewer'    Full Click    participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.currency'    Get Field Text    id=procuringParticipantsCurrency_0_0
-    ${awardIsVAT}=    Execute Javascript    return $('#procuringParticipantsIsVAT_0_0').text();
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    Convert To Boolean    ${awardIsVAT}
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    View.Conv to Boolean    xpath=.//*[@ng-if='procuringParticipant.isVAT']
+    Comment    ${awardIsVAT}=    Execute Javascript    $('#procuringParticipantsIsVAT_0_0').text()
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    View.Conv to Boolean    ${awardIsVAT}
     #***Award Suppliers(identifier/contactPoint/address)***
-    Run Keyword If    '${role}'=='viewer'    Full Click    id=participants-tab
+    Comment    Run Keyword If    '${role}'=='viewer'    Full Click    id=participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].name'    Get Field Text    id=procuringParticipantsIdentifierLegalName_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.id'    Get Field Text    id=procuringParticipantsIdentifierCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.scheme'    Get Field Text    id=procuringParticipantsIdentifierScheme_0_0
@@ -704,21 +707,21 @@ Get Info Award
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
     #***Contracts***
-    Sleep    60
-    Reload Page
-    Comment    Full Click    id=results-tab
-    Wait Until Element Is Visible    id=tab-content-3
-    Sleep    10
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Comment    Sleep    60
+    Comment    Reload Page
+    Comment    Comment    Full Click    id=results-tab
+    Comment    Wait Until Element Is Visible    id=tab-content-3
+    Comment    Sleep    10
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Sleep    60
     Reload Page
-    Run Keyword And Return If    '${role}'=='viewer'    Full Click    id=results-tab
-    Run Keyword And Return If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
+    Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
+    Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
     Sleep    10
-    Run Keyword And Return If    '${role}'=='viewer'    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
