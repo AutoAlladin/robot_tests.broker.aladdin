@@ -158,7 +158,7 @@ Get Answer Status
     ${txt}=
     Return From Keyword If    '${txt}'=='Недійсно'    declined
     Return From Keyword If    '${txt}'=='Відхилено'    cancelled
-    Return From Keyword If    '${txt}'=='Вирішено'    resolved
+    Return From Keyword If    '${txt}'=='Задоволено'    resolved
 
 Set Click For Award
     [Arguments]    ${idd}
