@@ -552,8 +552,8 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
-    Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl']@href
-    Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='purchaseUrlOwner_0']@href
+    Comment    \    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl']@href
+    Run Keyword And Return    Get Element Attribute    //a[@id='purchaseUrlOwner_0']@href
 
 Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
