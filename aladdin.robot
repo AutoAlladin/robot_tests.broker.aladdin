@@ -492,7 +492,6 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     ${title}=    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
-    Log To Console    download ${title}
     Full Click    xpath=//a[contains(.,'${arguments[1]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     sleep    3
     Return From Keyword    ${title}
@@ -555,7 +554,6 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
     Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl']@href
     Run Keyword And Ignore Error    Run Keyword And Return    Get Element Attribute    //a[@id='purchaseUrlOwner_0']@href
-    [Return]    ${url}
 
 Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
@@ -573,6 +571,7 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
+    Full Click    //a[contains(.,'${arguments[2]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
