@@ -185,14 +185,14 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
-<<<<<<< HEAD
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-=======
+<<<<<<< Temporary merge branch 1
     Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+=======
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
+>>>>>>> Temporary merge branch 2
     #***Contracts***
-    ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
-    Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
+    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -451,19 +451,19 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-<<<<<<< HEAD
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
-    #add contract
-    Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    2
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/test.txt
-=======
+<<<<<<< Temporary merge branch 1
     Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+=======
+    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
+    #add contract
+    Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
+    sleep    2
+    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/test.txt
+>>>>>>> Temporary merge branch 2
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
@@ -471,7 +471,18 @@ ${apiUrl}         ${EMPTY}
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Comment    Input Text    id=processingContractDateSigned    ${signed}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-<<<<<<< HEAD
+    Full Click    id=processingContractDateSigned
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    Full Click    id=processingContractStartDate
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    Full Click    id=processingContractEndDate
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    15
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
+    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    Click Button    xpath=.//*[contains(@id,'saveContract_')]
+    Publish tender/negotiation
+=======
     Click Element    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     sleep    15
@@ -484,19 +495,7 @@ ${apiUrl}         ${EMPTY}
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     sleep    15
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
-=======
-    Full Click    id=processingContractDateSigned
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractStartDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractEndDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
-    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
-    Publish tender/negotiation
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+>>>>>>> Temporary merge branch 2
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
@@ -580,8 +579,8 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
-    ${url}=    Get Element Attribute    //a[@id='auctionUrl']@href
-    [Return]    ${url}
+    Comment    \    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl']@href
+    Run Keyword And Return    Get Element Attribute    //a[@id='purchaseUrlOwner_0']@href
 
 Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
@@ -598,12 +597,8 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-<<<<<<< HEAD
-    ${title}=    Get Field Text    id=docFileName1
-    Comment    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding"][contains(@id,'strikeDocFileNameBut')]
-=======
-    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+    ${title}=    Get Field Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
+    Full Click    //a[contains(.,'${arguments[2]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
@@ -792,19 +787,19 @@ ${apiUrl}         ${EMPTY}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
 
-<<<<<<< HEAD
-Підтвердити постачальник
-=======
+<<<<<<< Temporary merge branch 1
 Підтвердити постачальника
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+=======
+Підтвердити постачальник
+>>>>>>> Temporary merge branch 2
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //button[contains(@id,'awardAcceptDecision')]
-<<<<<<< HEAD
-=======
+<<<<<<< Temporary merge branch 1
     Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Full Click    //button[@ng-show='showBtnAcceptDecision']
->>>>>>> 2047f0747b6239c38afe4d0001e0e12e961122c8
+=======
+>>>>>>> Temporary merge branch 2

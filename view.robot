@@ -22,7 +22,7 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${id}
-    Wait Until Element Is Enabled    ${id}    60
+    Wait Until Page Contains Element    ${id}    40
     ${r}=    Get Text    ${id}
     [Return]    ${r}
 
@@ -49,6 +49,7 @@ Get Field feature.title
 
 Get Field Date
     [Arguments]    ${id}
+    Wait Until Page Contains Element    ${id}    40
     ${startDate}=    Get Text    ${id}
     ${startDate}    Replace String    ${startDate}    ${SPACE}    T
     ${tz}=    Get Local TZ
@@ -158,7 +159,7 @@ Get Answer Status
     ${txt}=
     Return From Keyword If    '${txt}'=='Недійсно'    declined
     Return From Keyword If    '${txt}'=='Відхилено'    cancelled
-    Return From Keyword If    '${txt}'=='Вирішено'    resolved
+    Return From Keyword If    '${txt}'=='Задоволено'    resolved
 
 Set Click For Award
     [Arguments]    ${idd}
