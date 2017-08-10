@@ -540,7 +540,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${rrr}=    Get Location
-    ${rrr}=    Get Element Attribute    id=purchaseUrlOwner@href    #//a[contains(@href,'auction-sandbox')]@href
+    ${rrr}=    Get Element Attribute    //a[contains(@id,purchaseUrlOwner)]@href    #//a[contains(@href,'auction-sandbox')]@href
     Return From Keyword    ${rrr}
     [Return]    ${rrr}
 
@@ -745,7 +745,7 @@ ${apiUrl}         ${EMPTY}
 
 Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    ${arguments[0]}    ${arguments[1]}    ${arguments[3]}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
@@ -766,3 +766,7 @@ ${apiUrl}         ${EMPTY}
     Full Click    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Full Click    //button[@ng-show='showBtnAcceptDecision']
+
+Створити чернетку вимоги про виправлення визначення переможця
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
