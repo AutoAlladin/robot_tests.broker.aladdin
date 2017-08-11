@@ -188,6 +188,8 @@ ${apiUrl}         ${EMPTY}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    #***Status***
+    Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -771,5 +773,19 @@ ${apiUrl}         ${EMPTY}
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
-    [Arguments]    ${username}    @{arguments}
+ [Arguments]    ${username}    @{arguments}
     Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+
+Завантажити документ у кваліфікацію
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
+    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
+    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Підтвердити кваліфікацію
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Затвердити остаточне рішення кваліфікації
