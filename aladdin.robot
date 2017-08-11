@@ -185,14 +185,11 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
-<<<<<<< Temporary merge branch 1
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-=======
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
->>>>>>> Temporary merge branch 2
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    #***Status***
+    Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -451,19 +448,11 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-<<<<<<< Temporary merge branch 1
-    Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
-    #add contract
-    Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    2
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
-=======
     Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/test.txt
->>>>>>> Temporary merge branch 2
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
@@ -482,20 +471,6 @@ ${apiUrl}         ${EMPTY}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
     Publish tender/negotiation
-=======
-    Click Element    id=processingContractDateSigned
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
-    Click Element    id=processingContractStartDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
-    Click Element    id=processingContractEndDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
-    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    sleep    15
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
->>>>>>> Temporary merge branch 2
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
@@ -787,19 +762,26 @@ ${apiUrl}         ${EMPTY}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
 
-<<<<<<< Temporary merge branch 1
 Підтвердити постачальника
-=======
-Підтвердити постачальник
->>>>>>> Temporary merge branch 2
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
-    Full Click    //button[contains(@id,'awardAcceptDecision')]
-<<<<<<< Temporary merge branch 1
     Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Full Click    //button[@ng-show='showBtnAcceptDecision']
-=======
->>>>>>> Temporary merge branch 2
+
+Завантажити документ у кваліфікацію
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
+    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
+    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Підтвердити кваліфікацію
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Затвердити остаточне рішення кваліфікації
