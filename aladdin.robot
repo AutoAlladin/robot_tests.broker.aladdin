@@ -766,6 +766,9 @@ ${apiUrl}         ${EMPTY}
     Full Click    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Full Click    //button[@ng-show='showBtnAcceptDecision']
+    Wait Until Page Contains    contractProzorroId
+    ${res}=    Get Text    contractProzorroId
+    Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
