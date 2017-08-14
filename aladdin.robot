@@ -225,6 +225,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
+    Run Keyword And Ignore Error    Full Click    confirmInvalidButton
     Run Keyword And Return If    '${fieldname}'=='value.amount'    Set Field Amount    id=bidAmount    ${fieldvalue}
     Run Keyword And Return If    '${fieldname}'=='lotValues[0].value.amount'    Set Field Amount    id=lotAmount_0    ${fieldvalue}
     Run Keyword And Ignore Error    Full Click    id=submitBid
@@ -773,7 +774,7 @@ ${apiUrl}         ${EMPTY}
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
- [Arguments]    ${username}    @{arguments}
+    [Arguments]    ${username}    @{arguments}
     Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
 
 Завантажити документ у кваліфікацію
