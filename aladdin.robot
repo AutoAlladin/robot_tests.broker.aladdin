@@ -518,6 +518,9 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=openLotDocuments_technicalSpecifications_0
     Run Keyword And Ignore Error    Full Click    id=openDocuments_biddingDocuments
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='financial_documents'    Full Click    id=openTenderDocuments_commercialProposal_0
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='qualification_documents'    Full Click    openTenderDocuments_qualificationDocuments_0
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='eligibility_documents'    Full Click    id=openTenderDocuments_eligibilityDocuments_0
     Run Keyword And Ignore Error    Choose File    id=bidDocInput_biddingDocuments    ${arguments[1]}
     Run Keyword And Ignore Error    Choose File    bidLotDocInputBtn_technicalSpecifications_0    ${arguments[1]}
     Capture Page Screenshot
