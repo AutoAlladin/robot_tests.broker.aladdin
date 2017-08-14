@@ -542,8 +542,7 @@ ${apiUrl}         ${EMPTY}
 Отримати посилання на аукціон для учасника
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    ${rrr}=    Get Location
-    ${rrr}=    Get Element Attribute    //a[contains(@id,purchaseUrlOwner)]@href    #//a[contains(@href,'auction-sandbox')]@href
+    ${rrr}=    Get Element Attribute    //a[contains(@id,'purchaseUrlOwner')]@href
     Return From Keyword    ${rrr}
     [Return]    ${rrr}
 
