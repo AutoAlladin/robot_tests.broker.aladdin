@@ -225,8 +225,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
     Run Keyword And Ignore Error    Full Click    confirmInvalidButton
-    Run Keyword And Return If    '${fieldname}'=='value.amount'    Set Field Amount    id=bidAmount    ${fieldvalue}
-    Run Keyword And Return If    '${fieldname}'=='lotValues[0].value.amount'    Set Field Amount    id=lotAmount_0    ${fieldvalue}
+    Run Keyword And Ignore Error    Set Field Amount    id=bidAmount    ${fieldvalue}
+    Run Keyword And Ignore Error    Set Field Amount    id=lotAmount_0    ${fieldvalue}
     Run Keyword And Ignore Error    Full Click    id=submitBid
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
