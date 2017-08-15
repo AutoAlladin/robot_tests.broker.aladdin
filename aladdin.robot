@@ -185,12 +185,10 @@ ${apiUrl}         ${EMPTY}
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
+    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
-    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
-    #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
+    Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -457,7 +455,7 @@ ${apiUrl}         ${EMPTY}
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Comment    Input Text    id=processingContractDateSigned    ${signed}
@@ -758,6 +756,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
+    Wait Until Page Contains Element    //file-category-upload
     Choose File    //file-category-upload[contains(@id,'awardUploadFile')]//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    //file-category-upload[contains(@id,'awardUploadFile')]//select[contains(@id,'fileCategory')]    3
     Full Click    //file-category-upload[contains(@id,'awardUploadFile')]//a[contains(@id,'submitUpload')]
