@@ -190,6 +190,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
+    #***date before action***
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Text
     [Return]    ${field_value}
 
 Задати запитання на тендер
