@@ -189,6 +189,7 @@ ${apiUrl}         ${EMPTY}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
     Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Text    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
 Задати запитання на тендер
