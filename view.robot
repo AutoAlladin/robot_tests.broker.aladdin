@@ -21,10 +21,10 @@ Get Field Amount
     Return From Keyword    ${r}
 
 Get Field Text
-    [Arguments]    ${id}
-    Wait Until Element Is Enabled    ${id}    60
-    ${r}=    Get Text    ${id}
-    [Return]    ${r}
+    [Arguments]    ${_id}
+    Wait Until Page Contains Element    ${_id}    40
+    ${e}=    Get Text    ${_id}
+    [Return]    ${e}
 
 Prepare View
     [Arguments]    ${username}    ${argument}
@@ -49,6 +49,7 @@ Get Field feature.title
 
 Get Field Date
     [Arguments]    ${id}
+    Wait Until Page Contains Element    ${id}    40
     ${startDate}=    Get Text    ${id}
     ${startDate}    Replace String    ${startDate}    ${SPACE}    T
     ${tz}=    Get Local TZ
@@ -107,6 +108,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
     Reload Page
@@ -158,7 +160,7 @@ Get Answer Status
     ${txt}=
     Return From Keyword If    '${txt}'=='Недійсно'    declined
     Return From Keyword If    '${txt}'=='Відхилено'    cancelled
-    Return From Keyword If    '${txt}'=='Вирішено'    resolved
+    Return From Keyword If    '${txt}'=='Задоволено'    resolved
 
 Set Click For Award
     [Arguments]    ${idd}
