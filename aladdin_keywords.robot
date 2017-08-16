@@ -520,7 +520,7 @@ Add Feature
     Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='FAIL'    Select Item Param    ${fi.relatedItem}
     Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='PASS'    Select Item Param Label    ${fi.item_id}
     #Enum_0_1
-    Set Suite Variable    ${enid}    ${0}
+    Set Suite Variable    ${feature_suffix}    ${0}
     ${enums}=    Get From Dictionary    ${fi}    enum
     : FOR    ${enum}    IN    @{enums}
     \    ${val}=    Evaluate    int(${enum.value}*${100})
