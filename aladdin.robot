@@ -14,7 +14,7 @@ Resource          view.robot
 ${js}             ${EMPTY}
 ${log_enabled}    ${EMPTY}
 ${start_date}     ${EMPTY}
-${n_c}            ${0}
+${page_load_count}    ${0}
 ${apiUrl}         ${EMPTY}
 
 *** Keywords ***
@@ -39,16 +39,13 @@ ${apiUrl}         ${EMPTY}
     Set Suite Variable    ${log_enabled}    ${False}
     #замена названия компании
     ${tender_data}=    Set Variable    ${arguments[0]}
-    Run Keyword If    '${role}'!='viewer'    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
-    Run Keyword If    '${role}'=='viewer'    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
-    Comment    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Апс солюшн
+    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
     Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Тестовая компания    id=11111111
     Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=м. Київ    streetAddress=ул. 2я тестовая    postalCode=12312
     Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Тестовый Закупщик    telephone=+380504597894    url=http://192.168.80.169:90/Profile#/company
     ${items}=    Get From Dictionary    ${tender_data.data}    items
     ${item}=    Get From List    ${items}    0
     : FOR    ${en}    IN    @{items}
-    \    Comment    Set To Dictionary    ${en.deliveryAddress}    region    м. Київ
     \    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${en}    additionalClassifications
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Log To Console    ${en.additionalClassifications[0].id}
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Set To Dictionary    ${en.additionalClassifications[0]}    id=7242    description=Монтажники електронного устаткування
@@ -106,16 +103,14 @@ ${apiUrl}         ${EMPTY}
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
     [Documentation]    Оновлює інформацію на сторінці, якщо відкрита сторінка з тендером, інакше переходить на сторінку з тендером tender_uaid
-    ${q}=    Evaluate    ${n_c}+${1}
-    Set Suite Variable    ${n_c}    ${q}
-    Log To Console    n_c ${n_c}
-    ${fai}=    Evaluate    ${n_c}>4
-    Run Keyword If    ${fai}    Close All Browsers
-    Run Keyword If    ${fai}    Aladdin.Підготувати клієнт для користувача    ${username}
-    Run Keyword If    ${fai}    Log To Console    Search tender    ${username}    ${tender_uaid}
-    Run Keyword If    ${fai}    Search tender    ${username}    ${tender_uaid}
-    Run Keyword If    ${fai}    Set Suite Variable    ${n_c}    ${1}
-    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
+    ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
+    Set Suite Variable    ${page_load_count}    ${next_page_load_count}
+    Log To Console    ${page_load_count}
+    ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
+    Run Keyword If    ${is_load_before_crash}    Close All Browsers
+    Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
+    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
+    Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
     Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
     Switch Browser    1
     Reload Page
@@ -123,7 +118,6 @@ ${apiUrl}         ${EMPTY}
 Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
-    #Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     #***Purchase***
     Run Keyword And Return If    '${arguments[1]}'=='tenderID'    Get Field Text    id=purchaseProzorroId
     Run Keyword And Return If    '${arguments[1]}'=='status'    Get Tender Status
@@ -183,7 +177,6 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
     #***Awards***
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
-    Log To Console    Award- ${awardInfo}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
@@ -235,10 +228,9 @@ ${apiUrl}         ${EMPTY}
 
 Створити постачальника, додати документацію і підтвердити його
     [Arguments]    ${username}    ${ua_id}    ${s}    ${filepath}
-    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    ${idd}=    Get Location
-    ${idd}=    Fetch From Left    ${idd}    \#/info-purchase
-    ${id}=    Fetch From Right    ${idd}    /
+    ${url}=    Get Location
+    ${idd}=    Fetch From Left    ${url}    \#/info-purchase
+    ${id}=    Fetch From Right    ${url}    /
     Go To    ${USERS.users['${username}'].homepage}/Purchase/Edit/${id}#/info-purchase
     Wait Until Element Is Enabled    ${locator_participant}
     Click Element    ${locator_participant}
@@ -296,7 +288,6 @@ ${apiUrl}         ${EMPTY}
     Click Button    ${locator_save_participant}
     #Add doc
     Run Keyword And Ignore Error    Wait Until Page Does Not Contain    Учасник Збережена успішно
-    Comment    Wait Until Page Contains Element    id=uploadFile247
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    10
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${filepath}
@@ -399,7 +390,6 @@ ${apiUrl}         ${EMPTY}
     ${fi.item_id}=    Set Variable    ${arguments[2]}
     Add Feature    ${fi}    1    0
     Full Click    id=basicInfo-tab
-    Comment    Full Click    id=save_changes
     Full Click    id=movePurchaseView
     Publish tender
 
@@ -412,7 +402,6 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=//div[contains(text(),'${arguments[1]}')]/../..//a[contains(@id,'updateOrCreateFeatureDeleteButton')]
     Full Click    xpath=//div[@class='jconfirm-buttons']/button[1]
     Full Click    id=basicInfo-tab
-    Comment    Full Click    id=save_changes
     Full Click    id=movePurchaseView
     Publish tender
 
@@ -473,7 +462,6 @@ ${apiUrl}         ${EMPTY}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
     Publish tender/negotiation
-    #xpath=.//file-category-upload//input[@class='form-control ng-pristine ng-valid ng-isolate-scope ng-empty ng-touched']
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
@@ -601,8 +589,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    1
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${lot_name}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
+    Select From List By Label    name=LotsAddOptions    ${lot_name}
     Input Text    name=Title    ${arguments[2].data.title}
     Input Text    name=Description    ${arguments[2].data.description}
     Full Click    id=confirm_creationForm
@@ -614,8 +602,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    2
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${item_name}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
+    Select From List By Label    name=LotsAddOptions    ${item_name}
     Input Text    name=Title    ${arguments[2]}.data.title}
     Input Text    name=Description    ${arguments[2]}.data.description}
     Full Click    id=confirm_creationForm
