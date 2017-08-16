@@ -791,6 +791,10 @@ ${apiUrl}         ${EMPTY}
     Full Click    .//*[contains(@id,'btn_submit')]
 
 Підтвердити кваліфікацію
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    .//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
