@@ -547,7 +547,7 @@ Add Enum
     ${val}=    Evaluate    int(${enum.value}*${100})
     Full Click    xpath=//button[@ng-click="addFeatureEnum(lotPurchasePlan, features)"]
     ${enid_}=    Evaluate    ${feature_suffix}+${1}
-    Set Suite Variable    ${enid}    ${enid_}
+    Set Suite Variable    ${feature_suffix}    ${enid_}
     ${end}=    Set Variable    ${p}_${feature_suffix}
     Wait Until Page Contains Element    id=featureEnumValue_${end}    15
     Input Text    id=featureEnumValue_${end}    ${val}
@@ -564,19 +564,16 @@ Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
     ${dkpp_id_local}=    Get From Dictionary    ${dkpp}    id
-    Log To Console    Other DK ${dkpp_id_local}
     Set Suite Variable    ${dkkp_id}    ${dkpp_id_local}
 
 Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    start publish tender
-    Log To Console    start publish tender
     aniwait
     Wait Until Page Contains Element    id=publishNegotiationAutoTest    90
     Wait Until Element Is Enabled    id=publishNegotiationAutoTest
     sleep    3
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
-    Log To Console    ${url}
     sleep    5
     Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
     Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
