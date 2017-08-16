@@ -21,10 +21,10 @@ Get Field Amount
     Return From Keyword    ${r}
 
 Get Field Text
-    [Arguments]    ${id}
-    Wait Until Page Contains Element    ${id}    40
-    ${r}=    Get Text    ${id}
-    [Return]    ${r}
+    [Arguments]    ${_id}
+    Wait Until Page Contains Element    ${_id}    40
+    ${e}=    Get Text    ${_id}
+    [Return]    ${e}
 
 Prepare View
     [Arguments]    ${username}    ${argument}

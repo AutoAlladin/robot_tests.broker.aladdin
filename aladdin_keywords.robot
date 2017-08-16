@@ -123,7 +123,8 @@ Add Item
     Click Element    ${locator_Quantity}${d}
     Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
     #Выбор страны
-    Select From List By Label    xpath=.//*[@id='select_countries${d}']['Україна']    ${item.deliveryAddress.countryName}
+    Wait Until Element Is Visible    xpath=.//*[@id='select_countries${d}']
+    Select From List By Label    xpath=.//*[@id='select_countries${d}']    ${item.deliveryAddress.countryName}
     Press Key    ${locator_postal_code}${d}    ${item.deliveryAddress.postalCode}
     aniwait
     Wait Until Element Is Enabled    id=select_regions${d}
