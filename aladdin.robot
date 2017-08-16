@@ -187,8 +187,9 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Contracts***
-    ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    ${contractInfo}=    Get Substring    ${arguments[1]}    0    13
+    Run Keyword And Return If    '${contractInfo}'=='contracts'    Get Info Contract    ${arguments}
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Text    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -224,8 +225,9 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
-    Run Keyword And Return If    '${fieldname}'=='value.amount'    Set Field Amount    id=bidAmount    ${fieldvalue}
-    Run Keyword And Return If    '${fieldname}'=='lotValues[0].value.amount'    Set Field Amount    id=lotAmount_0    ${fieldvalue}
+    Run Keyword And Ignore Error    Full Click    confirmInvalidButton
+    Run Keyword And Ignore Error    Set Field Amount    id=bidAmount    ${fieldvalue}
+    Run Keyword And Ignore Error    Set Field Amount    id=lotAmount_0    ${fieldvalue}
     Run Keyword And Ignore Error    Full Click    id=submitBid
     Run Keyword And Ignore Error    Full Click    id=lotSubmit_0
     Run Keyword And Ignore Error    Full Click    id=publishButton
@@ -328,8 +330,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.locality'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectLocality')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.streetAddress'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectStreet')]
     Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].scheme'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassSheme')]
-    Run Keyword And Return If    '${arguments[2]}'==' additionalClassifications[0].id'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassCode')]
-    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].description'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectOtherClassTitle')]
+    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].id'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassCode')]
+    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].description'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassTitle')]
 
 Отримати інформацію із лоту
     [Arguments]    ${username}    @{arguments}
@@ -484,6 +486,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
+    sleep    5
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
 
 Отримати документ
@@ -491,7 +494,6 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     ${title}=    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
-    Log To Console    download ${title}
     Full Click    xpath=//a[contains(.,'${arguments[1]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     sleep    3
     Return From Keyword    ${title}
@@ -516,6 +518,9 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    id=editButton
     Run Keyword And Ignore Error    Full Click    id=openLotDocuments_technicalSpecifications_0
     Run Keyword And Ignore Error    Full Click    id=openDocuments_biddingDocuments
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='financial_documents'    Full Click    id=openTenderDocuments_commercialProposal_0
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='qualification_documents'    Full Click    openTenderDocuments_qualificationDocuments_0
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[2]}'=='eligibility_documents'    Full Click    id=openTenderDocuments_eligibilityDocuments_0
     Run Keyword And Ignore Error    Choose File    id=bidDocInput_biddingDocuments    ${arguments[1]}
     Run Keyword And Ignore Error    Choose File    bidLotDocInputBtn_technicalSpecifications_0    ${arguments[1]}
     Capture Page Screenshot
@@ -542,8 +547,7 @@ ${apiUrl}         ${EMPTY}
 Отримати посилання на аукціон для учасника
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    ${rrr}=    Get Location
-    ${rrr}=    Get Element Attribute    id=purchaseUrlOwner@href    #//a[contains(@href,'auction-sandbox')]@href
+    ${rrr}=    Get Element Attribute    //a[contains(@id,'purchaseUrlOwner')]@href
     Return From Keyword    ${rrr}
     [Return]    ${rrr}
 
@@ -552,8 +556,7 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
-    ${url}=    Get Element Attribute    //a[@id='auctionUrl']@href
-    [Return]    ${url}
+    Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl' or @id='purchaseUrlOwner_0']@href
 
 Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
@@ -570,7 +573,8 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    xpath=.//*[@class="btn btn-primary ng-binding ng-scope" ][contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
+    Full Click    //a[contains(.,'${arguments[2]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
@@ -747,7 +751,24 @@ ${apiUrl}         ${EMPTY}
 
 Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Створити вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    id=claim-tab
+    Wait Until Element Is Enabled    id=add_claim    60
+    Full Click    id=add_claim
+    ${data}=    Set Variable    ${arguments[1].data}
+    Wait Until Page Contains Element    save_claim    60
+    Wait Until Element Is Visible    add_claim_select_type    60
+    Select From List By Value    add_claim_select_type    3
+    Select From List By Index    AwardsAddOptions    1
+    Input Text    claim_title    ${arguments[1].data.title}
+    Input Text    claim_descriptions    ${arguments[1].data.description}
+    Choose File    add_file_complaint    ${arguments[3]}
+    Full Click    save_claim
+    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
+    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
+    Log To Console    new award claim ${cg}
+    Return From Keyword    ${cg}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
@@ -768,3 +789,45 @@ ${apiUrl}         ${EMPTY}
     Full Click    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Full Click    //button[@ng-show='showBtnAcceptDecision']
+    Wait Until Page Contains    contractProzorroId
+    ${res}=    Get Text    contractProzorroId
+    Return From Keyword    ${res}
+
+Створити чернетку вимоги про виправлення визначення переможця
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    id=claim-tab
+    Wait Until Element Is Enabled    id=add_claim    60
+    Full Click    id=add_claim
+    ${data}=    Set Variable    ${arguments[1].data}
+    Wait Until Page Contains Element    save_claim    60
+    Wait Until Element Is Visible    add_claim_select_type    60
+    Select From List By Value    add_claim_select_type    3
+    Select From List By Index    AwardsAddOptions    1
+    Input Text    claim_title    ${arguments[1].data.title}
+    Input Text    claim_descriptions    ${arguments[1].data.description}
+    Choose File    add_file_complaint    ${arguments[3]}
+    Execute Javascript    $('#save_claim_draft').click()
+    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
+    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
+    Log To Console    new draft award claim ${cg}
+    Return From Keyword    ${cg}
+
+Завантажити документ у кваліфікацію
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
+    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
+    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Підтвердити кваліфікацію
+    Full Click    .//*[contains(@id,'btn_submit')]
+
+Затвердити остаточне рішення кваліфікації
+
+Підтвердити вирішення вимоги про виправлення визначення переможця
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
