@@ -123,7 +123,8 @@ Add Item
     Click Element    ${locator_Quantity}${d}
     Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
     #Выбор страны
-    Select From List By Label    xpath=.//*[@id='select_countries${d}']['Україна']    ${item.deliveryAddress.countryName}
+    Wait Until Element Is Visible    xpath=.//*[@id='select_countries${d}']
+    Select From List By Label    xpath=.//*[@id='select_countries${d}']    ${item.deliveryAddress.countryName}
     Press Key    ${locator_postal_code}${d}    ${item.deliveryAddress.postalCode}
     aniwait
     Wait Until Element Is Enabled    id=select_regions${d}
@@ -686,10 +687,7 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.currency'    Get Field Text    id=procuringParticipantsCurrency_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    View.Conv to Boolean    xpath=.//*[@ng-if='procuringParticipant.isVAT']
-    Comment    ${awardIsVAT}=    Execute Javascript    $('#procuringParticipantsIsVAT_0_0').text()
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.valueAddedTaxIncluded'    View.Conv to Boolean    ${awardIsVAT}
     #***Award Suppliers(identifier/contactPoint/address)***
-    Comment    Run Keyword If    '${role}'=='viewer'    Full Click    id=participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].name'    Get Field Text    id=procuringParticipantsIdentifierLegalName_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.id'    Get Field Text    id=procuringParticipantsIdentifierCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].identifier.scheme'    Get Field Text    id=procuringParticipantsIdentifierScheme_0_0
