@@ -140,6 +140,7 @@ Get Field Doc
 
 Get Field Doc for paticipant
     [Arguments]    ${idd}
+    Full Click    info-purchase-tab
     Full Click    participants-tab
     ${rrr}=    Get Text    ${idd}
     Return From Keyword    ${rrr}
