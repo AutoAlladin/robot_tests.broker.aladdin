@@ -829,12 +829,9 @@ ${apiUrl}         ${EMPTY}
     Full Click    .//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
-<<<<<<< HEAD
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
-=======
 
 Підтвердити вирішення вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
     Aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
->>>>>>> da4c9f200f249c1e5f527ed9540106c64237b621
