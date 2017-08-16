@@ -448,17 +448,15 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    2
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Element    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Comment    Input Text    id=processingContractDateSigned    ${signed}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
@@ -471,6 +469,7 @@ ${apiUrl}         ${EMPTY}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Click Button    xpath=.//*[contains(@id,'saveContract_')]
     Publish tender/negotiation
+    #xpath=.//file-category-upload//input[@class='form-control ng-pristine ng-valid ng-isolate-scope ng-empty ng-touched']
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
