@@ -474,8 +474,9 @@ ${apiUrl}         ${EMPTY}
 Отримати інформацію із документа
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    info-purchase-tab
     Full Click    id=documents-tab
-    sleep    5
+    sleep    15
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
 
 Отримати документ
@@ -822,4 +823,4 @@ ${apiUrl}         ${EMPTY}
 
 Скасувати вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}     @{arguments}
+    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
