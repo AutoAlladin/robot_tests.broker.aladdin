@@ -124,7 +124,7 @@ Add Item
     Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
     Wait Until Element Is Enabled    id=select_regions${item_suffix}
-    Set Region    ${item.deliveryAddress.region}    ${d}
+    Set Region    ${item.deliveryAddress.region}    ${item_suffix}
     Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
     Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
@@ -343,9 +343,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${q}
-    Comment    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions00')).scope(); autotestmodel.procurementSubject.procurementSubject.region=autotestmodel.procurementSubject.procurementSubject.region; autotestmodel.procurementSubject.procurementSubject.region={id:0,name:'${region}',initName:'${region}'};
-    Comment    Comment    Select From List By Label    ${locator_SelectRegion}${q}    ${region}
+    Set Region    ${region}    ${id_suffix}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -358,7 +356,6 @@ Add item negotiate
     Press Key    ${locator_street}${id_suffix}    ${street}
     Run Keyword If    ${log_enabled}    Log To Console    Адрес ${street}
     sleep    3
-    Comment    Click Element    ${locator_check_gps}${q}
     ${deliveryLocation_latitude}=    Get From Dictionary    ${item.deliveryLocation}    latitude
     ${deliveryLocation_latitude}    Convert Float To String    ${deliveryLocation_latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
