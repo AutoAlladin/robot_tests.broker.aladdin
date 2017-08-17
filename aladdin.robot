@@ -105,7 +105,6 @@ ${apiUrl}         ${EMPTY}
     [Documentation]    Оновлює інформацію на сторінці, якщо відкрита сторінка з тендером, інакше переходить на сторінку з тендером tender_uaid
     ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
     Set Suite Variable    ${page_load_count}    ${next_page_load_count}
-    Log To Console    ${page_load_count}
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
