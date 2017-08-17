@@ -183,7 +183,8 @@ ${apiUrl}         ${EMPTY}
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][0]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][1]
     [Return]    ${field_value}
 
 Задати запитання на тендер

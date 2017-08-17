@@ -181,3 +181,8 @@ Get Bid Status
     [Arguments]    ${aladdin_bid_status}
     ${txt}=    Get Text    ${aladdin_bid_status}
     Return From Keyword If    'Подана'=='${txt}'    invalid
+
+Get qualification status
+    [Arguments]    @{arguments}
+    ${status}=    Get Text    .//*[contains(@id,'qualificationStatus_')]
+    Return From Keyword If    '${status}'=='Очікування рішення'    pending

@@ -704,7 +704,7 @@ Get Info Award
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
-    Sleep    60
+    m    60
     Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
