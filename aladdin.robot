@@ -229,7 +229,7 @@ ${apiUrl}         ${EMPTY}
 Створити постачальника, додати документацію і підтвердити його
     [Arguments]    ${username}    ${ua_id}    ${s}    ${filepath}
     ${url}=    Get Location
-    ${idd}=    Fetch From Left    ${url}    \#/info-purchase
+    ${url}=    Fetch From Left    ${url}    \#/info-purchase
     ${id}=    Fetch From Right    ${url}    /
     Go To    ${USERS.users['${username}'].homepage}/Purchase/Edit/${id}#/info-purchase
     Wait Until Element Is Enabled    ${locator_participant}
@@ -441,11 +441,11 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    2
+    sleep    5
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
