@@ -127,14 +127,20 @@ Get Field Amount for latitude
 
 Get Field Doc
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    documents-tab
     Full Click    documents-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    5
+    ${doc_name}=    Get Text    ${idd}
+    Return From Keyword    ${doc_name}
 
 Get Field Doc for paticipant
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    info-purchase-tab
     Full Click    info-purchase-tab
     Full Click    participants-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    15
+    ${name_doc_part}=    Get Text    ${idd}
+    Return From Keyword    ${name_doc_part}
 
 Get Claim Status
     [Arguments]    ${_id}

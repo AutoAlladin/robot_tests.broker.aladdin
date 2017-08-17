@@ -702,6 +702,7 @@ Get Info Award
     Comment    Wait Until Element Is Visible    id=tab-content-3
     Comment    Sleep    10
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    \    \    .//*[contains(@id,'docFileName')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
