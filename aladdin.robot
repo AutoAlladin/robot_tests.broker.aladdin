@@ -807,6 +807,7 @@ ${apiUrl}         ${EMPTY}
     Return From Keyword    ${cg}
 
 Завантажити документ у кваліфікацію
+    [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
@@ -822,7 +823,8 @@ ${apiUrl}         ${EMPTY}
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    ActiveStandStill
 
 Підтвердити вирішення вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
