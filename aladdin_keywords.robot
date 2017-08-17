@@ -117,7 +117,7 @@ Add Item
     #Срок поставки (конечная дата)
     ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.endDate}
     Fill Date    ${locator_date_delivery_end}${item_suffix}    ${date_time}
-    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
+    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${item_suffix}']/div[2]/span
     #Выбор страны
     Wait Until Element Is Visible    xpath=.//*[@id='select_countries${item_suffix}']
     Select From List By Label    xpath=.//*[@id='select_countries${item_suffix}']    ${item.deliveryAddress.countryName}
