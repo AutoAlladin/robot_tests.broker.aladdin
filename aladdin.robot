@@ -183,8 +183,8 @@ ${apiUrl}         ${EMPTY}
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][0]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][1]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -813,14 +813,20 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
-    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
-    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
-    Full Click    .//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Wait Until Page Contains Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Choose File    xpath=.//*[@id='prequalification']/div/div/div[1]    ${arguments[0]}
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
-    Full Click    .//*[contains(@id,'btn_submit')]
+    Click Element    prequalification-tab
+    Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}

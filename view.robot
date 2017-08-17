@@ -183,6 +183,7 @@ Get Bid Status
     Return From Keyword If    'Подана'=='${txt}'    invalid
 
 Get qualification status
-    [Arguments]    @{arguments}
-    ${status}=    Get Text    .//*[contains(@id,'qualificationStatus_')]
+    [Arguments]    ${_id}
+    Full Click    prequalification-tab
+    ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
