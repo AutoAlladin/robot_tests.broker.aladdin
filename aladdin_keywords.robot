@@ -10,7 +10,7 @@ Library           conv_timeDate.py
 Resource          aladdin.robot
 
 *** Variables ***
-${enid}           ${0}
+${feature_suffix}    ${0}
 ${locator_necTitle}    id=featureTitle_
 ${dkkp_id}        ${EMPTY}
 
@@ -22,11 +22,11 @@ ${dkkp_id}        ${EMPTY}
     Full Click    ${locator_create_negotiation}
     Wait Until Page Contains Element    ${locator_tenderTitle}
     Info Negotiate    ${tender_data}
-    ${trtte}=    Get From Dictionary    ${tender_data}    data
-    ${ttt}=    Get From Dictionary    ${trtte}    items
-    ${item}=    Get From List    ${ttt}    0
+    ${tnd_data}=    Get From Dictionary    ${tender_data}    data
+    ${items}=    Get From Dictionary    ${tnd_data}    items
+    ${item}=    Get From List    ${items}    0
     Add item negotiate    ${item}    00    0
-    ${item}=    Get From List    ${ttt}    1
+    ${item}=    Get From List    ${items}    1
     Add item negotiate    ${item}    01    0
     Execute Javascript    window.scroll(-1000, -1000)
     Full Click    ${locator_finish_edit}
@@ -112,15 +112,11 @@ Add Item
     Set DKKP
     Run Keyword And Ignore Error    Wait Until Element Is Not Visible    xpath=//div[@class="modal-backdrop fade"]    10
     #Срок поставки (начальная дата)
-    ${date_time}=    dt    ${item.deliveryDate.startDate}
+    ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.startDate}
     Fill Date    ${locator_date_delivery_start}${d}    ${date_time}
-    Click Element    ${locator_date_delivery_start}${d}
-    Click Element    ${locator_Quantity}${d}
     #Срок поставки (конечная дата)
-    ${date_time}=    dt    ${item.deliveryDate.endDate}
+    ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.endDate}
     Fill Date    ${locator_date_delivery_end}${d}    ${date_time}
-    Click Element    ${locator_date_delivery_end}${d}
-    Click Element    ${locator_Quantity}${d}
     Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
     #Выбор страны
     Wait Until Element Is Visible    xpath=.//*[@id='select_countries${d}']
@@ -161,13 +157,13 @@ Info Below
     Run Keyword If    ${NUMBER_OF_LOTS}<1    Set Tender Budget    ${tender_data}
     Run Keyword If    ${NUMBER_OF_LOTS}>0    Full Click    xpath=.//*[@id='is_multilot']/div[1]/div[2]
     #Период уточнений нач дата
-    ${date_time_enq_st}=    dt    ${tender_data.data.enquiryPeriod.startDate}
+    ${date_time_enq_st}=    get_aladdin_formated_date    ${tender_data.data.enquiryPeriod.startDate}
     #Период уточнений кон дата
-    ${date_time_enq_end}=    dt    ${tender_data.data.enquiryPeriod.endDate}
+    ${date_time_enq_end}=    get_aladdin_formated_date    ${tender_data.data.enquiryPeriod.endDate}
     #Период приема предложений (нач дата)
-    ${date_time_ten_st}=    dt    ${tender_data.data.tenderPeriod.startDate}
+    ${date_time_ten_st}=    get_aladdin_formated_date    ${tender_data.data.tenderPeriod.startDate}
     #Период приема предложений (кон дата)
-    ${date_time_ten_end}=    dt    ${tender_data.data.tenderPeriod.endDate}
+    ${date_time_ten_end}=    get_aladdin_formated_date    ${tender_data.data.tenderPeriod.endDate}
     Fill Date    ${locator_discussionDate_start}    ${date_time_enq_st}
     Fill Date    ${locator_discussionDate_end}    ${date_time_enq_end}
     Fill Date    ${locator_bidDate_start}    ${date_time_ten_st}
@@ -282,7 +278,7 @@ Info OpenUA
     Run Keyword If    ${NUMBER_OF_LOTS}<1    Set Tender Budget    ${tender}
     Run Keyword If    ${NUMBER_OF_LOTS}>0    Full Click    xpath=.//*[@id='is_multilot']/div[1]/div[2]
     #Период приема предложений (кон дата)
-    ${date_time_ten_end}=    dt    ${tender.data.tenderPeriod.endDate}
+    ${date_time_ten_end}=    get_aladdin_formated_date    ${tender.data.tenderPeriod.endDate}
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    ${locator_bidDate_end}
     Full Click    id=createOrUpdatePurchase
@@ -332,12 +328,12 @@ Add item negotiate
     #Срок поставки (начальная дата)
     sleep    10
     ${delivery_Date_start}=    Get From Dictionary    ${item.deliveryDate}    startDate
-    ${date_time}=    dt    ${delivery_Date_start}
+    ${date_time}=    get_aladdin_formated_date    ${delivery_Date_start}
     Fill Date    ${locator_date_delivery_start}${q}    ${date_time}
     Run Keyword If    ${log_enabled}    Log To Console    Срок поставки (начальная дата) ${date_time}
     #Срок поставки (конечная дата)
     ${delivery_Date}=    Get From Dictionary    ${item.deliveryDate}    endDate
-    ${date_time}=    dt    ${delivery_Date}
+    ${date_time}=    get_aladdin_formated_date    ${delivery_Date}
     Fill Date    ${locator_date_delivery_end}${q}    ${date_time}
     Run Keyword If    ${log_enabled}    Log To Console    Срок поставки (конечная дата) ${date_time}
     #Выбор страны
@@ -462,7 +458,7 @@ Info OpenEng
     Press Key    ${locator_currency}    ${currency}
     Full Click    ${locator_currency}
     #Период приема предложений (кон дата)
-    ${date_time_ten_end}=    dt    ${tender.data.tenderPeriod.endDate}
+    ${date_time_ten_end}=    get_aladdin_formated_date    ${tender.data.tenderPeriod.endDate}
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    id=createOrUpdatePurchase
     Full Click    ${locator_next_step}
@@ -524,7 +520,7 @@ Add Feature
     Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='FAIL'    Select Item Param    ${fi.relatedItem}
     Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='PASS'    Select Item Param Label    ${fi.item_id}
     #Enum_0_1
-    Set Suite Variable    ${enid}    ${0}
+    Set Suite Variable    ${feature_suffix}    ${0}
     ${enums}=    Get From Dictionary    ${fi}    enum
     : FOR    ${enum}    IN    @{enums}
     \    ${val}=    Evaluate    int(${enum.value}*${100})
@@ -535,7 +531,6 @@ Add Feature
     Full Click    id=updateFeature_${lid}_${pid}
 
 Set DKKP
-    Log To Console    ${dkkp_id}
     #Выбор др ДК
     sleep    1
     Wait Until Element Is Enabled    ${locator_button_add_dkpp}
@@ -551,12 +546,10 @@ Add Enum
     [Arguments]    ${enum}    ${p}
     ${val}=    Evaluate    int(${enum.value}*${100})
     Full Click    xpath=//button[@ng-click="addFeatureEnum(lotPurchasePlan, features)"]
-    ${enid_}=    Evaluate    ${enid}+${1}
-    Set Suite Variable    ${enid}    ${enid_}
-    ${end}=    Set Variable    ${p}_${enid}
-    Comment    Log To Console    id=featureEnumValue_${end} - \ \ ${val}
+    ${enid_}=    Evaluate    ${feature_suffix}+${1}
+    Set Suite Variable    ${feature_suffix}    ${enid_}
+    ${end}=    Set Variable    ${p}_${feature_suffix}
     Wait Until Page Contains Element    id=featureEnumValue_${end}    15
-    Comment    Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitle_En${end}    ${enum.title_en}
     Input Text    id=featureEnumValue_${end}    ${val}
     Input Text    id=featureEnumTitle_${end}    ${enum.title}
     Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitleEn_${end}    flowers
@@ -571,19 +564,16 @@ Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
     ${dkpp_id_local}=    Get From Dictionary    ${dkpp}    id
-    Log To Console    Other DK ${dkpp_id_local}
     Set Suite Variable    ${dkkp_id}    ${dkpp_id_local}
 
 Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    start publish tender
-    Log To Console    start publish tender
     aniwait
     Wait Until Page Contains Element    id=publishNegotiationAutoTest    90
     Wait Until Element Is Enabled    id=publishNegotiationAutoTest
     sleep    3
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
-    Log To Console    ${url}
     sleep    5
     Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
     Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
@@ -673,9 +663,9 @@ Add Bid Lot
     Full Click    id=lotSubmit${end}
 
 Get Param By Id
-    [Arguments]    ${m}    ${p}
-    : FOR    ${pp}    IN    @{p}
-    \    Return From Keyword If    '${pp['code']}'=='${m}'    ${pp['value']}
+    [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
+    : FOR    ${pp}    IN    @{prozorro_param_codes}
+    \    Return From Keyword If    '${prozorro_param_codes[0]}'=='${aladdin_param_code}'    ${prozorro_param_codes[1]}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
