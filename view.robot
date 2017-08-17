@@ -162,9 +162,6 @@ Get Answer Status
     Return From Keyword If    '${txt}'=='Відхилено'    cancelled
     Return From Keyword If    '${txt}'=='Задоволено'    resolved
 
-Set Click For Award
-    [Arguments]    ${idd}
-
 Get NAward Field
     [Arguments]    ${fu}    ${is_amount}
     Full Click    participants-tab
