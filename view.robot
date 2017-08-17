@@ -191,3 +191,12 @@ Get Bid Status
     [Arguments]    ${ggg}
     ${txt}=    Get Text    ${ggg}
     Return From Keyword If    'Подана'=='${txt}'    invalid
+<<<<<<< HEAD
+=======
+
+Get qualification status
+    [Arguments]    ${_id}
+    Full Click    prequalification-tab
+    ${status}=    Get Text    ${_id}
+    Return From Keyword If    '${status}'=='Очікування рішення'    pending
+>>>>>>> 4a27ec8... openeu tender owner question and docs
