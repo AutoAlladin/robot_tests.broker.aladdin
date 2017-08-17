@@ -117,14 +117,14 @@ Add Item
     #Срок поставки (конечная дата)
     ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.endDate}
     Fill Date    ${locator_date_delivery_end}${item_suffix}    ${date_time}
-    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
+    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${item_suffix}']/div[2]/span
     #Выбор страны
     Wait Until Element Is Visible    xpath=.//*[@id='select_countries${item_suffix}']
     Select From List By Label    xpath=.//*[@id='select_countries${item_suffix}']    ${item.deliveryAddress.countryName}
     Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
     Wait Until Element Is Enabled    id=select_regions${item_suffix}
-    Set Region    ${item.deliveryAddress.region}    ${d}
+    Set Region    ${item.deliveryAddress.region}    ${item_suffix}
     Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
     Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
@@ -344,8 +344,6 @@ Add item negotiate
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
     Set Region    ${region}    ${id_suffix}
-    Comment    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions00')).scope(); autotestmodel.procurementSubject.procurementSubject.region=autotestmodel.procurementSubject.procurementSubject.region; autotestmodel.procurementSubject.procurementSubject.region={id:0,name:'${region}',initName:'${region}'};
-    Comment    Comment    Select From List By Label    ${locator_SelectRegion}${q}    ${region}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -695,7 +693,6 @@ Get Info Award
     Comment    Wait Until Element Is Visible    id=tab-content-3
     Comment    Sleep    10
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
-    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    .//*[contains(@id,'docFileName')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
