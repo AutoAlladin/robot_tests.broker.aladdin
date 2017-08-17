@@ -22,7 +22,7 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${_id}
-    Comment    Wait Until Element Is Enabled    ${_id}    40
+    Wait Until Element Is Enabled    ${_id}    40
     ${value}=    Get Text    ${_id}
     [Return]    ${value}
 
