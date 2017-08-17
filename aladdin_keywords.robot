@@ -343,7 +343,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${q}
+    Set Region    ${region}    ${id_suffix}
     Comment    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions00')).scope(); autotestmodel.procurementSubject.procurementSubject.region=autotestmodel.procurementSubject.procurementSubject.region; autotestmodel.procurementSubject.procurementSubject.region={id:0,name:'${region}',initName:'${region}'};
     Comment    Comment    Select From List By Label    ${locator_SelectRegion}${q}    ${region}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
@@ -695,7 +695,7 @@ Get Info Award
     Comment    Wait Until Element Is Visible    id=tab-content-3
     Comment    Sleep    10
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
-    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    \    \    .//*[contains(@id,'docFileName')]
+    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    .//*[contains(@id,'docFileName')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
