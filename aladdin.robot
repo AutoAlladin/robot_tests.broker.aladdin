@@ -442,13 +442,12 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    30
-    Choose File    xpath=.//*[contains(@id,'downloadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    sleep    5
+    Choose File    xpath=.//*[contains(@id,'uploadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
-    sleep    30
+    sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    20
-    Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
