@@ -183,8 +183,8 @@ ${apiUrl}         ${EMPTY}
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -825,11 +825,15 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
-    Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
+    Sleep    10
+    Full Click    xpath=.//*[contains(@id,'toggleQualification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Завантажити документ у кваліфікацію    aladdin_Owner
-    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
-    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Sleep    5
+    Choose File    .//*[contains(@id,'downloadFile')]    ${arguments[0]}
+    Click Button    .//*[contains(@id,'submitUpload')]
+    Sleep    10
+    Click Element    isQualified0
+    Click Element    isEligible0
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
