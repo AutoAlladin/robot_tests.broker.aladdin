@@ -696,10 +696,7 @@ Get Info Award
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
-    m    60
-    Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
     Sleep    10
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
