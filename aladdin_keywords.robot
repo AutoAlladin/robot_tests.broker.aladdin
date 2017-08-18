@@ -655,8 +655,8 @@ Add Bid Lot
 
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
-    : FOR    ${pp}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_codes[0]}'=='${aladdin_param_code}'    ${prozorro_param_codes[1]}
+    : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
+    \    Return From Keyword If    '${prozorro_param_cod[0]}'=='${aladdin_param_code}'    ${prozorro_param_cod[1]}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
@@ -696,14 +696,9 @@ Get Info Award
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
-    Sleep    60
-    Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
-    Sleep    30
-    Log To Console    '${arguments[1]}'=='contracts[0].status'
+    Sleep    10
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
-    Log To Console    '${arguments[1]}'=='contracts[0].status'
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}

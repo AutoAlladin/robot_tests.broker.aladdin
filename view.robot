@@ -152,6 +152,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Чернетка'    draft
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
+    Return From Keyword If    '${text}'=='Задоволено'    resolved
 
 Get Answer Status
     [Arguments]    ${_id}
@@ -188,3 +189,9 @@ Get Bid Status
     [Arguments]    ${aladdin_bid_status}
     ${txt}=    Get Text    ${aladdin_bid_status}
     Return From Keyword If    'Подана'=='${txt}'    invalid
+
+Get qualification status
+    [Arguments]    ${_id}
+    Full Click    prequalification-tab
+    ${status}=    Get Text    ${_id}
+    Return From Keyword If    '${status}'=='Очікування рішення'    pending

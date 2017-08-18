@@ -183,7 +183,8 @@ ${apiUrl}         ${EMPTY}
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='active.pre-qualification'    Get Field Text
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -439,7 +440,6 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    40
@@ -740,7 +740,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
-    Run Keyword And Return If    '${arguments[3]}'=='title'    Get Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
+    Run Keyword And Return If    '${arguments[3]}'=='title'    Get Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]
 
 Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
@@ -781,10 +781,11 @@ ${apiUrl}         ${EMPTY}
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //button[contains(@id,'awardAcceptDecision')]
-    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
-    Full Click    //button[@ng-show='showBtnAcceptDecision']
-    Wait Until Page Contains    contractProzorroId
-    ${res}=    Get Text    contractProzorroId
+    Run Keyword And Ignore Error    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
+    Run Keyword And Ignore Error    Full Click    //button[@ng-show='showBtnAcceptDecision']
+    Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
+    Wait Until Element Is Visible    //span[@id="contractProzorroId"]    60
+    ${res}=    Get Text    //span[@id="contractProzorroId"]
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
@@ -807,18 +808,30 @@ ${apiUrl}         ${EMPTY}
     Return From Keyword    ${cg}
 
 Завантажити документ у кваліфікацію
+    [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
-    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
-    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
-    Full Click    .//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Wait Until Page Contains Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Choose File    xpath=.//*[@id='prequalification']/div/div/div[1]    ${arguments[0]}
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Підтвердити кваліфікацію
-    Full Click    .//*[contains(@id,'btn_submit')]
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Click Element    prequalification-tab
+    Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    ActiveStandStill
 
 Підтвердити вирішення вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
