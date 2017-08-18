@@ -655,7 +655,7 @@ Add Bid Lot
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
     : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_cod.code}'=='${aladdin_param_code}'    ${prozorro_param_cod.value}
+    \    Return From Keyword If    '${prozorro_param_cod[0]}'=='${aladdin_param_code}'    ${prozorro_param_cod[1]}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
