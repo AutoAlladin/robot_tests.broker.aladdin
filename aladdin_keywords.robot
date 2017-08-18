@@ -700,8 +700,10 @@ Get Info Contract
     Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
-    Sleep    10
+    Sleep    30
+    Log To Console    '${arguments[1]}'=='contracts[0].status'
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Log To Console    '${arguments[1]}'=='contracts[0].status'
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}

@@ -442,10 +442,12 @@ ${apiUrl}         ${EMPTY}
     Comment    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    5
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/div/label    ${CURDIR}/LICENSE.txt
+    sleep    40
+    Choose File    xpath=.//*[@id='processingContract0']//file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
+    sleep    40
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    20
     Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
