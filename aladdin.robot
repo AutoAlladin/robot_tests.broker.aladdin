@@ -21,7 +21,7 @@ ${apiUrl}         ${EMPTY}
 Підготувати клієнт для користувача
     [Arguments]    ${username}
     [Documentation]    Відкриває переглядач на потрібній сторінці, готує api wrapper тощо
-    Set Suite Variable    ${apiUrl}    https://192.168.95.153:92
+    Set Suite Variable    ${apiUrl}    http://192.168.95.153:92
     ${user}=    Get From Dictionary    ${USERS.users}    ${username}
     Comment    Open Browser    ${user.homepage}    ${user.browser}    desired_capabilities=nativeEvents:false
     ${chrome options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
