@@ -97,6 +97,7 @@ Get Tru PDV
     Return From Keyword If    '${txt}'!='true'    ${False}
 
 Get Tender Status
+    Reload Page
     ${status}=    Execute Javascript    return $('#purchaseStatus').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    draft
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
@@ -105,6 +106,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
+    Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    pending
     Run Keyword If    '${status}'=='2'    Return From Keyword    active

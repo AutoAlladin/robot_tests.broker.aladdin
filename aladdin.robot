@@ -591,8 +591,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    1
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${lot_name}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
+    Select From List By Label    name=LotsAddOptions    ${lot_name}
     Input Text    name=Title    ${arguments[2].data.title}
     Input Text    name=Description    ${arguments[2].data.description}
     Full Click    id=confirm_creationForm
@@ -604,8 +604,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    2
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${item_name}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
+    Select From List By Label    name=LotsAddOptions    ${item_name}
     Input Text    name=Title    ${arguments[2]}.data.title}
     Input Text    name=Description    ${arguments[2]}.data.description}
     Full Click    id=confirm_creationForm
@@ -758,10 +758,9 @@ ${apiUrl}         ${EMPTY}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
     Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
-    Log To Console    new award claim ${cg}
-    Return From Keyword    ${cg}
+    ${complaint_guid}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Log To Console    new award claim ${complaint_guid}
+    Return From Keyword    ${complaint_guid}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
@@ -839,4 +838,4 @@ ${apiUrl}         ${EMPTY}
 
 Скасувати вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}     @{arguments}
