@@ -784,8 +784,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
     Run Keyword And Ignore Error    Full Click    //button[@ng-show='showBtnAcceptDecision']
     Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
-    Wait Until Page Contains    contractProzorroId    60
-    ${res}=    Get Text    contractProzorroId
+    Wait Until Element Is Visible    //span[@id="contractProzorroId"]    60
+    ${res}=    Get Text    //span[@id="contractProzorroId"]
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
