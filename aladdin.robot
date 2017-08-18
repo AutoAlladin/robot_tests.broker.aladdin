@@ -442,10 +442,10 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    40
-    Choose File    xpath=.//*[@id='processingContract0']//file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
-    sleep    40
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    sleep    30
+    Choose File    xpath=.//*[contains(@id,'downloadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
+    sleep    30
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     sleep    20
     Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
@@ -838,4 +838,4 @@ ${apiUrl}         ${EMPTY}
 
 Скасувати вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}     @{arguments}
+    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
