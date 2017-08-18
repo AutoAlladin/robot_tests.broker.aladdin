@@ -825,13 +825,12 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
-    Sleep    10
+    Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Sleep    5
     Choose File    .//*[contains(@id,'downloadFile')]    ${arguments[0]}
     Click Button    .//*[contains(@id,'submitUpload')]
-    Sleep    10
     Click Element    isQualified0
     Click Element    isEligible0
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
