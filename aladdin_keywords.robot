@@ -356,6 +356,7 @@ Add item negotiate
     Press Key    ${locator_street}${id_suffix}    ${street}
     Run Keyword If    ${log_enabled}    Log To Console    Адрес ${street}
     sleep    3
+    Comment    Click Element    ${locator_check_gps}${q}
     ${deliveryLocation_latitude}=    Get From Dictionary    ${item.deliveryLocation}    latitude
     ${deliveryLocation_latitude}    Convert Float To String    ${deliveryLocation_latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
@@ -554,16 +555,19 @@ Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
     ${dkpp_id_local}=    Get From Dictionary    ${dkpp}    id
+    Log To Console    Other DK ${dkpp_id_local}
     Set Suite Variable    ${dkkp_id}    ${dkpp_id_local}
 
 Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    start publish tender
+    Log To Console    start publish tender
     aniwait
     Wait Until Page Contains Element    id=publishNegotiationAutoTest    90
     Wait Until Element Is Enabled    id=publishNegotiationAutoTest
     sleep    3
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
+    Log To Console    ${url}
     sleep    5
     Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
     Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
@@ -692,7 +696,6 @@ Get Info Award
     Comment    Wait Until Element Is Visible    id=tab-content-3
     Comment    Sleep    10
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
-    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    .//*[contains(@id,'docFileName')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
