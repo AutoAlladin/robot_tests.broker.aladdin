@@ -613,7 +613,8 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
-    Run Keyword And Return If    '${arguments[2]}'=='status'    Get Claim Status    complaintStatus_${guid}
+    ${status}=    Get Claim Status    complaintStatus_${guid}
+    Run Keyword And Return If    '${arguments[2]}'=='status'    Run Keyword And Return If    '${status}'='answered'    Get Claim Status    complaintResolutionTypeName_${guid}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    complaintTitle_${guid}
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    complaintDescription_${guid}
     Run Keyword And Return If    '${arguments[2]}'=='resolutionType'    Get Claim Status    complaintResolutionTypeName_${guid}
@@ -757,10 +758,9 @@ ${apiUrl}         ${EMPTY}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
     Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
-    Log To Console    new award claim ${cg}
-    Return From Keyword    ${cg}
+    ${complaint_guid}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Log To Console    new award claim ${complaint_guid}
+    Return From Keyword    ${complaint_guid}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
@@ -785,6 +785,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
     Wait Until Element Is Visible    //span[@id="contractProzorroId"]    60
     ${res}=    Get Text    //span[@id="contractProzorroId"]
+    Comment    ${award_guid}=    Execute Javascript    return $('#complaintAward_${complaint_guid}').text()
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
