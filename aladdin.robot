@@ -614,7 +614,7 @@ ${apiUrl}         ${EMPTY}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     ${status}=    Get Claim Status    complaintStatus_${guid}
-    Run Keyword And Return If    '${arguments[2]}'=='status'    Run Keyword And Return If    '${status}'='answered'    Get Claim Status    complaintResolutionTypeName_${guid}
+    Run Keyword And Return If    '${arguments[2]}'=='status'    Run Keyword And Return If    '${status}'=='answered'    Get Claim Status    complaintResolutionTypeName_${guid}
     Run Keyword And Return If    '${arguments[2]}'!='status'    Return From Keyword    ${status}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    complaintTitle_${guid}
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    complaintDescription_${guid}
