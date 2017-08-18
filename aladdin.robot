@@ -168,8 +168,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
     Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
     #***Documents***
-    Run Keyword If    '${arguments[1]}'=='documents[0].title'    Full Click    id=documents-tab
-    Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    id=docFileName0
+    Comment    Run Keyword If    '${arguments[1]}'=='documents[0].title'    Full Click    id=documents-tab
+    Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
     Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
@@ -183,8 +183,8 @@ ${apiUrl}         ${EMPTY}
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][0]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get Field Text    xpath=.//*[contains(@id,'qualificationStatus_')][1]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -440,17 +440,17 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
+    sleep    600
     Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    2
+    sleep    5
     Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Comment    Input Text    id=processingContractDateSigned    ${signed}
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
@@ -477,16 +477,17 @@ ${apiUrl}         ${EMPTY}
 Отримати інформацію із документа
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    info-purchase-tab
     Full Click    id=documents-tab
-    sleep    5
-    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
+    sleep    15
+    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Text    //div[contains(@id,'docFileName')]/span[contains(text(),'${arguments[1]}')]
 
 Отримати документ
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    xpath=//a[contains(@id,'docFileName')][contains(.,'${arguments[1]}')]
-    Full Click    xpath=//a[contains(.,'${arguments[1]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
+    Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     sleep    3
     Return From Keyword    ${title}
 
@@ -565,8 +566,8 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
-    ${title}=    Get Field Text    //a[contains(@id,'docFileName')][contains(.,'${arguments[2]}')]
-    Full Click    //a[contains(.,'${arguments[2]}')]/../../../../..//a[contains(@id,'strikeDocFileNameBut')]
+    ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]
+    Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
@@ -590,8 +591,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    1
-    ${lot_name}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
-    Select From List By Label    name=LotsAddOptions    ${lot_name}
+    ${g}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
+    Select From List By Label    name=LotsAddOptions    ${g}
     Input Text    name=Title    ${arguments[2].data.title}
     Input Text    name=Description    ${arguments[2].data.description}
     Full Click    id=confirm_creationForm
@@ -603,8 +604,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    2
-    ${item_name}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
-    Select From List By Label    name=LotsAddOptions    ${item_name}
+    ${g}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
+    Select From List By Label    name=LotsAddOptions    ${g}
     Input Text    name=Title    ${arguments[2]}.data.title}
     Input Text    name=Description    ${arguments[2]}.data.description}
     Full Click    id=confirm_creationForm
@@ -780,9 +781,10 @@ ${apiUrl}         ${EMPTY}
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Full Click    //button[contains(@id,'awardAcceptDecision')]
-    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
-    Full Click    //button[@ng-show='showBtnAcceptDecision']
-    Wait Until Page Contains    contractProzorroId
+    Run Keyword And Ignore Error    Full Click    //div[@ng-show='showAcceptDecision']/md-checkbox
+    Run Keyword And Ignore Error    Full Click    //button[@ng-show='showBtnAcceptDecision']
+    Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
+    Wait Until Page Contains    contractProzorroId    60
     ${res}=    Get Text    contractProzorroId
     Return From Keyword    ${res}
 
@@ -799,11 +801,9 @@ ${apiUrl}         ${EMPTY}
     Select From List By Index    AwardsAddOptions    1
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
-    Choose File    add_file_complaint    ${arguments[3]}
     Execute Javascript    $('#save_claim_draft').click()
     Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
     ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new draft award claim ${cg}
     Return From Keyword    ${cg}
 
@@ -813,14 +813,20 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
-    Wait Until Page Contains Element    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label
-    Choose File    .//*[@id='prequalification']/div/div/div[1]/div/div[2]/div[2]/div/label    ${arguments[0]}
-    Full Click    .//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Wait Until Page Contains Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Choose File    xpath=.//*[@id='prequalification']/div/div/div[1]    ${arguments[0]}
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
-    Full Click    .//*[contains(@id,'btn_submit')]
+    Click Element    prequalification-tab
+    Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
@@ -830,3 +836,7 @@ ${apiUrl}         ${EMPTY}
 Підтвердити вирішення вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
     Aladdin.Підтвердити вирішення вимоги про виправлення умов закупівлі    ${username}    @{arguments}
+
+Скасувати вимогу про виправлення визначення переможця
+    [Arguments]    ${username}    @{arguments}
+    Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}

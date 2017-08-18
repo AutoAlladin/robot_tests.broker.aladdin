@@ -11,20 +11,20 @@ Resource          aladdin.robot
 
 *** Keywords ***
 Get Field Amount
-    [Arguments]    ${id}
+    [Arguments]    ${_id}
     ${path}=    Set Variable    ${id}
     Wait Until Element Is Visible    ${path}
-    ${r}=    Get Text    ${path}
-    ${r}=    Remove String    ${r}    ${SPACE}
-    ${r}=    Replace String    ${r}    ,    .
-    ${r}=    Convert To Number    ${r}
-    Return From Keyword    ${r}
+    ${tmp_val}=    Get Text    ${path}
+    ${tmp_val}=    Remove String    ${tmp_val}    ${SPACE}
+    ${tmp_val}=    Replace String    ${tmp_val}    ,    .
+    ${tmp_val}=    Convert To Number    ${tmp_val}
+    Return From Keyword    ${tmp_val}
 
 Get Field Text
-    [Arguments]    ${id}
-    Wait Until Element Is Enabled    ${id}    60
-    ${r}=    Get Text    ${id}
-    [Return]    ${r}
+    [Arguments]    ${_id}
+    Wait Until Element Is Enabled    ${_id}    40
+    ${value}=    Get Text    ${_id}
+    [Return]    ${value}
 
 Prepare View
     [Arguments]    ${username}    ${argument}
@@ -37,18 +37,14 @@ Prepare View
 Get Field feature.title
     [Arguments]    ${id}
     Wait Until Element Is Enabled    id=features-tab
-    Click Element    id=features-tab
-    Comment    Wait Until Page Contains Element    id = updateOrCreateFeature_0_0    30
-    sleep    3000
+    Full Click    id=features-tab
     Wait Until Page Contains Element    id=Feature_1_0_Title    30
     Execute Javascript    window.scroll(0, 150)
-    ${d}=    Set Variable    ${id}
-    Comment    Wait Until Page Contains Element    id = updateOrCreateFeature_0_0    30
-    Comment    Wait Until Element Is Enabled    id = updateOrCreateFeature_0_0    30
     Get Field Text    xpath=//form[contains(@id,'updateOrCreateFeature_${id}')]
 
 Get Field Date
     [Arguments]    ${id}
+    Wait Until Page Contains Element    ${id}    40
     ${startDate}=    Get Text    ${id}
     ${startDate}    Replace String    ${startDate}    ${SPACE}    T
     ${tz}=    Get Local TZ
@@ -66,18 +62,18 @@ Set Field tenderPeriod.endDate
 Set Field Amount
     [Arguments]    ${_id}    ${value}
     Wait Until Element Is Enabled    ${_id}
-    ${eee}=    Convert Float To String    ${value}
-    Input Text    ${_id}    ${eee}
+    ${tmp_val}=    Convert Float To String    ${value}
+    Input Text    ${_id}    ${tmp_val}
     Click Element    ${_id}
 
 Conv to Boolean
     [Arguments]    ${id}
     ${path}=    Set Variable    ${id}
     Wait Until Element Is Visible    ${path}
-    ${r}=    Get Text    ${path}
-    ${r}=    Remove String    ${r}    ${SPACE}
-    ${r}=    Convert To Boolean    ${r}
-    Return From Keyword    ${r}
+    ${tmp_val}=    Get Text    ${path}
+    ${tmp_val}=    Remove String    ${tmp_val}    ${SPACE}
+    ${tmp_val}=    Convert To Boolean    ${tmp_val}
+    Return From Keyword    ${tmp_val}
 
 Set Field Text
     [Arguments]    ${idishka}    ${text}
@@ -101,21 +97,20 @@ Get Tru PDV
     Return From Keyword If    '${txt}'!='true'    ${False}
 
 Get Tender Status
-    Reload Page
     ${status}=    Execute Javascript    return $('#purchaseStatus').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    draft
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
-    Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    pending
     Run Keyword If    '${status}'=='2'    Return From Keyword    active
 
 Get Field question.answer
-    [Arguments]    ${www}
+    [Arguments]    ${x}
     Full Click    id=questions-tab
     Wait Until Page Contains    ${x}    60
     ${txt}=    Get Text    xpath=//div[contains(text(),'${x}')]
@@ -132,19 +127,24 @@ Get Field Amount for latitude
 
 Get Field Doc
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    documents-tab
     Full Click    documents-tab
-    ${rrr}=    Get Text    ${idd}
-    Return From Keyword    ${rrr}
+    sleep    5
+    ${doc_name}=    Get Text    ${idd}
+    Return From Keyword    ${doc_name}
 
 Get Field Doc for paticipant
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    info-purchase-tab
+    Full Click    info-purchase-tab
     Full Click    participants-tab
-    ${rrr}=    Get Text    ${idd}
-    Return From Keyword    ${rrr}
+    sleep    15
+    ${name_doc_part}=    Get Text    ${idd}
+    Return From Keyword    ${name_doc_part}
 
 Get Claim Status
-    [Arguments]    ${yyy}
-    ${text}=    Get Text    ${yyy}
+    [Arguments]    ${_id}
+    ${text}=    Get Text    ${_id}
     Return From Keyword If    '${text}'=='Вимога'    claim
     Return From Keyword If    '${text}'=='Дано відповідь'    answered
     Return From Keyword If    '${text}'=='Вирішено'    resolved
@@ -155,13 +155,10 @@ Get Claim Status
 
 Get Answer Status
     [Arguments]    ${_id}
-    ${txt}=
+    ${txt}=    Set Variable    ${EMPTY}
     Return From Keyword If    '${txt}'=='Недійсно'    declined
     Return From Keyword If    '${txt}'=='Відхилено'    cancelled
-    Return From Keyword If    '${txt}'=='Вирішено'    resolved
-
-Set Click For Award
-    [Arguments]    ${idd}
+    Return From Keyword If    '${txt}'=='Задоволено'    resolved
 
 Get NAward Field
     [Arguments]    ${fu}    ${is_amount}
@@ -188,15 +185,12 @@ Open Claim Form
     [Return]    ${guid}
 
 Get Bid Status
-    [Arguments]    ${ggg}
-    ${txt}=    Get Text    ${ggg}
+    [Arguments]    ${aladdin_bid_status}
+    ${txt}=    Get Text    ${aladdin_bid_status}
     Return From Keyword If    'Подана'=='${txt}'    invalid
-<<<<<<< HEAD
-=======
 
 Get qualification status
     [Arguments]    ${_id}
     Full Click    prequalification-tab
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
->>>>>>> 4a27ec8... openeu tender owner question and docs
