@@ -766,6 +766,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Wait Until Page Contains Element    //file-category-upload
@@ -810,6 +811,7 @@ ${apiUrl}         ${EMPTY}
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
@@ -821,9 +823,11 @@ ${apiUrl}         ${EMPTY}
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Завантажити документ у кваліфікацію    aladdin_Owner
     Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
     Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
