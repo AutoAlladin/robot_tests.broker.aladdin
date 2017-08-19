@@ -185,6 +185,8 @@ ${apiUrl}         ${EMPTY}
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    #***End Date***
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -207,6 +209,7 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -813,11 +816,11 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
-    Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
     Click Element    xpath=.//*[contains(@id,'toggleQualification')]
-    Wait Until Page Contains Element    xpath=.//*[@id='prequalification']/div/div/div[1]
-    Choose File    xpath=.//*[@id='prequalification']/div/div/div[1]    ${arguments[0]}
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
@@ -828,8 +831,10 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[contains(@id,'toggleQualification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Sleep    5
-    Choose File    .//*[contains(@id,'downloadFile')]    ${arguments[0]}
-    Click Button    .//*[contains(@id,'submitUpload')]
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Click Element    isQualified0
     Click Element    isEligible0
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
@@ -837,6 +842,9 @@ ${apiUrl}         ${EMPTY}
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Click Element    prequalification-tab
+    Sleep    5
     Full Click    ActiveStandStill
 
 Підтвердити вирішення вимоги про виправлення визначення переможця

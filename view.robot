@@ -195,6 +195,6 @@ Get qualification status
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Sleep    5
     Full Click    prequalification-tab
-    Sleep    10
+    Sleep    5
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
