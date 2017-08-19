@@ -420,8 +420,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[2]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]    60
+    ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new tender claim ${cg}
     Return From Keyword    ${cg}
@@ -647,8 +647,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
+    ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new lot claim ${cg}
     Return From Keyword    ${cg}
@@ -669,8 +669,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
+    ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new draft claim ${cg}
     Return From Keyword    ${cg}
@@ -689,8 +689,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
+    ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new draft lot claim ${cg}
     Return From Keyword    ${cg}
@@ -756,8 +756,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${complaint_guid}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
+    ${complaint_guid}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Log To Console    new award claim ${complaint_guid}
     Return From Keyword    ${complaint_guid}
 
@@ -783,8 +783,8 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //button[@ng-show='showBtnAcceptDecision']
     Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
     Wait Until Element Is Visible    //span[@id="contractProzorroId"]    60
-    ${res}=    Get Text    //span[@id="contractProzorroId"]
-    Comment    ${award_guid}=    Execute Javascript    return $('#complaintAward_${complaint_guid}').text()
+    Comment    ${res}=    Get Text    //span[@id="contractProzorroId"]
+    ${award_guid}=    Execute Javascript    return $('#awargGuid_0').text()
     Return From Keyword    ${res}
 
 Створити чернетку вимоги про виправлення визначення переможця
@@ -801,8 +801,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
+    ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Log To Console    new draft award claim ${cg}
     Return From Keyword    ${cg}
 
