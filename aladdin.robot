@@ -420,6 +420,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[2]}
     Full Click    save_claim
+    Reload Page
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]    60
     ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -647,6 +648,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
+    Reload Page
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
     ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -669,6 +671,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
+    Reload Page
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
     ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -689,6 +692,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
+    Reload Page
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
     ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -755,6 +759,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
+    Reload Page
     Full Click    save_claim
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
     ${complaint_guid}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
@@ -801,6 +806,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
+    Reload Page
     Wait Until Page Contains Element    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]    60
     ${cg}=    Get Text    //div[@class="feed-activity-list ng-scope"][1]//div[contains(@id,"complaintForm_")]//span[contains(@id,'complaintProzorroId_')]
     Log To Console    new draft award claim ${cg}
