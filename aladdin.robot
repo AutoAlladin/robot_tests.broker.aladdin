@@ -419,13 +419,11 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[2]}
-    ${old_count}=    Get Matching Xpath Count    //div[contains(@id,'complaintForm')]
-    Log To Console    sdfasfsdf
-    Wait For Condition    'return \ Boolean(${old_count}< $("div[id^=complaintForm").length)'    60
+    Full Click    save_claim
+    sleep    3
     Reload Page
     Wait Until Page Contains Element    complaintForm_0    60
     ${cg}=    Get Text    complaintProzorroId_0
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new tender claim ${cg}
     Return From Keyword    ${cg}
 
@@ -651,9 +649,7 @@ ${apiUrl}         ${EMPTY}
     Choose File    add_file_complaint    ${arguments[3]}
     ${old_count}=    Get Matching Xpath Count    //div[contains(@id,'complaintForm')]
     Full Click    save_claim
-    Wait For Condition    'return \ ${old_count}<$("div[id^=complaintForm").length'    60
-    Reload Page
-    Wait Until Page Contains Element    complaintForm_0    60
+    sleep    3
     ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new lot claim ${cg}
