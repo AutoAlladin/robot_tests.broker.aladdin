@@ -192,6 +192,9 @@ Get Bid Status
 
 Get qualification status
     [Arguments]    ${_id}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Sleep    5
     Full Click    prequalification-tab
+    Sleep    10
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
