@@ -86,19 +86,19 @@ ${dkkp_id}        ${EMPTY}
     [Return]    ${tender_UID}
 
 Add Item
-    [Arguments]    ${item}    ${d}    ${d_lot}
+    [Arguments]    ${item}    ${item_suffix}    ${d_lot}
     #Клик доб позицию
     Full Click    ${locator_add_item_button}${d_lot}
-    Full Click    ${locator_item_description}${d}
+    Full Click    ${locator_item_description}${item_suffix}
     #Название предмета закупки
-    Input Text    ${locator_item_description}${d}    ${item.description}
+    Input Text    ${locator_item_description}${item_suffix}    ${item.description}
     Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divProcurementSubjectControllerEdit')).scope().procurementSubject.guid='${item.id}'
     #Количество товара
-    Wait Until Element Is Enabled    ${locator_Quantity}${d}
-    Input Text    ${locator_Quantity}${d}    ${item.quantity}
+    Wait Until Element Is Enabled    ${locator_Quantity}${item_suffix}
+    Input Text    ${locator_Quantity}${item_suffix}    ${item.quantity}
     #Выбор ед измерения
-    Wait Until Element Is Enabled    ${locator_code}${d}
-    Select From List By Value    ${locator_code}${d}    ${item.unit.code}
+    Wait Until Element Is Enabled    ${locator_code}${item_suffix}
+    Select From List By Value    ${locator_code}${item_suffix}    ${item.unit.code}
     ${name}=    Get From Dictionary    ${item.unit}    name
     #Выбор ДК
     Full Click    ${locator_button_add_cpv}
@@ -113,33 +113,33 @@ Add Item
     Run Keyword And Ignore Error    Wait Until Element Is Not Visible    xpath=//div[@class="modal-backdrop fade"]    10
     #Срок поставки (начальная дата)
     ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.startDate}
-    Fill Date    ${locator_date_delivery_start}${d}    ${date_time}
+    Fill Date    ${locator_date_delivery_start}${item_suffix}    ${date_time}
     #Срок поставки (конечная дата)
     ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.endDate}
-    Fill Date    ${locator_date_delivery_end}${d}    ${date_time}
-    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${d}']/div[2]/span
+    Fill Date    ${locator_date_delivery_end}${item_suffix}    ${date_time}
+    Run Keyword And Ignore Error    Full Click    xpath=//md-switch[@id='is_delivary_${item_suffix}']/div[2]/span
     #Выбор страны
-    Wait Until Element Is Visible    xpath=.//*[@id='select_countries${d}']
-    Select From List By Label    xpath=.//*[@id='select_countries${d}']    ${item.deliveryAddress.countryName}
-    Press Key    ${locator_postal_code}${d}    ${item.deliveryAddress.postalCode}
+    Wait Until Element Is Visible    xpath=.//*[@id='select_countries${item_suffix}']
+    Select From List By Label    xpath=.//*[@id='select_countries${item_suffix}']    ${item.deliveryAddress.countryName}
+    Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
-    Wait Until Element Is Enabled    id=select_regions${d}
-    Set Region    ${item.deliveryAddress.region}    ${d}
-    Press Key    ${locator_street}${d}    ${item.deliveryAddress.streetAddress}
-    Press Key    ${locator_locality}${d}    ${item.deliveryAddress.locality}
+    Wait Until Element Is Enabled    id=select_regions${item_suffix}
+    Set Region    ${item.deliveryAddress.region}    ${item_suffix}
+    Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
+    Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
     ${deliveryLocation_latitude}    Convert To String    ${item.deliveryLocation.latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
-    Press Key    ${locator_deliveryLocation_latitude}${d}    ${deliveryLocation_latitude}
+    Press Key    ${locator_deliveryLocation_latitude}${item_suffix}    ${deliveryLocation_latitude}
     ${deliveryLocation_longitude}=    Convert To String    ${item.deliveryLocation.longitude}
     ${deliveryLocation_longitude}=    String.Replace String    ${deliveryLocation_longitude}    decimal    string
-    Press Key    ${locator_deliveryLocation_longitude}${d}    ${deliveryLocation_longitude}
-    Run Keyword If    '${MODE}'=='openeu'    Add Item Eng    ${item}    ${d}
+    Press Key    ${locator_deliveryLocation_longitude}${item_suffix}    ${deliveryLocation_longitude}
+    Run Keyword If    '${MODE}'=='openeu'    Add Item Eng    ${item}    ${item_suffix}
     #Клик кнопку "Створити"
     Run Keyword And Ignore Error    Wait Until Element Is Not Visible    xpath=.//div[@class='page-loader animated fadeIn']    5
-    Wait Until Element Is Enabled    ${locator_button_create_item}${d}
-    Full Click    ${locator_button_create_item}${d}
-    Log To Console    finish item ${d}
+    Wait Until Element Is Enabled    ${locator_button_create_item}${item_suffix}
+    Full Click    ${locator_button_create_item}${item_suffix}
+    Log To Console    finish item ${item_suffix}
 
 Info Below
     [Arguments]    ${tender_data}
@@ -284,26 +284,26 @@ Info OpenUA
     Full Click    id=createOrUpdatePurchase
 
 Add item negotiate
-    [Arguments]    ${item}    ${q}    ${w}
+    [Arguments]    ${item}    ${id_suffix}    ${lot_number}
     Run Keyword If    ${log_enabled}    Log To Console    start add item negotiation
     #Клик доб позицию
     sleep    3
-    Full Click    ${locator_add_item_button}${w}
-    Wait Until Element Is Enabled    ${locator_item_description}${q}
+    Full Click    ${locator_add_item_button}${lot_number}
+    Wait Until Element Is Enabled    ${locator_item_description}${id_suffix}
     Run Keyword If    ${log_enabled}    Log To Console    Click add item
     #Название предмета закупки
     ${add_classif}=    Get From Dictionary    ${item}    description
-    Press Key    ${locator_item_description}${q}    ${add_classif}
+    Press Key    ${locator_item_description}${id_suffix}    ${add_classif}
     Run Keyword If    ${log_enabled}    Log To Console    Название предмета закупки ${add_classif}
     #Количество товара
     ${editItemQuant}=    Get From Dictionary    ${item}    quantity
-    Wait Until Element Is Enabled    ${locator_Quantity}${q}
-    Input Text    ${locator_Quantity}${q}    ${editItemQuant}
+    Wait Until Element Is Enabled    ${locator_Quantity}${id_suffix}
+    Input Text    ${locator_Quantity}${id_suffix}    ${editItemQuant}
     Run Keyword If    ${log_enabled}    Log To Console    Количество товара ${editItemQuant}
     #Выбор ед измерения
-    Wait Until Element Is Enabled    ${locator_code}${q}
+    Wait Until Element Is Enabled    ${locator_code}${id_suffix}
     ${code}=    Get From Dictionary    ${item.unit}    code
-    Select From List By Value    ${locator_code}${q}    ${code}
+    Select From List By Value    ${locator_code}${id_suffix}    ${code}
     ${name}=    Get From Dictionary    ${item.unit}    name
     Run Keyword If    ${log_enabled}    Log To Console    Выбор ед измерения ${code} ${name}
     #Выбор ДК
@@ -329,50 +329,48 @@ Add item negotiate
     sleep    10
     ${delivery_Date_start}=    Get From Dictionary    ${item.deliveryDate}    startDate
     ${date_time}=    get_aladdin_formated_date    ${delivery_Date_start}
-    Fill Date    ${locator_date_delivery_start}${q}    ${date_time}
+    Fill Date    ${locator_date_delivery_start}${id_suffix}    ${date_time}
     Run Keyword If    ${log_enabled}    Log To Console    Срок поставки (начальная дата) ${date_time}
     #Срок поставки (конечная дата)
     ${delivery_Date}=    Get From Dictionary    ${item.deliveryDate}    endDate
     ${date_time}=    get_aladdin_formated_date    ${delivery_Date}
-    Fill Date    ${locator_date_delivery_end}${q}    ${date_time}
+    Fill Date    ${locator_date_delivery_end}${id_suffix}    ${date_time}
     Run Keyword If    ${log_enabled}    Log To Console    Срок поставки (конечная дата) ${date_time}
     #Выбор страны
     ${country}=    Get From Dictionary    ${item.deliveryAddress}    countryName
-    Select From List By Label    ${locator_country_id}${q}    ${country}
+    Select From List By Label    ${locator_country_id}${id_suffix}    ${country}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор страны ${country}
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${q}
-    Comment    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions00')).scope(); autotestmodel.procurementSubject.procurementSubject.region=autotestmodel.procurementSubject.procurementSubject.region; autotestmodel.procurementSubject.procurementSubject.region={id:0,name:'${region}',initName:'${region}'};
-    Comment    Comment    Select From List By Label    ${locator_SelectRegion}${q}    ${region}
+    Set Region    ${region}    ${id_suffix}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
-    Press Key    ${locator_postal_code}${q}    ${post_code}
+    Press Key    ${locator_postal_code}${id_suffix}    ${post_code}
     Run Keyword If    ${log_enabled}    Log To Console    Индекс ${post_code}
     ${locality}=    Get From Dictionary    ${item.deliveryAddress}    locality
-    Press Key    ${locator_locality}${q}    ${locality}
+    Press Key    ${locator_locality}${id_suffix}    ${locality}
     Run Keyword If    ${log_enabled}    Log To Console    Насел пункт ${locality}
     ${street}=    Get From Dictionary    ${item.deliveryAddress}    streetAddress
-    Press Key    ${locator_street}${q}    ${street}
+    Press Key    ${locator_street}${id_suffix}    ${street}
     Run Keyword If    ${log_enabled}    Log To Console    Адрес ${street}
     sleep    3
     Comment    Click Element    ${locator_check_gps}${q}
     ${deliveryLocation_latitude}=    Get From Dictionary    ${item.deliveryLocation}    latitude
     ${deliveryLocation_latitude}    Convert Float To String    ${deliveryLocation_latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
-    Press Key    ${locator_deliveryLocation_latitude}${q}    ${deliveryLocation_latitude}
+    Press Key    ${locator_deliveryLocation_latitude}${id_suffix}    ${deliveryLocation_latitude}
     Run Keyword If    ${log_enabled}    Log To Console    Широта ${deliveryLocation_latitude}
     ${deliveryLocation_longitude}=    Get From Dictionary    ${item.deliveryLocation}    longitude
     ${deliveryLocation_longitude}=    Convert Float To String    ${deliveryLocation_longitude}
     ${deliveryLocation_longitude}=    String.Replace String    ${deliveryLocation_longitude}    decimal    string
-    Press Key    ${locator_deliveryLocation_longitude}${q}    ${deliveryLocation_longitude}
+    Press Key    ${locator_deliveryLocation_longitude}${id_suffix}    ${deliveryLocation_longitude}
     Run Keyword If    ${log_enabled}    Log To Console    Долгота ${deliveryLocation_longitude}
     Execute Javascript    window.scroll(1000, 1000)
     sleep    2
     #Клик кнопку "Створити"
-    Full Click    ${locator_button_create_item}${q}
+    Full Click    ${locator_button_create_item}${id_suffix}
     sleep    2
     Run Keyword If    ${log_enabled}    Log To Console    end add item negotiation
 
@@ -398,25 +396,25 @@ Add question
     Press Key    ${locator_description_question}    ${description}
 
 Add Lot
-    [Arguments]    ${d}    ${lot}
+    [Arguments]    ${lot_number}    ${lot}
     Full Click    ${locator_multilot_new}
-    Wait Until Page Contains Element    ${locator_multilot_title}${d}    30
-    Wait Until Element Is Enabled    ${locator_multilot_title}${d}
-    Input Text    ${locator_multilot_title}${d}    ${lot.title}
-    Input Text    id=lotDescription_${d}    ${lot.description}
+    Wait Until Page Contains Element    ${locator_multilot_title}${lot_number}    30
+    Wait Until Element Is Enabled    ${locator_multilot_title}${lot_number}
+    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
+    Input Text    id=lotDescription_${lot_number}    ${lot.description}
     Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
     ${budget}=    Get From Dictionary    ${lot.value}    amount
     ${text}=    Convert Float To String    ${budget}
     ${text}=    String.Replace String    ${text}    .    ,
-    Input Text    id=lotBudget_${d}    ${text}
+    Input Text    id=lotBudget_${lot_number}    ${text}
     ${step}=    Get From Dictionary    ${lot.minimalStep}    amount
     ${text}=    Convert Float To String    ${step}
     ${text}=    String.Replace String    ${text}    .    ,
-    Press Key    id=lotMinStep_${d}    ${text}
-    Press Key    id=lotMinStep_${d}    00
+    Press Key    id=lotMinStep_${lot_number}    ${text}
+    Press Key    id=lotMinStep_${lot_number}    00
     #Input Text    id=lotGuarantee_${d}
     Full Click    xpath=.//*[@id='updateOrCreateLot_1']//button[@class="btn btn-success"]
-    Log To Console    finish lot ${d}
+    Log To Console    finish lot ${lot_number}
 
 Fill Date
     [Arguments]    ${id}    ${value}
@@ -468,32 +466,27 @@ Info OpenEng
     ${w}=    Set Variable    1
     ${lot}=    Get From Dictionary    ${tender.data}    lots
     ${lot}=    Get From List    ${lot}    0
-    Log To Console    ${locator_multilot_title}${w}
-    Wait Until Page Contains Element    ${locator_multilot_title}${w}
-    Wait Until Element Is Enabled    ${locator_multilot_title}${w}
-    Input Text    ${locator_multilot_title}${w}    ${lot.title}
-    Input Text    ${locator_lotTitleEng}${w}    ${lot.title_en}
-    Input Text    id=lotDescription_${w}    ${lot.description}
+    Log To Console    ${locator_multilot_title}1
+    Wait Until Page Contains Element    ${locator_multilot_title}1
+    Wait Until Element Is Enabled    ${locator_multilot_title}1
+    Input Text    ${locator_multilot_title}1    ${lot.title}
+    Input Text    ${locator_lotTitleEng}1    ${lot.title_en}
+    Input Text    id=lotDescription_1    ${lot.description}
     ${budget}=    Get From Dictionary    ${lot.value}    amount
     ${text}=    Convert Float To String    ${budget}
     ${text}=    String.Replace String    ${text}    .    ,
-    Press Key    id=lotBudget_${w}    ${text}
-    Comment    Convert Float To String    ${lot.value.amount}
-    Comment    Input Text    id=lotBudget_${w}    ${lot.value.amount}
-    Comment    Input Text    id=lotMinStep_${w}    ${lot.minimalStep.amount}
-    Comment    Input Text    id=lotMinStep_${w}    00
+    Press Key    id=lotBudget_1    ${text}
     ${minStep}=    Get From Dictionary    ${lot.minimalStep}    amount
     ${text_ms}=    Convert Float To String    ${lot.minimalStep.amount}
     ${text_ms}=    String.Replace String    ${text_ms}    .    ,
-    Press Key    id=lotMinStep_${w}    ${text_ms}
-    Comment    Input Text    id=lotMinStep_${w}    00
+    Press Key    id=lotMinStep_1    ${text_ms}
     #Input Text    id=lotGuarantee_${w}
     Full Click    xpath=.//*[@id='divLotControllerEdit']/div/div/div/div[9]/div/button[1]
     Comment    Full Click    xpath=.//*[@id='updateOrCreateLot_1']//a[@ng-click="editLot(lotPurchasePlan)"]
     Run Keyword And Ignore Error    Wait Until Page Contains Element    ${locator_toast_container}
     Run Keyword And Ignore Error    Click Button    ${locator_toast_close}
     Wait Until Page Contains Element    xpath=.//*[@id='updateOrCreateLot_1']//a[@ng-click="editLot(lotPurchasePlan)"]
-    Log To Console    finish lot ${w}
+    Log To Console    finish lot 1
     #нажатие след.шаг
     Full Click    ${locator_next_step}
 
@@ -506,29 +499,29 @@ Add Item Eng
     Input Text    ${locator_item_descriptionEng}${d}    ${add_classifEng}
 
 Add Feature
-    [Arguments]    ${fi}    ${lid}    ${pid}
+    [Arguments]    ${feature}    ${lot_n}    ${f_id}
     aniwait
     sleep    3
-    Full Click    id=add_features${lid}
-    Wait Until Element Is Enabled    id=featureTitle_${lid}_${pid}
+    Full Click    id=add_features${lot_n}
+    Wait Until Element Is Enabled    id=featureTitle_${lot_n}_${f_id}
     #Param0
-    Input Text    id=featureTitle_${lid}_${pid}    ${fi.title}
-    Run Keyword If    '${MODE}'=='openeu'    Input Text    id=featureTitle_En_${lid}_${pid}    ${fi.title_en}
-    Input Text    id=featureDescription_${lid}_${pid}    ${fi.description}
+    Input Text    id=featureTitle_${lot_n}_${f_id}    ${feature.title}
+    Run Keyword If    '${MODE}'=='openeu'    Input Text    id=featureTitle_En_${lot_n}_${f_id}    ${feature.title_en}
+    Input Text    id=featureDescription_${lot_n}_${f_id}    ${feature.description}
     # Position nec
-    ${status}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${fi}    item_id
-    Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='FAIL'    Select Item Param    ${fi.relatedItem}
-    Run Keyword If    '${fi.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='PASS'    Select Item Param Label    ${fi.item_id}
+    ${status}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${feature}    item_id
+    Run Keyword If    '${feature.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='FAIL'    Select Item Param    ${feature.relatedItem}
+    Run Keyword If    '${feature.featureOf}'=='item'    Run Keyword If    '${status[0]}'=='PASS'    Select Item Param Label    ${feature.item_id}
     #Enum_0_1
     Set Suite Variable    ${feature_suffix}    ${0}
-    ${enums}=    Get From Dictionary    ${fi}    enum
+    ${enums}=    Get From Dictionary    ${feature}    enum
     : FOR    ${enum}    IN    @{enums}
     \    ${val}=    Evaluate    int(${enum.value}*${100})
-    \    Run Keyword If    ${val}>0    Add Enum    ${enum}    ${lid}_${pid}
-    \    Run Keyword If    ${val}==0    Input Text    id=featureEnumTitle_${lid}_${pid}_0    ${enum.title}
-    \    Run Keyword If    (${val}==0)&('${MODE}'=='openeu')    Input Text    id=featureEnumTitleEn_${lid}_${pid}_0    flowers
-    Wait Until Element Is Enabled    id=updateFeature_${lid}_${pid}
-    Full Click    id=updateFeature_${lid}_${pid}
+    \    Run Keyword If    ${val}>0    Add Enum    ${enum}    ${lot_n}_${f_id}
+    \    Run Keyword If    ${val}==0    Input Text    id=featureEnumTitle_${lot_n}_${f_id}_0    ${enum.title}
+    \    Run Keyword If    (${val}==0)&('${MODE}'=='openeu')    Input Text    id=featureEnumTitleEn_${lot_n}_${f_id}_0    flowers
+    Wait Until Element Is Enabled    id=updateFeature_${lot_n}_${f_id}
+    Full Click    id=updateFeature_${lot_n}_${f_id}
 
 Set DKKP
     #Выбор др ДК
@@ -564,16 +557,19 @@ Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
     ${dkpp_id_local}=    Get From Dictionary    ${dkpp}    id
+    Log To Console    Other DK ${dkpp_id_local}
     Set Suite Variable    ${dkkp_id}    ${dkpp_id_local}
 
 Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    start publish tender
+    Log To Console    start publish tender
     aniwait
     Wait Until Page Contains Element    id=publishNegotiationAutoTest    90
     Wait Until Element Is Enabled    id=publishNegotiationAutoTest
     sleep    3
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
+    Log To Console    ${url}
     sleep    5
     Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
     Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
@@ -665,7 +661,7 @@ Add Bid Lot
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
     : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_cod.code}'=='${aladdin_param_code}'    ${prozorro_param_cod.value}
+    \    Return From Keyword If    '${prozorro_param_cod[0]}'=='${aladdin_param_code}'    ${prozorro_param_cod[1]}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
@@ -691,6 +687,7 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
+    Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
@@ -704,10 +701,7 @@ Get Info Award
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
-    m    60
-    Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Comment    Run Keyword If    '${role}'=='viewer'    Wait Until Element Is Visible    id=tab-content-3
     Sleep    10
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 

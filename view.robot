@@ -22,7 +22,7 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${_id}
-    Wait Until Page Contains Element    ${_id}    40
+    Wait Until Element Is Enabled    ${_id}    40
     ${value}=    Get Text    ${_id}
     [Return]    ${value}
 
@@ -127,13 +127,20 @@ Get Field Amount for latitude
 
 Get Field Doc
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    documents-tab
     Full Click    documents-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    5
+    ${doc_name}=    Get Text    ${idd}
+    Return From Keyword    ${doc_name}
 
 Get Field Doc for paticipant
     [Arguments]    ${idd}
+    Wait Until Page Contains Element    info-purchase-tab
+    Full Click    info-purchase-tab
     Full Click    participants-tab
-    Return From Keyword    Get Text    ${idd}
+    sleep    15
+    ${name_doc_part}=    Get Text    ${idd}
+    Return From Keyword    ${name_doc_part}
 
 Get Claim Status
     [Arguments]    ${_id}
@@ -145,6 +152,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Чернетка'    draft
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
+    Return From Keyword If    '${text}'=='Задоволено'    resolved
 
 Get Answer Status
     [Arguments]    ${_id}
@@ -184,9 +192,6 @@ Get Bid Status
 
 Get qualification status
     [Arguments]    ${_id}
-    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Sleep    5
     Full Click    prequalification-tab
-    Sleep    10
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
