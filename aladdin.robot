@@ -816,11 +816,17 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
-    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Click Element    xpath=.//div[@class='hpanel hgreen ng-scope tender-panel'][1]//a
+    Comment    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Wait Until Element Is Visible    .//div[@class='hpanel hgreen ng-scope tender-panel'][2]//a
+    Click Element    .//div[@class='hpanel hgreen ng-scope tender-panel'][2]//a
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
