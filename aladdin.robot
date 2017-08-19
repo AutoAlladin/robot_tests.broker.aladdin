@@ -443,14 +443,14 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    5
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Choose File    xpath=.//*[contains(@id,'uploadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
+    sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
@@ -593,8 +593,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    1
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${lot_name}=    get text    xpath=//option[contains(@label,'${arguments[1]}')]
+    Select From List By Label    name=LotsAddOptions    ${lot_name}
     Input Text    name=Title    ${arguments[2].data.title}
     Input Text    name=Description    ${arguments[2].data.description}
     Full Click    id=confirm_creationForm
@@ -606,8 +606,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
     Select From List By Value    name=OfOptions    2
-    ${g}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
-    Select From List By Label    name=LotsAddOptions    ${g}
+    ${item_name}=    get text    xpath=//option[contains(@label,'${arguments[2]}')]
+    Select From List By Label    name=LotsAddOptions    ${item_name}
     Input Text    name=Title    ${arguments[2]}.data.title}
     Input Text    name=Description    ${arguments[2]}.data.description}
     Full Click    id=confirm_creationForm
