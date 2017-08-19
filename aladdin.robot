@@ -843,7 +843,9 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
-    Click Element    prequalification-tab
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
     Sleep    5
     Full Click    ActiveStandStill
 
