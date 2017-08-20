@@ -420,8 +420,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[2]}
     Full Click    save_claim
-    sleep    3
-    Reload Page
+    Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${cg}=    Get Text    complaintProzorroId_0
     Log To Console    new tender claim ${cg}
@@ -671,8 +670,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    complaintForm_0    60
-    Reload Page
+    Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -693,8 +691,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    complaintForm_0    60
-    Reload Page
+    Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
@@ -762,8 +759,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    Wait Until Page Contains Element    complaintForm_0    60
-    Reload Page
+    Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${complaint_guid}=    Get Text    complaintProzorroId_0
     Log To Console    new award claim ${complaint_guid}
@@ -809,8 +805,7 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    complaintForm_0    60
-    Reload Page
+    sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${cg}=    Get Text    complaintProzorroId_0
     Log To Console    new draft award claim ${cg}
