@@ -115,6 +115,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
+    Дочекатись синхронізації з майданчиком    ${username}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     #***Purchase***
     Run Keyword And Return If    '${arguments[1]}'=='tenderID'    Get Field Text    id=purchaseProzorroId
@@ -328,9 +329,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із лоту
     [Arguments]    ${username}    @{arguments}
+    Дочекатись синхронізації з майданчиком    ${username}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Wait Until Element Is Enabled    id=view-lots-tab
-    Click Element    id=view-lots-tab
+    Full Click    id=view-lots-tab
     Wait Until Element Is Enabled    id=view-lots
     sleep    5
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//h4[@id='Lot-1-Title'][contains(.,'${arguments[1]}')]
@@ -346,7 +348,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із нецінового показника
     [Arguments]    ${username}    @{arguments}
-    sleep    5
+    Дочекатись синхронізації з майданчиком    ${username}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=features-tab
     Wait Until Element Is Enabled    id=features
