@@ -816,16 +816,16 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
-    Click Element    xpath=.//div[@class='hpanel hgreen ng-scope tender-panel'][1]//a
-    Comment    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][1]
+    Click Element    xpath=.//*[contains(@id,'preQualification')][1]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Wait Until Element Is Visible    .//div[@class='hpanel hgreen ng-scope tender-panel'][2]//a
-    Click Element    .//div[@class='hpanel hgreen ng-scope tender-panel'][2]//a
+    Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][2]
+    Click Element    xpath=.//*[contains(@id,'preQualification')][2]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
@@ -835,12 +835,12 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Sleep    5
-    Full Click    xpath=.//*[contains(@id,'toggleQualification')]
+    Full Click    .//*[contains(@id,'preQualification')][1]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Click Element    isQualified0
     Click Element    isEligible0
