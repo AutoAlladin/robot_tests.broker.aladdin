@@ -24,7 +24,6 @@ ${apiUrl}         ${EMPTY}
     Set Suite Variable    ${apiUrl}    http://192.168.95.153:92
     Comment    Set Suite Variable    ${apiUrl}    https://77.120.107.172:93
     ${user}=    Get From Dictionary    ${USERS.users}    ${username}
-    Log To Console    ${OUTPUT_DIR}
     ${chrome options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     ${prefs}    Create Dictionary    prompt_for_download=false    download.default_directory=${OUTPUT_DIR}    download.directory_update=True
     Call Method    ${chrome options}    add_experimental_option    prefs    ${prefs}
@@ -48,7 +47,6 @@ ${apiUrl}         ${EMPTY}
     ${item}=    Get From List    ${items}    0
     : FOR    ${en}    IN    @{items}
     \    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${en}    additionalClassifications
-    \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Log To Console    ${en.additionalClassifications[0].id}
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Set To Dictionary    ${en.additionalClassifications[0]}    id=7242    description=Монтажники електронного устаткування
     \    ...    scheme=ДК003
     Set List Value    ${items}    0    ${item}
@@ -581,7 +579,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword If    '${arguments[2].data.resolutionType}'=='invalid'    Select From List By Value    complaintResolutionType_${guid}    1
     Input Text    complaintResolution_${guid}    ${arguments[2].data.resolution}
     Full Click    makeComplaintResolution_${guid}
-    Log To Console    ${guid} \ ${arguments[2].data.resolutionType}
+    Log To Console    ${guid}-${arguments[2].data.resolutionType}
     Return From Keyword    '${arguments[2].data.resolutionType}'=='declined'
 
 Задати запитання на лот
