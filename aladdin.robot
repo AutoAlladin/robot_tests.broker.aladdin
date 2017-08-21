@@ -26,11 +26,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${prefs}    Create Dictionary    prompt_for_download=false    download.default_directory=${OUTPUT_DIR}    download.directory_update=True
     Call Method    ${chrome options}    add_experimental_option    prefs    ${prefs}
     Create Webdriver    Chrome    chrome_options=${chrome options}
-    Set Suite Variable    ${apiUrl}    ${user.homepage}
     Goto    ${user.homepage}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
     Run Keyword If    '${role}'!='viewer'    Login    ${user}
+    Set Suite Variable    ${apiUrl}    ${user.homepage}
 
 Підготувати дані для оголошення тендера
     [Arguments]    ${username}    @{arguments}
