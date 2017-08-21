@@ -207,6 +207,7 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}

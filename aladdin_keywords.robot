@@ -28,7 +28,6 @@ ${dkkp_id}        ${EMPTY}
     Add item negotiate    ${item}    00    0
     ${item}=    Get From List    ${items}    1
     Add item negotiate    ${item}    01    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    ${locator_finish_edit}
     ${tender_UID}=    Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    End negotiation
@@ -564,18 +563,10 @@ Publish tender/negotiation
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
     sleep    5
-    Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
-    Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     ${tender_UID}=    Get Text    id=purchaseProzorroId
     ${tender_GUID}=    Get Text    id=purchaseGuid
     Log To Console    UID=${tender_UID}
-    ${url}=    Get Location
-    ${url}=    Fetch From Left    ${url}    :90
-    Log To Console    ${url}
-    Execute Javascript    $.get('${url}:92/api/sync/purchases/${tender_GUID}')
-    Reload Page
-    Log To Console    finish publish tender ${tender_UID}
     Return From Keyword    ${tender_UID}
     Run Keyword If    ${log_enabled}    Log To Console    end publish tender
     [Return]    ${tender_UID}
@@ -654,7 +645,7 @@ Add Bid Lot
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
     : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_cod[0]}'=='${aladdin_param_code}'    ${prozorro_param_cod[1]}
+    \    Return From Keyword If    '${prozorro_param_cod['code']}'=='${aladdin_param_code}'    ${prozorro_param_cod['value']}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
