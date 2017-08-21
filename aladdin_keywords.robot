@@ -242,7 +242,7 @@ Load document
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -542,12 +542,6 @@ Add Enum
     Input Text    id=featureEnumValue_${end}    ${val}
     Input Text    id=featureEnumTitle_${end}    ${enum.title}
     Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitleEn_${end}    flowers
-
-Sync
-    [Arguments]    ${uaid}    ${api}
-    Execute Javascript    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-    ${guid}=    Execute Javascript    return $.get('publish/SearchTenderById?tenderId=${uaid}&guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf')
-    Log To Console    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
 
 Get OtherDK
     [Arguments]    ${item}

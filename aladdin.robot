@@ -15,19 +15,18 @@ ${js}             ${EMPTY}
 ${log_enabled}    ${EMPTY}
 ${start_date}     ${EMPTY}
 ${page_load_count}    ${0}
-${apiUrl}         ${EMPTY}
+${apiUrl}         https://test-gov.ald.in.ua
 
 *** Keywords ***
 Підготувати клієнт для користувача
     [Arguments]    ${username}
     [Documentation]    Відкриває переглядач на потрібній сторінці, готує api wrapper тощо
-    Set Suite Variable    ${apiUrl}    http://192.168.95.153:92
-    Comment    Set Suite Variable    ${apiUrl}    https://77.120.107.172:93
     ${user}=    Get From Dictionary    ${USERS.users}    ${username}
     ${chrome options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     ${prefs}    Create Dictionary    prompt_for_download=false    download.default_directory=${OUTPUT_DIR}    download.directory_update=True
     Call Method    ${chrome options}    add_experimental_option    prefs    ${prefs}
     Create Webdriver    Chrome    chrome_options=${chrome options}
+    Set Suite Variable    ${apiUrl}    ${user.homepage}
     Goto    ${user.homepage}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
@@ -97,7 +96,7 @@ ${apiUrl}         ${EMPTY}
     Search tender    ${username}    ${tender_uaid}
     ${guid}=    Get Text    id=purchaseGuid
     Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    90
-    Load Tender    ${apiUrl}/api/sync/purchases/${guid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -109,7 +108,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Switch Browser    1
     Reload Page
 
