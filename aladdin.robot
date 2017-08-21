@@ -205,6 +205,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -214,6 +215,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
     [Documentation]    Змінює поле fieldname (сума, неціновий показник тощо) в раніше створеній ставці в тендері tender_uaid
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editButton
@@ -492,6 +494,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     sleep    5
     Run Keyword And Ignore Error    Full Click    id=openLotForm_0
