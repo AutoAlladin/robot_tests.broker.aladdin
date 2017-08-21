@@ -819,7 +819,7 @@ ${apiUrl}         ${EMPTY}
     Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][1]
     Click Element    xpath=.//*[contains(@id,'preQualification')][1]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][2]
