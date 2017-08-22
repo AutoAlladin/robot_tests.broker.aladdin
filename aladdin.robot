@@ -648,7 +648,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    add_file_complaint    ${arguments[3]}
     ${old_count}=    Get Matching Xpath Count    //div[contains(@id,'complaintForm')]
     Full Click    save_claim
-    sleep    3
+    sleep    15
     ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new lot claim ${cg}
