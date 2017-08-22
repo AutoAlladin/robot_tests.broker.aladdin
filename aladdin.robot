@@ -816,16 +816,14 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
-    Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][1]
-    Click Element    xpath=.//*[contains(@id,'preQualification')][1]
+    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Wait Until Element Is Visible    xpath=.//*[contains(@id,'preQualification')][2]
-    Click Element    xpath=.//*[contains(@id,'preQualification')][2]
+    Full Click    xpath=.//*[contains(@id,'preQualification')][2]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
 
