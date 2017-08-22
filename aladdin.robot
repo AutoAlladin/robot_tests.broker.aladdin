@@ -835,8 +835,9 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Sleep    5
-    Full Click    .//*[contains(@id,'preQualification')][1]
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
@@ -845,6 +846,14 @@ ${apiUrl}         ${EMPTY}
     Click Element    isQualified0
     Click Element    isEligible0
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'preQualification')][2]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
