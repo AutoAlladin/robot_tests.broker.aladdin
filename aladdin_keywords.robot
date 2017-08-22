@@ -143,6 +143,7 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания
@@ -226,12 +227,12 @@ Info Negotiate
 
 Login
     [Arguments]    ${user}
-    Click Element    ${locator_cabinetEnter}
-    Click Element    ${locator_enter}
+    Full Click    ${locator_cabinetEnter}
+    Full Click    ${locator_enter}
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Click Element    ${locator_loginButton}
+    Full Click    ${locator_loginButton}
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
@@ -251,7 +252,7 @@ Load document
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -552,12 +553,6 @@ Add Enum
     Input Text    id=featureEnumTitle_${end}    ${enum.title}
     Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitleEn_${end}    flowers
 
-Sync
-    [Arguments]    ${uaid}    ${api}
-    Execute Javascript    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-    ${guid}=    Execute Javascript    return $.get('publish/SearchTenderById?tenderId=${uaid}&guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf')
-    Log To Console    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-
 Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
@@ -615,7 +610,7 @@ Select Item Param Label
     Select From List By Label    id=featureItem_1_0    ${lb}
 
 aniwait
-    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    40
+    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"
 
 Full Click
     [Arguments]    ${lc}
