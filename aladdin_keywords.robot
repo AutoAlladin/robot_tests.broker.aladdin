@@ -609,7 +609,7 @@ Select Item Param Label
     Select From List By Label    id=featureItem_1_0    ${lb}
 
 aniwait
-    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    40
+    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"
 
 Full Click
     [Arguments]    ${lc}
