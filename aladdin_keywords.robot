@@ -218,12 +218,12 @@ Info Negotiate
 
 Login
     [Arguments]    ${user}
-    Click Element    ${locator_cabinetEnter}
-    Click Element    ${locator_enter}
+    Full Click    ${locator_cabinetEnter}
+    Full Click    ${locator_enter}
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Click Element    ${locator_loginButton}
+    Full Click    ${locator_loginButton}
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
