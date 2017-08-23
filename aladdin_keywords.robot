@@ -144,6 +144,7 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания
@@ -217,12 +218,12 @@ Info Negotiate
 
 Login
     [Arguments]    ${user}
-    Click Element    ${locator_cabinetEnter}
-    Click Element    ${locator_enter}
+    Full Click    ${locator_cabinetEnter}
+    Full Click    ${locator_enter}
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Click Element    ${locator_loginButton}
+    Full Click    ${locator_loginButton}
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
@@ -242,7 +243,7 @@ Load document
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -356,7 +357,6 @@ Add item negotiate
     Press Key    ${locator_street}${id_suffix}    ${street}
     Run Keyword If    ${log_enabled}    Log To Console    Адрес ${street}
     sleep    3
-    Comment    Click Element    ${locator_check_gps}${q}
     ${deliveryLocation_latitude}=    Get From Dictionary    ${item.deliveryLocation}    latitude
     ${deliveryLocation_latitude}    Convert Float To String    ${deliveryLocation_latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
@@ -463,7 +463,6 @@ Info OpenEng
     Log To Console    finish openEng info
     #Добавление лота
     Full Click    ${locator_multilot_new}
-    ${w}=    Set Variable    1
     ${lot}=    Get From Dictionary    ${tender.data}    lots
     ${lot}=    Get From List    ${lot}    0
     Log To Console    ${locator_multilot_title}1
@@ -482,11 +481,9 @@ Info OpenEng
     Press Key    id=lotMinStep_1    ${text_ms}
     #Input Text    id=lotGuarantee_${w}
     Full Click    xpath=.//*[@id='divLotControllerEdit']/div/div/div/div[9]/div/button[1]
-    Comment    Full Click    xpath=.//*[@id='updateOrCreateLot_1']//a[@ng-click="editLot(lotPurchasePlan)"]
     Run Keyword And Ignore Error    Wait Until Page Contains Element    ${locator_toast_container}
     Run Keyword And Ignore Error    Click Button    ${locator_toast_close}
     Wait Until Page Contains Element    xpath=.//*[@id='updateOrCreateLot_1']//a[@ng-click="editLot(lotPurchasePlan)"]
-    Log To Console    finish lot 1
     #нажатие след.шаг
     Full Click    ${locator_next_step}
 
@@ -547,29 +544,20 @@ Add Enum
     Input Text    id=featureEnumTitle_${end}    ${enum.title}
     Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitleEn_${end}    flowers
 
-Sync
-    [Arguments]    ${uaid}    ${api}
-    Execute Javascript    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-    ${guid}=    Execute Javascript    return $.get('publish/SearchTenderById?tenderId=${uaid}&guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf')
-    Log To Console    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-
 Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
     ${dkpp_id_local}=    Get From Dictionary    ${dkpp}    id
-    Log To Console    Other DK ${dkpp_id_local}
     Set Suite Variable    ${dkkp_id}    ${dkpp_id_local}
 
 Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    start publish tender
-    Log To Console    start publish tender
     aniwait
     Wait Until Page Contains Element    id=publishNegotiationAutoTest    90
     Wait Until Element Is Enabled    id=publishNegotiationAutoTest
     sleep    3
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
-    Log To Console    ${url}
     sleep    5
     Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
     Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
@@ -621,7 +609,7 @@ Select Item Param Label
     Select From List By Label    id=featureItem_1_0    ${lb}
 
 aniwait
-    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    40
+    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"
 
 Full Click
     [Arguments]    ${lc}
@@ -661,7 +649,7 @@ Add Bid Lot
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
     : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_cod[0]}'=='${aladdin_param_code}'    ${prozorro_param_cod[1]}
+    \    Return From Keyword If    '${prozorro_param_cod['code']}'=='${aladdin_param_code}'    ${prozorro_param_cod['value']}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}

@@ -15,15 +15,13 @@ ${js}             ${EMPTY}
 ${log_enabled}    ${EMPTY}
 ${start_date}     ${EMPTY}
 ${page_load_count}    ${0}
-${apiUrl}         ${EMPTY}
+${apiUrl}         https://test-gov.ald.in.ua
 
 *** Keywords ***
 Підготувати клієнт для користувача
     [Arguments]    ${username}
     [Documentation]    Відкриває переглядач на потрібній сторінці, готує api wrapper тощо
-    Set Suite Variable    ${apiUrl}    http://192.168.95.153:92
     ${user}=    Get From Dictionary    ${USERS.users}    ${username}
-    Comment    Open Browser    ${user.homepage}    ${user.browser}    desired_capabilities=nativeEvents:false
     ${chrome options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     ${prefs}    Create Dictionary    prompt_for_download=false    download.default_directory=${OUTPUT_DIR}    download.directory_update=True
     Call Method    ${chrome options}    add_experimental_option    prefs    ${prefs}
@@ -32,6 +30,7 @@ ${apiUrl}         ${EMPTY}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
     Run Keyword If    '${role}'!='viewer'    Login    ${user}
+    Set Suite Variable    ${apiUrl}    ${user.homepage}
 
 Підготувати дані для оголошення тендера
     [Arguments]    ${username}    @{arguments}
@@ -47,7 +46,6 @@ ${apiUrl}         ${EMPTY}
     ${item}=    Get From List    ${items}    0
     : FOR    ${en}    IN    @{items}
     \    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${en}    additionalClassifications
-    \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Log To Console    ${en.additionalClassifications[0].id}
     \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Set To Dictionary    ${en.additionalClassifications[0]}    id=7242    description=Монтажники електронного устаткування
     \    ...    scheme=ДК003
     Set List Value    ${items}    0    ${item}
@@ -97,8 +95,7 @@ ${apiUrl}         ${EMPTY}
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
     ${guid}=    Get Text    id=purchaseGuid
-    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    90
-    Load Tender    ${apiUrl}/api/sync/purchases/${guid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -209,7 +206,7 @@ ${apiUrl}         ${EMPTY}
     Close All Browsers
     Aladdin.Підготувати клієнт для користувача    ${username}
     Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -219,6 +216,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
     [Documentation]    Змінює поле fieldname (сума, неціновий показник тощо) в раніше створеній ставці в тендері tender_uaid
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editButton
@@ -333,7 +331,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Wait Until Element Is Enabled    id=view-lots-tab
-    Click Element    id=view-lots-tab
+    Full Click    id=view-lots-tab
     Wait Until Element Is Enabled    id=view-lots
     sleep    5
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//h4[@id='Lot-1-Title'][contains(.,'${arguments[1]}')]
@@ -423,9 +421,9 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[2]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
+    Sleep    15
+    Wait Until Page Contains Element    complaintForm_0    60
+    ${cg}=    Get Text    complaintProzorroId_0
     Log To Console    new tender claim ${cg}
     Return From Keyword    ${cg}
 
@@ -443,12 +441,12 @@ ${apiUrl}         ${EMPTY}
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    5
-    Choose File    xpath=.//*[@id='processingContract0']/div/div/div[2]/div/div/div/file-category-upload/div/div/input    ${CURDIR}/LICENSE.txt
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Choose File    xpath=.//*[contains(@id,'uploadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
+    sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
@@ -497,6 +495,7 @@ ${apiUrl}         ${EMPTY}
     [Arguments]    ${username}    @{arguments}
     sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     sleep    5
     Run Keyword And Ignore Error    Full Click    id=openLotForm_0
@@ -583,7 +582,7 @@ ${apiUrl}         ${EMPTY}
     Run Keyword If    '${arguments[2].data.resolutionType}'=='invalid'    Select From List By Value    complaintResolutionType_${guid}    1
     Input Text    complaintResolution_${guid}    ${arguments[2].data.resolution}
     Full Click    makeComplaintResolution_${guid}
-    Log To Console    ${guid} \ ${arguments[2].data.resolutionType}
+    Log To Console    ${guid}-${arguments[2].data.resolutionType}
     Return From Keyword    '${arguments[2].data.resolutionType}'=='declined'
 
 Задати запитання на лот
@@ -650,8 +649,8 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    sleep    15
+    ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new lot claim ${cg}
     Return From Keyword    ${cg}
@@ -672,8 +671,9 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Sleep    15
+    Wait Until Page Contains Element    complaintForm_0    60
+    ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new draft claim ${cg}
     Return From Keyword    ${cg}
@@ -692,8 +692,9 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Sleep    15
+    Wait Until Page Contains Element    complaintForm_0    60
+    ${cg}=    Get Text    complaintProzorroId_0
     Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
     Log To Console    new draft lot claim ${cg}
     Return From Keyword    ${cg}
@@ -759,8 +760,9 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${complaint_guid}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    Sleep    15
+    Wait Until Page Contains Element    complaintForm_0    60
+    ${complaint_guid}=    Get Text    complaintProzorroId_0
     Log To Console    new award claim ${complaint_guid}
     Return From Keyword    ${complaint_guid}
 
@@ -787,9 +789,9 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //button[@ng-show='showBtnAcceptDecision']
     Run Keyword And Ignore Error    Full Click    //button[@class="btn btn-success pull-right"]
     Wait Until Element Is Visible    //span[@id="contractProzorroId"]    60
-    ${res}=    Get Text    //span[@id="contractProzorroId"]
-    Comment    ${award_guid}=    Execute Javascript    return $('#complaintAward_${complaint_guid}').text()
-    Return From Keyword    ${res}
+    Comment    ${res}=    Get Text    //span[@id="contractProzorroId"]
+    ${award_guid}=    Execute Javascript    return $('#awargGuid_0').text()
+    Return From Keyword    ${award_guid}
 
 Створити чернетку вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
@@ -805,8 +807,9 @@ ${apiUrl}         ${EMPTY}
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Execute Javascript    $('#save_claim_draft').click()
-    Wait Until Page Contains Element    //a[contains(@id,'openComplaintForm')][contains(text(),"${arguments[1].data.title}")]    60
-    ${cg}=    Get Text    //a[contains(@id,'openComplaintForm')][contains(.,'${arguments[1].data.title}')]/../../..//span[contains(@id,'complaintProzorroId')]
+    sleep    15
+    Wait Until Page Contains Element    complaintForm_0    60
+    ${cg}=    Get Text    complaintProzorroId_0
     Log To Console    new draft award claim ${cg}
     Return From Keyword    ${cg}
 
