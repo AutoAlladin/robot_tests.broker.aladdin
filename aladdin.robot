@@ -159,9 +159,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='items[1].description'    Get Field Text    id=procurementSubjectDescription_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].additionalClassifications[0].description'    Get Field Text    id=procurementSubjectOtherClassTitle_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.latitude'    Get Field Amount for latitude    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_ru'    Execute Javascript    $('#procurementSubjectCounrtyNameRu_0_0').text().trim()
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
     Run Keyword And Return If    '${arguments[1]}'=='items[0].additionalClassifications[0].id'    Get Field Text    id=procurementSubjectOtherClassCode_1_0
     #***Purchase Features ***
     Run Keyword And Return If    '${arguments[1]}'=='features[0].title'    Get Field feature.title    0_0
@@ -312,7 +309,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Wait Until Element Is Enabled    id=procurement-subject
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
-    Comment    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Execute Javascript    $('#procurementSubjectCounrtyNameRu_0_0').text().trim()
     ${item_path}=    Set Variable    xpath=//h4[contains(@id,'procurementSubjectDescription')][contains(.,\'${arguments[1]}\')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    ${item_path}
     Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.startDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryStart')]
@@ -829,13 +825,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     sleep    10
-    Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
@@ -851,13 +845,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Comment    sleep    10
-    Comment    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    Comment    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Comment    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
-    Comment    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
