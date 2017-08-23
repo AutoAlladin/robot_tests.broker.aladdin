@@ -817,13 +817,14 @@ ${apiUrl}         ${EMPTY}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     sleep    10
-    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
+    Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     sleep    10
-    Full Click    xpath=.//*[contains(@id,'preQualification')][2]
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
@@ -854,6 +855,7 @@ ${apiUrl}         ${EMPTY}
     Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
