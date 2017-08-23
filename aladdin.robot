@@ -123,7 +123,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='title_en'    Get Field Text    id=purchaseTitle_En
     Run Keyword And Return If    '${arguments[1]}'=='title_ru'    Get Field Text    id=purchaseTitle_Ru
     #***Purchase Description ***
-    Run Keyword And Return If    '${arguments[1]}'=='description'    Get Field Text    xpath=.//*[@id='purchse-controller']/div/div[1]/div[1]/div/p[1]
     Run Keyword And Return If    '${arguments[1]}'=='description'    Get Field Text    id=purchaseDescription
     Run Keyword And Return If    '${arguments[1]}'=='description_en'    Get Field Text    id=purchaseDescription_En
     Run Keyword And Return If    '${arguments[1]}'=='description_ru'    Get Field Text    id=purchaseDescriptionRu
@@ -184,6 +183,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     #***End Date***
+    Run Keyword If    '${arguments[1]}'=='qualificationPeriod.endDate'    Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
@@ -323,7 +323,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.latitude'    Get Field Amount    ${item_path}/../../..//div[contains(@id,'procurementSubjectLatitude')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyName')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyNameEn')]
-    Comment    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyNameRu')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.postalCode'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectZipCode')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.region'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectRegionName')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.locality'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectLocality')]
@@ -428,9 +427,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    save_claim
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
-    ${cg}=    Get Text    complaintProzorroId_0
-    Log To Console    new tender claim ${cg}
-    Return From Keyword    ${cg}
+    ${claim_guid}=    Get Text    complaintProzorroId_0
+    Log To Console    new tender claim ${claim_guid}
+    Return From Keyword    ${claim_guid}
 
 Отримати інформацію із запитання
     [Arguments]    ${username}    @{arguments}
@@ -655,10 +654,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
     sleep    15
-    ${cg}=    Get Text    complaintProzorroId_0
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
-    Log To Console    new lot claim ${cg}
-    Return From Keyword    ${cg}
+    ${claim_guid}=    Get Text    complaintProzorroId_0
+    Log To Console    new lot claim ${claim_guid}
+    Return From Keyword    ${claim_guid}
 
 Підтвердити вирішення вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
@@ -699,10 +697,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Execute Javascript    $('#save_claim_draft').click()
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
-    ${cg}=    Get Text    complaintProzorroId_0
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
-    Log To Console    new draft lot claim ${cg}
-    Return From Keyword    ${cg}
+    ${claim_guid}=    Get Text    complaintProzorroId_0
+    Log To Console    new draft lot claim ${claim_guid}
+    Return From Keyword    ${claim_guid}
     [Teardown]
 
 Скасувати вимогу про виправлення умов закупівлі
@@ -767,9 +764,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    save_claim
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
-    ${complaint_guid}=    Get Text    complaintProzorroId_0
-    Log To Console    new award claim ${complaint_guid}
-    Return From Keyword    ${complaint_guid}
+    ${claim_guid}=    Get Text    complaintProzorroId_0
+    Log To Console    new award claim ${claim_guid}
+    Return From Keyword    ${claim_guid}
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
@@ -814,9 +811,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Execute Javascript    $('#save_claim_draft').click()
     sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
-    ${cg}=    Get Text    complaintProzorroId_0
-    Log To Console    new draft award claim ${cg}
-    Return From Keyword    ${cg}
+    ${claim_guid}=    Get Text    complaintProzorroId_0
+    Log To Console    new draft award claim ${claim_guid}
+    Return From Keyword    ${claim_guid}
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
