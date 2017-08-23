@@ -100,15 +100,15 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
     [Documentation]    Оновлює інформацію на сторінці, якщо відкрита сторінка з тендером, інакше переходить на сторінку з тендером tender_uaid
-    Comment    ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
-    Comment    Set Suite Variable    ${page_load_count}    ${next_page_load_count}
-    Comment    ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
-    Comment    Run Keyword If    ${is_load_before_crash}    Close All Browsers
-    Comment    Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
-    Comment    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
-    Comment    Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Comment    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
-    Comment    Switch Browser    1
+    ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
+    Set Suite Variable    ${page_load_count}    ${next_page_load_count}
+    ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
+    Run Keyword If    ${is_load_before_crash}    Close All Browsers
+    Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
+    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
+    Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Switch Browser    1
     Reload Page
 
 Отримати інформацію із тендера
@@ -126,6 +126,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='description'    Get Field Text    xpath=.//*[@id='purchse-controller']/div/div[1]/div[1]/div/p[1]
     Run Keyword And Return If    '${arguments[1]}'=='description'    Get Field Text    id=purchaseDescription
     Run Keyword And Return If    '${arguments[1]}'=='description_en'    Get Field Text    id=purchaseDescription_En
+    Run Keyword And Return If    '${arguments[1]}'=='description_ru'    Get Field Text    id=purchaseDescriptionRu
     #***Purchse Cause***
     Run Keyword And Return If    '${arguments[1]}'=='causeDescription'    Get Field Text    id=CauseDescription
     Run Keyword And Return If    '${arguments[1]}'=='cause'    Execute Javascript    return $('#Cause').text()
@@ -158,6 +159,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='items[1].description'    Get Field Text    id=procurementSubjectDescription_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].additionalClassifications[0].description'    Get Field Text    id=procurementSubjectOtherClassTitle_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.latitude'    Get Field Amount for latitude    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_ru'    Execute Javascript    $('#procurementSubjectCounrtyNameRu_0_0').text().trim()
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='items[1].deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
     Run Keyword And Return If    '${arguments[1]}'=='items[0].additionalClassifications[0].id'    Get Field Text    id=procurementSubjectOtherClassCode_1_0
     #***Purchase Features ***
     Run Keyword And Return If    '${arguments[1]}'=='features[0].title'    Get Field feature.title    0_0
@@ -182,6 +186,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
+    #***End Date***
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -304,6 +310,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=procurement-subject-tab
     Wait Until Element Is Enabled    id=procurement-subject
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Execute Javascript    $('#procurementSubjectCounrtyNameRu_0_0').text().trim()
     ${item_path}=    Set Variable    xpath=//h4[contains(@id,'procurementSubjectDescription')][contains(.,\'${arguments[1]}\')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    ${item_path}
     Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.startDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryStart')]
@@ -317,6 +326,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.longitude'    Get Field Amount    ${item_path}/../../..//div[contains(@id,'procurementSubjectLongitude')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.latitude'    Get Field Amount    ${item_path}/../../..//div[contains(@id,'procurementSubjectLatitude')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyName')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyNameEn')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyNameRu')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.postalCode'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectZipCode')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.region'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectRegionName')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.locality'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectLocality')]
@@ -345,12 +356,13 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із нецінового показника
     [Arguments]    ${username}    @{arguments}
+    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=features-tab
     Wait Until Element Is Enabled    id=features
     ${d}=    Set Variable    ${arguments[1]}
     Wait Until Element Is Enabled    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]    30
-    sleep    5
+    sleep    10
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../div/div/div[contains(@id,'featureDescription')]
     Run Keyword And Return If    '${arguments[2]}'=='featureOf'    Get Element Attribute    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../../../../../..@itemid
@@ -441,7 +453,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    5
-    Choose File    xpath=.//*[contains(@id,'uploadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Choose File    xpath=.//*[contains(@id,'uploadFile')]    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
     sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div

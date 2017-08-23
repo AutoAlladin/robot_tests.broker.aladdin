@@ -28,7 +28,6 @@ ${dkkp_id}        ${EMPTY}
     Add item negotiate    ${item}    00    0
     ${item}=    Get From List    ${items}    1
     Add item negotiate    ${item}    01    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    ${locator_finish_edit}
     ${tender_UID}=    Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    End negotiation
@@ -179,16 +178,25 @@ Info Negotiate
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
+    ${title_ru}=    Get From Dictionary    ${tender_data.data}    title_ru
+    Log To Console    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    sleep    10
+    Execute Javascript    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    ${title_en}=    Get From Dictionary    ${tender_data.data}    title_en
+    Execute Javascript    angular.element(document.getElementById('title_En')).scope().purchase.title_En='${title_en}'
     #Примечания
     ${description}=    Get From Dictionary    ${tender_data.data}    description
     Press Key    ${locator_description}    ${description}
     Run Keyword If    ${log_enabled}    Log To Console    Примечания ${description}
+    ${description_ru}=    Get From Dictionary    ${tender_data.data}    description_ru
+    Execute Javascript    angular.element(document.getElementById('description_Ru')).scope().purchase.description_Ru='${description_ru}'
+    ${description_en}=    Get From Dictionary    ${tender_data.data}    description_en
+    Execute Javascript    angular.element(document.getElementById('description_En')).scope().purchase.description_En='${description_en}'
     #Условие применения переговорной процедуры
     ${select_directory_causes}=    Get From Dictionary    ${tender_data.data}    cause
     Full Click    id=select_directory_causes
     Log To Console    $("li[value='${tender_data.data.cause}']").trigger("click")
     Execute Javascript    $("li[value=\'${tender_data.data.cause}\']").trigger("click")
-    Comment    Click Element    xpath=html/body
     Run Keyword If    ${log_enabled}    Log To Console    Условие применения переговорной процедуры ${select_directory_causes}
     #Обоснование
     ${cause_description}=    Get From Dictionary    ${tender_data.data}    causeDescription
@@ -214,7 +222,6 @@ Info Negotiate
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
-    #xpath=.//li[@value="${tender_data.data.cause}"]
 
 Login
     [Arguments]    ${user}
@@ -559,18 +566,10 @@ Publish tender/negotiation
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
     sleep    5
-    Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
-    Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     ${tender_UID}=    Get Text    id=purchaseProzorroId
     ${tender_GUID}=    Get Text    id=purchaseGuid
     Log To Console    UID=${tender_UID}
-    ${url}=    Get Location
-    ${url}=    Fetch From Left    ${url}    :90
-    Log To Console    ${url}
-    Execute Javascript    $.get('${url}:92/api/sync/purchases/${tender_GUID}')
-    Reload Page
-    Log To Console    finish publish tender ${tender_UID}
     Return From Keyword    ${tender_UID}
     Run Keyword If    ${log_enabled}    Log To Console    end publish tender
     [Return]    ${tender_UID}
@@ -690,7 +689,7 @@ Get Info Award
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Sleep    10
+    Sleep    20
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
