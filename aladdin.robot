@@ -95,7 +95,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
     ${guid}=    Get Text    id=purchaseGuid
-    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    90
     Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
@@ -185,8 +184,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][0]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')][1]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     #***End Date***
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
@@ -658,7 +657,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Input Text    claim_title    ${arguments[1].data.title}
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
-    ${old_count}=    Get Matching Xpath Count    //div[contains(@id,'complaintForm')]
     Full Click    save_claim
     sleep    15
     ${cg}=    Get Text    complaintProzorroId_0
@@ -781,6 +779,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Full Click    processing-tab
     Wait Until Page Contains Element    //button[contains(@id,'awardAcceptDecision')]
     Wait Until Page Contains Element    //file-category-upload
@@ -826,27 +825,80 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
-    Comment    Wait Until Page Contains Element    //button[contains(@id,'prequalification')]
-    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
-    Wait Until Page Contains Element    xpath=.//*[@id='prequalification']/div/div/div[1]
-    Choose File    xpath=.//*[@id='prequalification']/div/div/div[1]    ${arguments[0]}
+    sleep    10
+    Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    sleep    10
+    Comment    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    Comment    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Comment    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Comment    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
-    Full Click    xpath=.//*[contains(@id,'toggleQualification')][0]
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
-    Click Element    xpath=.//*[@id='prequalification']/div/div/div[1]
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Sleep    5
     Full Click    ActiveStandStill
 
 Підтвердити вирішення вимоги про виправлення визначення переможця
