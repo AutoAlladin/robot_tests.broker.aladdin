@@ -197,7 +197,6 @@ Info Negotiate
     Full Click    id=select_directory_causes
     Log To Console    $("li[value='${tender_data.data.cause}']").trigger("click")
     Execute Javascript    $("li[value=\'${tender_data.data.cause}\']").trigger("click")
-    Comment    Click Element    xpath=html/body
     Run Keyword If    ${log_enabled}    Log To Console    Условие применения переговорной процедуры ${select_directory_causes}
     #Обоснование
     ${cause_description}=    Get From Dictionary    ${tender_data.data}    causeDescription
@@ -223,7 +222,6 @@ Info Negotiate
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
-    #xpath=.//li[@value="${tender_data.data.cause}"]
 
 Login
     [Arguments]    ${user}
@@ -691,7 +689,7 @@ Get Info Award
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Sleep    10
+    Sleep    20
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)

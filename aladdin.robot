@@ -451,11 +451,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
     Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
-    Click Button    xpath=.//*[@id='processingContract0']/div/div/div[3]/div/div[4]/div/button
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
     sleep    5
-    Choose File    xpath=.//*[contains(@id,'uploadFile')]    /home/ova/robot_tests/src/robot_tests.broker.aladdin/LICENSE.txt
+    Choose File    xpath=.//*[contains(@id,'uploadFile')]    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
     sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
