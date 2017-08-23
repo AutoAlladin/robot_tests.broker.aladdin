@@ -676,10 +676,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Execute Javascript    $('#save_claim_draft').click()
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
-    ${cg}=    Get Text    complaintProzorroId_0
-    Comment    ${cg}=    Get Text    //div[contains(@id,'complaintTitle')][contains(text(),"${arguments[1].data.title}")]/../../../../..//span[contains(@id,'complaintProzorroId')]
+    ${claim_guid}=    Get Text    complaintProzorroId_0
     Log To Console    new draft claim ${cg}
-    Return From Keyword    ${cg}
+    Return From Keyword    ${claim_guid}
 
 Створити чернетку вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
