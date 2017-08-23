@@ -836,26 +836,31 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Sleep    5
-    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Click Element    isQualified0
     Click Element    isEligible0
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
-    Full Click    xpath=.//*[contains(@id,'preQualification')][2]
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched'][contains(@id,'fileCategory')]    1
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Full Click
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Click Element    isQualified0
+    Click Element    isEligible0
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
