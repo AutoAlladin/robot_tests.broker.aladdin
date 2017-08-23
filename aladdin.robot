@@ -186,6 +186,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     #***End Date***
+    Run Keyword If    '${arguments[1]}'=='qualificationPeriod.endDate'    Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
