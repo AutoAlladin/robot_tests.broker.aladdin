@@ -846,8 +846,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Click Element    isQualified0
-    Click Element    isEligible0
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
@@ -858,8 +858,8 @@ ${apiUrl}         ${EMPTY}
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Click Element    isQualified0
-    Click Element    isEligible0
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
 
 Затвердити остаточне рішення кваліфікації
