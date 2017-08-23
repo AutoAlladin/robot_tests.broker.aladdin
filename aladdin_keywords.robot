@@ -28,7 +28,6 @@ ${dkkp_id}        ${EMPTY}
     Add item negotiate    ${item}    00    0
     ${item}=    Get From List    ${items}    1
     Add item negotiate    ${item}    01    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    ${locator_finish_edit}
     ${tender_UID}=    Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    End negotiation
@@ -144,6 +143,7 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания
@@ -178,16 +178,25 @@ Info Negotiate
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
+    ${title_ru}=    Get From Dictionary    ${tender_data.data}    title_ru
+    Log To Console    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    sleep    10
+    Execute Javascript    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    ${title_en}=    Get From Dictionary    ${tender_data.data}    title_en
+    Execute Javascript    angular.element(document.getElementById('title_En')).scope().purchase.title_En='${title_en}'
     #Примечания
     ${description}=    Get From Dictionary    ${tender_data.data}    description
     Press Key    ${locator_description}    ${description}
     Run Keyword If    ${log_enabled}    Log To Console    Примечания ${description}
+    ${description_ru}=    Get From Dictionary    ${tender_data.data}    description_ru
+    Execute Javascript    angular.element(document.getElementById('description_Ru')).scope().purchase.description_Ru='${description_ru}'
+    ${description_en}=    Get From Dictionary    ${tender_data.data}    description_en
+    Execute Javascript    angular.element(document.getElementById('description_En')).scope().purchase.description_En='${description_en}'
     #Условие применения переговорной процедуры
     ${select_directory_causes}=    Get From Dictionary    ${tender_data.data}    cause
     Full Click    id=select_directory_causes
     Log To Console    $("li[value='${tender_data.data.cause}']").trigger("click")
     Execute Javascript    $("li[value=\'${tender_data.data.cause}\']").trigger("click")
-    Comment    Click Element    xpath=html/body
     Run Keyword If    ${log_enabled}    Log To Console    Условие применения переговорной процедуры ${select_directory_causes}
     #Обоснование
     ${cause_description}=    Get From Dictionary    ${tender_data.data}    causeDescription
@@ -213,16 +222,15 @@ Info Negotiate
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
-    #xpath=.//li[@value="${tender_data.data.cause}"]
 
 Login
     [Arguments]    ${user}
-    Click Element    ${locator_cabinetEnter}
-    Click Element    ${locator_enter}
+    Full Click    ${locator_cabinetEnter}
+    Full Click    ${locator_enter}
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Click Element    ${locator_loginButton}
+    Full Click    ${locator_loginButton}
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
@@ -242,7 +250,7 @@ Load document
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/api/sync/purchase/tenderID/tenderID=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -543,12 +551,6 @@ Add Enum
     Input Text    id=featureEnumTitle_${end}    ${enum.title}
     Run Keyword And Return If    '${MODE}'=='openeu'    Input Text    id=featureEnumTitleEn_${end}    flowers
 
-Sync
-    [Arguments]    ${uaid}    ${api}
-    Execute Javascript    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-    ${guid}=    Execute Javascript    return $.get('publish/SearchTenderById?tenderId=${uaid}&guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf')
-    Log To Console    $.get('${apiUrl}/api/sync/purchase/tenderID/tenderID=${uaid}');
-
 Get OtherDK
     [Arguments]    ${item}
     ${dkpp}=    Get From List    ${item.additionalClassifications}    0
@@ -564,18 +566,10 @@ Publish tender/negotiation
     Execute Javascript    $("#publishNegotiationAutoTest").click()
     ${url}=    Get Location
     sleep    5
-    Comment    Wait Until Page Contains Element    id=purchaseProzorroId    50
-    Comment    ${tender_UID}=    Execute Javascript    var model=angular.element(document.getElementById('purchse-controller')).scope(); return model.$$childHead.purchase.purchase.prozorroId
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     ${tender_UID}=    Get Text    id=purchaseProzorroId
     ${tender_GUID}=    Get Text    id=purchaseGuid
     Log To Console    UID=${tender_UID}
-    ${url}=    Get Location
-    ${url}=    Fetch From Left    ${url}    :90
-    Log To Console    ${url}
-    Execute Javascript    $.get('${url}:92/api/sync/purchases/${tender_GUID}')
-    Reload Page
-    Log To Console    finish publish tender ${tender_UID}
     Return From Keyword    ${tender_UID}
     Run Keyword If    ${log_enabled}    Log To Console    end publish tender
     [Return]    ${tender_UID}
@@ -614,7 +608,7 @@ Select Item Param Label
     Select From List By Label    id=featureItem_1_0    ${lb}
 
 aniwait
-    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    40
+    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    30
 
 Full Click
     [Arguments]    ${lc}
@@ -653,8 +647,8 @@ Add Bid Lot
 
 Get Param By Id
     [Arguments]    ${aladdin_param_code}    ${prozorro_param_codes}
-    : FOR    ${pp}    IN    @{prozorro_param_codes}
-    \    Return From Keyword If    '${prozorro_param_codes[0]}'=='${aladdin_param_code}'    ${prozorro_param_codes[1]}
+    : FOR    ${prozorro_param_cod}    IN    @{prozorro_param_codes}
+    \    Return From Keyword If    '${prozorro_param_cod['code']}'=='${aladdin_param_code}'    ${prozorro_param_cod['value']}
 
 Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
@@ -691,12 +685,11 @@ Get Info Award
     Comment    Wait Until Element Is Visible    id=tab-content-3
     Comment    Sleep    10
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
-    #xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]    .//*[contains(@id,'docFileName')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Sleep    10
+    Sleep    20
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)

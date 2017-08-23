@@ -103,6 +103,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
     Reload Page
@@ -193,6 +194,9 @@ Get Bid Status
 
 Get qualification status
     [Arguments]    ${_id}
+    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Sleep    5
     Full Click    prequalification-tab
+    Sleep    5
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
