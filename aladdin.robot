@@ -825,6 +825,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Wait Until Element Is Visible    xpath=.//*[contains(@id,'edrIdentification')]
+    sleep    20
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
@@ -856,8 +858,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Wait Until Element Is Visible    xpath=.//*[contains(@id,'edrIdentification')]
+    sleep    20
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
@@ -878,11 +882,36 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword And Ignore Error    Full Click    //md-next-button
-    Click Element    id=prequalification-tab
-    Click Element    xpath=.//*[contains(@id,'toggleQualification')]
+    Click Element    prequalification-tab
     Sleep    5
-    Full Click    ActiveStandStill
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    sleep    10
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Full Click    id=ActiveStandStill
+    Full Click    xpath=.//div[@class='jconfirm-buttons']/button[1]
 
 Підтвердити вирішення вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
