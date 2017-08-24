@@ -142,9 +142,11 @@ Add Item
 
 Info Below
     [Arguments]    ${tender_data}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
     #Ввод названия тендера
+    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -174,6 +176,7 @@ Info Negotiate
     [Arguments]    ${tender_data}
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
+    Full Click    ${locator_tenderTitle}
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -229,7 +232,8 @@ Login
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Full Click    ${locator_loginButton}
+    Comment    Full Click    ${locator_loginButton}
+    Execute Javascript    $('#submitLogin').click();
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
@@ -270,7 +274,7 @@ Info OpenUA
     #Ввод названия закупки
     ${status}=    Run Keyword And Ignore Error    Execute Javascript    $
     Run Keyword If    '${status[0]}'=='FAIL'    sleep    5
-    Wait Until Page Contains Element    ${locator_tenderTitle}
+    Full Click    ${locator_tenderTitle}
     ${descr}=    Get From Dictionary    ${tender.data}    title
     Input Text    ${locator_tenderTitle}    ${descr}
     Input Text    id=description    ${tender.data.description}
@@ -289,6 +293,7 @@ Info OpenUA
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    ${locator_bidDate_end}
     Full Click    id=createOrUpdatePurchase
+    Capture Page Screenshot
 
 Add item negotiate
     [Arguments]    ${item}    ${id_suffix}    ${lot_number}
