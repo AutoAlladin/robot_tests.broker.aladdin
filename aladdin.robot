@@ -680,7 +680,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${claim_guid}=    Get Text    complaintProzorroId_0
-    Log To Console    new draft claim ${cg}
+    Log To Console    new draft claim ${claim_guid}
     Return From Keyword    ${claim_guid}
 
 Створити чернетку вимоги про виправлення умов лоту
