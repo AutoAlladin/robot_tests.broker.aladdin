@@ -810,7 +810,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
@@ -826,7 +825,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
