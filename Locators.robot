@@ -9,8 +9,8 @@ ${locator_emailField}    id=Email    # id=Email
 ${locator_passwordField}    id=Password    # id=Password
 ${locator_loginButton}    id=submitLogin
 ${locator_buttonTenderAdd}    xpath=.//a[@href="/Purchase/Create"]    # додати допорогову закупівлю
-${locator_tenderTitle}    id=title
-${locator_button_create}    id=btn_create_purchase
+${locator_tenderTitle}    titleOfTenderForEdit
+${locator_button_create}    btn_create_purchase
 ${locator_budget}    id=budget
 ${locator_min_step}    id=min_step
 ${locator_pdv}    xpath=.//*[@id='is_vat']/div[1]/div[2]/div
