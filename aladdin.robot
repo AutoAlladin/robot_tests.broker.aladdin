@@ -168,7 +168,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Comment    Run Keyword If    '${arguments[1]}'=='documents[0].title'    Full Click    id=documents-tab
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
-    Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
@@ -825,8 +824,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Wait Until Element Is Visible    xpath=.//*[contains(@id,'edrIdentification')]
-    sleep    20
+    sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
@@ -838,6 +836,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
