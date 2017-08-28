@@ -143,7 +143,8 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
-    Full Click    ${locator_tenderTitle}
+    Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
+    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
     Execute Javascript    var autotestmodel=angular.element(document.getElementById('${locator_tenderTitle}')).scope(); autotestmodel.purchase.modeFastForward=true;
