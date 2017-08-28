@@ -809,6 +809,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
+    
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
