@@ -65,9 +65,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Внести зміни в тендер
     [Arguments]    ${username}    ${tender_uaid}    ${field_name}    ${field_value}
     [Documentation]    Змінює значення поля field_name на field_value в тендері tender_uaid
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Search tender    ${username}    ${tender_uaid}
+    Comment    Close All Browsers
+    Comment    Aladdin.Підготувати клієнт для користувача    ${username}
+    Comment    Search tender    ${username}    ${tender_uaid}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
     Run Keyword If    '${field_name}'=='tenderPeriod.endDate'    Set Field tenderPeriod.endDate    ${field_value}
@@ -95,7 +95,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
     ${guid}=    Get Text    id=purchaseGuid
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
+    Comment    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -114,7 +114,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     #***Purchase***
     Run Keyword And Return If    '${arguments[1]}'=='tenderID'    Get Field Text    id=purchaseProzorroId
     Run Keyword And Return If    '${arguments[1]}'=='status'    Get Tender Status
@@ -157,7 +157,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='items[1].classification.scheme'    Get Field Text    id=procurementSubjectCpvTitle_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].description'    Get Field Text    id=procurementSubjectDescription_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].additionalClassifications[0].description'    Get Field Text    id=procurementSubjectOtherClassTitle_0_0
-    Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.latitude'    Get Field Amount for latitude    xpath=.//*[@class="col-md-8 ng-binding"][contains (@id,'procurementSubjectLatitude')]
+    Run Keyword And Return If    '${arguments[1]}'=='items[0].deliveryLocation.latitude'    Get Field Amount for latitude    xpath=.//*[contains (@id,'procurementSubjectLatitude')]
     Run Keyword And Return If    '${arguments[1]}'=='items[0].additionalClassifications[0].id'    Get Field Text    id=procurementSubjectOtherClassCode_1_0
     #***Purchase Features ***
     Run Keyword And Return If    '${arguments[1]}'=='features[0].title'    Get Field feature.title    0_0
@@ -165,12 +165,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
     Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
     #***Documents***
-    Comment    Run Keyword If    '${arguments[1]}'=='documents[0].title'    Full Click    id=documents-tab
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionTitle')]
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//*[@class="col-md-9 ng-binding"][contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//*[@class="col-sm-10 ng-binding"][contains(@id,'questionAnswer')]
+    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//div[contains(@id,'questionTitle')]
+    Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//div[contains(@id,'questionDescription')]
+    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
     #***Awards***
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    9
     Run Keyword And Return If    '${awardInfo}'=='awards[0]'    Get Info Award    ${arguments[0]}    ${arguments[1]}
@@ -189,9 +188,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Задати запитання на тендер
     [Arguments]    ${username}    ${tender_uaid}    ${question}
     [Documentation]    Задає питання question від імені користувача username в тендері tender_uaid
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Search tender    ${username}    ${tender_uaid}
+    Comment    @{Close All Browsers}    Close All Browsers
+    Comment    Comment    Aladdin.Підготувати клієнт для користувача    ${username}
+    Comment    Comment    Search tender    ${username}    ${tender_uaid}
     Full Click    id=questions-tab
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
@@ -203,9 +202,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Подати цінову пропозицію
     [Arguments]    ${username}    ${tender_uaid}    ${bid}    ${to_id}    ${params}
     [Documentation]    Створює нову ставку в тендері tender_uaid
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
+    Comment    Close All Browsers
+    Comment    Aladdin.Підготувати клієнт для користувача    ${username}
+    Comment    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
@@ -303,7 +302,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із предмету
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=procurement-subject-tab
     Wait Until Element Is Enabled    id=procurement-subject
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
@@ -332,7 +331,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із лоту
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Wait Until Element Is Enabled    id=view-lots-tab
     Full Click    id=view-lots-tab
     Wait Until Element Is Enabled    id=view-lots
@@ -363,9 +362,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ в лот
     [Arguments]    ${username}    ${file}    ${ua_id}    ${lot_id}
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Search tender    ${username}    ${ua_id}
+    Comment    @{Close All Browsers}    Close All Browsers
+    Comment    Comment    Aladdin.Підготувати клієнт для користувача    ${username}
+    Comment    Comment    Search tender    ${username}    ${ua_id}
     Full Click    id=purchaseEdit
     Load document    ${file}    Lot    ${lot_id}
     Full Click    id=movePurchaseView
@@ -387,7 +386,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Додати неціновий показник на предмет
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
     Full Click    id=features-tab
@@ -400,7 +399,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Видалити неціновий показник
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
     Full Click    id=features-tab
@@ -412,7 +411,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -434,15 +433,15 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[@id='questionTitle_0'][contains(.,'${arguments[1]}')]
+    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(.,'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
-    ${guid}=    Get Text    id=purchaseGuid
-    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
+    Comment    ${guid}=    Get Text    id=purchaseGuid
+    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
+    Comment    Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
@@ -487,7 +486,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати документ
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
@@ -508,7 +507,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ в ставку
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
@@ -527,7 +526,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Змінити документ в ставці
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
@@ -550,14 +549,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати посилання на аукціон для глядача
     [Arguments]    ${username}    @{arguments}
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return    Get Element Attribute    //a[@id='auctionUrl' or @id='purchaseUrlOwner_0']@href
 
 Додати неціновий показник на лот
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
     Full Click    id=features-tab
     ${fi}=    Set Variable    ${arguments[1]}
@@ -590,7 +587,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Задати запитання на лот
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=questions-tab
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
@@ -603,7 +600,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Задати запитання на предмет
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=questions-tab
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
@@ -636,9 +633,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    Close All Browsers
-    Aladdin.Підготувати клієнт для користувача    ${username}
-    Aladdin.Пошук тендера по ідентифікатору    ${username}    ${arguments[0]}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -663,7 +658,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити чернетку вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -676,12 +671,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    15
     Wait Until Page Contains Element    complaintForm_0    60
     ${claim_guid}=    Get Text    complaintProzorroId_0
-    Log To Console    new draft claim ${cg}
+    Log To Console    new draft claim ${claim_guid}
     Return From Keyword    ${claim_guid}
 
 Створити чернетку вимоги про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -721,7 +716,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Змінити документацію в ставці
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0
@@ -747,7 +742,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -768,7 +763,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ рішення кваліфікаційної комісії
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Full Click    processing-tab
@@ -795,7 +790,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити чернетку вимоги про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -815,17 +810,20 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     sleep    10
+    Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
@@ -857,10 +855,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
-    Wait Until Element Is Visible    xpath=.//*[contains(@id,'edrIdentification')]
-    sleep    20
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
