@@ -232,7 +232,8 @@ Login
     Wait Until Page Contains Element    Email    40
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
-    Full Click    ${locator_loginButton}
+    Comment    Full Click    ${locator_loginButton}
+    Execute Javascript    $('#submitLogin').click();
 
 Load document
     [Arguments]    ${filepath}    ${to}    ${to_name}
@@ -292,6 +293,7 @@ Info OpenUA
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    ${locator_bidDate_end}
     Full Click    id=createOrUpdatePurchase
+    Capture Page Screenshot
 
 Add item negotiate
     [Arguments]    ${item}    ${id_suffix}    ${lot_number}
