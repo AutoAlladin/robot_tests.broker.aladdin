@@ -179,7 +179,7 @@ Get Satisfied
 Open Claim Form
     [Arguments]    ${uaid}
     Full Click    claim-tab
-    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]
+    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
     sleep    3
     ${guid}=    Get Text    //span[text()='${uaid}']/..//span[contains(@id,'complaintGuid')]
     Full Click    openComplaintForm_${guid}
