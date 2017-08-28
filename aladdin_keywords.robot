@@ -146,7 +146,7 @@ Info Below
     Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('${locator_tenderTitle}')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -617,8 +617,8 @@ aniwait
 Full Click
     [Arguments]    ${lc}
     Wait Until Page Contains Element    ${lc}    15
-    Wait Until Element Is Enabled    ${lc}    15
-    Wait Until Element Is Visible    ${lc}    10
+    Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
     Click Element    ${lc}
 
