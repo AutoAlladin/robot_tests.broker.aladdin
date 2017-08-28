@@ -142,10 +142,9 @@ Add Item
 
 Info Below
     [Arguments]    ${tender_data}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
-    Full Click    ${locator_tenderTitle}
+    Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
+    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
@@ -293,7 +292,6 @@ Info OpenUA
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    ${locator_bidDate_end}
     Full Click    id=createOrUpdatePurchase
-    Capture Page Screenshot
 
 Add item negotiate
     [Arguments]    ${item}    ${id_suffix}    ${lot_number}
@@ -617,8 +615,8 @@ aniwait
 Full Click
     [Arguments]    ${lc}
     Wait Until Page Contains Element    ${lc}    15
-    Wait Until Element Is Enabled    ${lc}    15
-    Wait Until Element Is Visible    ${lc}    10
+    Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
     Click Element    ${lc}
 
