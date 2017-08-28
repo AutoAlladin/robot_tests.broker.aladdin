@@ -145,6 +145,7 @@ Info Below
     Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
     Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
+    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
@@ -175,6 +176,7 @@ Info Negotiate
     [Arguments]    ${tender_data}
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
+    Full Click    ${locator_tenderTitle}
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -271,7 +273,7 @@ Info OpenUA
     #Ввод названия закупки
     ${status}=    Run Keyword And Ignore Error    Execute Javascript    $
     Run Keyword If    '${status[0]}'=='FAIL'    sleep    5
-    Wait Until Page Contains Element    ${locator_tenderTitle}
+    Full Click    ${locator_tenderTitle}
     ${descr}=    Get From Dictionary    ${tender.data}    title
     Input Text    ${locator_tenderTitle}    ${descr}
     Input Text    id=description    ${tender.data.description}
