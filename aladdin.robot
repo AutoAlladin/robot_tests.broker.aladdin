@@ -914,3 +914,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Скасувати вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
     Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+
+Видалити лот
+    [Arguments]    ${username}    @{arguments}
+    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    id=cancelConfirmLot
+    Select From List By Index    xpath=.//*[contains(@id,'lotSelectCancelReason_')]    1
+    Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
+    Full Click    id=submitCancelLot
