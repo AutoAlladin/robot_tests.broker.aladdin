@@ -143,10 +143,9 @@ Add Item
 Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
-    Full Click    ${locator_tenderTitle}
+    Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
+    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('${locator_tenderTitle}')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -293,7 +292,6 @@ Info OpenUA
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    ${locator_bidDate_end}
     Full Click    id=createOrUpdatePurchase
-    Capture Page Screenshot
 
 Add item negotiate
     [Arguments]    ${item}    ${id_suffix}    ${lot_number}
@@ -612,7 +610,7 @@ Select Item Param Label
     Select From List By Label    id=featureItem_1_0    ${lb}
 
 aniwait
-    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    30
+    Run Keyword And Ignore Error    Wait For Condition    return $(".page-loader").css("display")=="none"    60
 
 Full Click
     [Arguments]    ${lc}
