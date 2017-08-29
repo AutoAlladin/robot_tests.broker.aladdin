@@ -489,7 +489,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
-    sleep    3
+    sleep    5
     Return From Keyword    ${title}
 
 Отримати інформацію із пропозиції
@@ -568,6 +568,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
+    sleep    5
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
