@@ -105,6 +105,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
+    Run Keyword If    ${is_load_before_crash}    sleep    5
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
     Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
@@ -489,7 +490,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
-    sleep    3
+    sleep    5
     Return From Keyword    ${title}
 
 Отримати інформацію із пропозиції
@@ -568,6 +569,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
+    sleep    5
     Return From Keyword    ${title}
 
 Відповісти на вимогу про виправлення умов закупівлі
