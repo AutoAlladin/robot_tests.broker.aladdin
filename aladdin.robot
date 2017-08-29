@@ -168,7 +168,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//div[contains(@id,'questionTitle_')]
+    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//div[contains(@id,'questionTitle')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//div[contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
     #***Awards***
@@ -179,10 +179,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     #***End Date***
-    Run Keyword If    '${arguments[1]}'=='qualificationPeriod.endDate'    Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
@@ -929,3 +928,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Full Click    id=procurementSubject-tab
     Full Click
+
+Створити лот із предметом закупівлі
+    [Arguments]    ${username}    @{arguments}
+    Full Click    purchaseEdit
+    Full Click    lots-tab
+    Add Lot    1    ${arguments[1].data}
+    Full Click    procurementSubject-tab
+    Add Item    ${arguments[2]}    20

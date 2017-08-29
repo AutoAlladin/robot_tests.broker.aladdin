@@ -409,9 +409,9 @@ Add Lot
     Full Click    ${locator_multilot_new}
     Wait Until Page Contains Element    ${locator_multilot_title}${lot_number}    30
     Wait Until Element Is Enabled    ${locator_multilot_title}${lot_number}
-    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
+    Run Keyword And Ignore Error    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
     Input Text    id=lotDescription_${lot_number}    ${lot.description}
-    Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
+    Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
     ${budget}=    Get From Dictionary    ${lot.value}    amount
     ${text}=    Convert Float To String    ${budget}
     ${text}=    String.Replace String    ${text}    .    ,
