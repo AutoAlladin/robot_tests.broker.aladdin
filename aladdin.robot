@@ -895,3 +895,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Скасувати вимогу про виправлення визначення переможця
     [Arguments]    ${username}    @{arguments}
     Aladdin.Скасувати вимогу про виправлення умов закупівлі    ${username}    @{arguments}
+
+Створити лот із предметом закупівлі
+    [Arguments]    ${username}    @{arguments}
+    Full Click    purchaseEdit
+    Full Click    lots-tab
+    Add Lot    1    ${arguments[1].data}
+    Full Click    procurementSubject-tab
+    Add Item    ${arguments[2]}    20    2
