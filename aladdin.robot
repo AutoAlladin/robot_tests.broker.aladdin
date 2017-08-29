@@ -922,3 +922,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Select From List By Index    xpath=.//*[contains(@id,'lotSelectCancelReason_')]    1
     Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
     Full Click    id=submitCancelLot
+
+Додати предмет закупівлі в лот
+    [Arguments]    ${username}    @{arguments}
+    Full Click    id=procurementSubject-tab
+    Full Click
