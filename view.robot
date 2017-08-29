@@ -178,6 +178,7 @@ Get Satisfied
 
 Open Claim Form
     [Arguments]    ${uaid}
+    Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
     Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
     sleep    3
