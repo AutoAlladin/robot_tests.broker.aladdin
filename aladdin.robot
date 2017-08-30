@@ -935,4 +935,4 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    lots-tab
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
-    Add Item    ${arguments[2]}    20
+    Add Item    ${arguments[2]}    20    2
