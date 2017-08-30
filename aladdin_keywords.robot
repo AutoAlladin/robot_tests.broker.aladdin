@@ -233,6 +233,7 @@ Login
     Input Text    ${locator_passwordField}    ${user.password}
     Comment    Full Click    ${locator_loginButton}
     sleep    2
+    Capture Page Screenshot
     Execute Javascript    $('#submitLogin').click();
 
 Load document
@@ -254,7 +255,7 @@ Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
     Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
-    Wait Until Page Contains Element    id=butSimpleSearch
+    Wait Until Page Contains Element    id=butSimpleSearch    40
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}

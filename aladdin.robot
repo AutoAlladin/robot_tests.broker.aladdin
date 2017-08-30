@@ -101,7 +101,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
     Set Suite Variable    ${page_load_count}    ${next_page_load_count}
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
-    Run Keyword If    ${is_load_before_crash}    Full Click    butLogoutPartial
+    Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
