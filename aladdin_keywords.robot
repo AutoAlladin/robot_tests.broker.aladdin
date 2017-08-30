@@ -228,12 +228,14 @@ Login
     [Arguments]    ${user}
     Full Click    ${locator_cabinetEnter}
     Full Click    ${locator_enter}
-    Wait Until Page Contains Element    Email    40
-    Input Text    Email    ${user.login}
-    Input Text    ${locator_passwordField}    ${user.password}
-    Comment    Full Click    ${locator_loginButton}
+    Wait Until Page Contains Element    id=Email    40
     sleep    2
-    Capture Page Screenshot
+    Press Key    id=Email    ${user.login}
+    sleep    2
+    Press Key    id=Password    ${user.password}
+    sleep    2
+    Wait Until Element Is Visible    ${locator_loginButton}    30
+    Comment    Full Click    ${locator_loginButton}
     Execute Javascript    $('#submitLogin').click();
 
 Load document
@@ -267,7 +269,8 @@ Search tender
     Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
     aniwait
-    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a
+    sleep    3
+    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[text()="${tender_uaid}"]/../a
     Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
     Wait Until Page Contains Element    purchaseProzorroId
 
