@@ -179,7 +179,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     #***End Date***
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
@@ -823,10 +823,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
@@ -934,6 +934,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Full Click    purchaseEdit
     Full Click    lots-tab
+    Sleep    30
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
     Add Item    ${arguments[2]}    20    2
