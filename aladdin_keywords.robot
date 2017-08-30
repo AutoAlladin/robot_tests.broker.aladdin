@@ -232,6 +232,7 @@ Login
     Input Text    Email    ${user.login}
     Input Text    ${locator_passwordField}    ${user.password}
     Comment    Full Click    ${locator_loginButton}
+    sleep    2
     Execute Javascript    $('#submitLogin').click();
 
 Load document
@@ -260,13 +261,13 @@ Search tender
     Wait Until Page Contains Element    ${locator_input_search}
     Wait Until Element Is Enabled    ${locator_input_search}
     Input Text    ${locator_input_search}    ${tender_uaid}
-    Execute Javascript    window.scroll(0,-1000)
     aniwait
     Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
     aniwait
     ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a
     Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
+    Wait Until Page Contains Element    purchaseProzorroId
 
 Info OpenUA
     [Arguments]    ${tender}
