@@ -94,8 +94,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Documentation]    Знаходить тендер по його UAID, відкриває його сторінку
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
-    ${guid}=    Get Text    id=purchaseGuid
-    Comment    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -103,11 +101,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
     Set Suite Variable    ${page_load_count}    ${next_page_load_count}
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
+    Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Run Keyword Unless    ${is_load_before_crash}    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Switch Browser    1
     Reload Page
 
@@ -178,10 +177,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
     Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
     #***Status***
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
-    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    id=qualificationStatusValueName_0
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
+    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    id=qualificationStatusValueName_1
     #***End Date***
-    Run Keyword If    '${arguments[1]}'=='qualificationPeriod.endDate'    Reload Page
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
     [Return]    ${field_value}
 
@@ -823,10 +823,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
@@ -924,10 +924,17 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
     Full Click    id=submitCancelLot
 
+Додати предмет закупівлі в лот
+    [Arguments]    ${username}    @{arguments}
+    Full Click    id=purchaseEdit
+    Full Click    id=procurementSubject-tab
+    Add Item    ${arguments[2]}    20    2
+
 Створити лот із предметом закупівлі
     [Arguments]    ${username}    @{arguments}
     Full Click    purchaseEdit
     Full Click    lots-tab
+    Sleep    30
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
     Add Item    ${arguments[2]}    10    1
