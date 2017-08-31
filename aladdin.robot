@@ -103,11 +103,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
     Set Suite Variable    ${page_load_count}    ${next_page_load_count}
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
+    Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Run Keyword Unless    ${is_load_before_crash}    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Switch Browser    1
     Reload Page
 
@@ -823,10 +824,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
-    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
@@ -924,13 +925,20 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
     Full Click    id=submitCancelLot
 
+Додати предмет закупівлі в лот
+    [Arguments]    ${username}    @{arguments}
+    Full Click    id=procurementSubject-tab
+    Add Item    ${arguments[2]}    11    1
+    Publish tender
+
 Створити лот із предметом закупівлі
     [Arguments]    ${username}    @{arguments}
     Full Click    purchaseEdit
     Full Click    lots-tab
+    Sleep    30
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
-    Add Item    ${arguments[2]}    20    2
+    Add Item    ${arguments[2]}    10    1
 
 Додати неціновий показник на тендер
     [Arguments]    ${username}    @{arguments}
@@ -942,3 +950,5 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=movePurchaseView
     Publish tender
 
+Видалити предмет закупівлі
+    [Arguments]    ${username}    @{arguments}

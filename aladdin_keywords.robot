@@ -60,6 +60,7 @@ ${dkkp_id}        ${EMPTY}
     ${item}=    Set Variable    ${ttt[0]}
     Add Item    ${item}    10    1
     Full Click    id=next_step
+    Full Click    id=features-tab
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
@@ -228,9 +229,13 @@ Login
     [Arguments]    ${user}
     Full Click    ${locator_cabinetEnter}
     Full Click    ${locator_enter}
-    Wait Until Page Contains Element    Email    40
-    Input Text    Email    ${user.login}
-    Input Text    ${locator_passwordField}    ${user.password}
+    Wait Until Page Contains Element    id=Email    40
+    sleep    2
+    Press Key    id=Email    ${user.login}
+    sleep    2
+    Press Key    id=Password    ${user.password}
+    sleep    2
+    Wait Until Element Is Visible    ${locator_loginButton}    30
     Comment    Full Click    ${locator_loginButton}
     Execute Javascript    $('#submitLogin').click();
 
@@ -253,6 +258,7 @@ Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
     Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Wait Until Page Contains Element    id=butSimpleSearch    40
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -260,13 +266,13 @@ Search tender
     Wait Until Page Contains Element    ${locator_input_search}
     Wait Until Element Is Enabled    ${locator_input_search}
     Input Text    ${locator_input_search}    ${tender_uaid}
-    Execute Javascript    window.scroll(0,-1000)
     aniwait
     Full Click    id=butSimpleSearch
-    Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
+    Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
+    ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
+    Go To    ${attributeHref}
     aniwait
-    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a
-    Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
+    Wait Until Page Contains Element    purchaseProzorroId
 
 Info OpenUA
     [Arguments]    ${tender}
@@ -387,7 +393,7 @@ Publish tender
     Run Keyword And Ignore Error    Wait Until Element Is Visible    id=save_changes    5
     Run Keyword And Ignore Error    Click Button    id=save_changes
     ${id}=    Get Location
-    Full Click    ${locator_publish_tender}
+    Full Click    id=publishPurchase
     Wait Until Page Contains Element    id=purchaseProzorroId    50
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     aniwait
@@ -410,6 +416,7 @@ Add Lot
     Wait Until Page Contains Element    ${locator_multilot_title}${lot_number}    30
     Wait Until Element Is Enabled    ${locator_multilot_title}${lot_number}
     Run Keyword And Ignore Error    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
+    Run Keyword If    '${MODE}'=='openeu'    Input Text    id=lotTitle_En_${lot_number}    ${lot.title_en}
     Input Text    id=lotDescription_${lot_number}    ${lot.description}
     Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
     ${budget}=    Get From Dictionary    ${lot.value}    amount
