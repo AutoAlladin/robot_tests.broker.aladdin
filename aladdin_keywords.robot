@@ -64,7 +64,6 @@ ${dkkp_id}        ${EMPTY}
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    id=movePurchaseView
     Run Keyword And Return    Publish tender
 
@@ -145,8 +144,8 @@ Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
-    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
+    Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
