@@ -921,7 +921,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Видалити лот
     [Arguments]    ${username}    @{arguments}
-    Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Full Click    xpath=//h4[contains(text(),'${arguments[1]}')]/../../..//a[contains(@id,'cancelConfirmLot')]
     Full Click    id=cancelConfirmLot
     Select From List By Index    xpath=.//*[contains(@id,'lotSelectCancelReason_')]    1
     Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
