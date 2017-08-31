@@ -60,7 +60,6 @@ ${dkkp_id}        ${EMPTY}
     ${item}=    Set Variable    ${ttt[0]}
     Add Item    ${item}    10    1
     Full Click    id=next_step
-    Full Click    id=features-tab
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
@@ -621,7 +620,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    15
+    Wait Until Page Contains Element    ${lc}    40
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
