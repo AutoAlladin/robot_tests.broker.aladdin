@@ -815,6 +815,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Click Element    id=prequalification-tab
     sleep    10
     Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
