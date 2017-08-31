@@ -180,7 +180,7 @@ Open Claim Form
     [Arguments]    ${uaid}
     Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
-    ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
+    ${status}=    Run Keyword And Ignore Error    Wait Until Element Is Visible    //span[contains(.,'${uaid}')]    40
     Run Keyword If    '${status[0]}' == 'FAIL'    Full Click    complaint-tab
     Run Keyword If    '${status[0]}' == 'FAIL'    Log To Console    try complaint-tab
     Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
