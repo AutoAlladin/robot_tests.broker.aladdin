@@ -930,7 +930,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    lots-tab
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
-    Add Item    ${arguments[2]}    20    2
+    Add Item    ${arguments[2]}    10    1
 
 Додати неціновий показник на тендер
     [Arguments]    ${username}    @{arguments}
@@ -941,4 +941,3 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Add Feature    ${fi}    1    0
     Full Click    id=movePurchaseView
     Publish tender
-

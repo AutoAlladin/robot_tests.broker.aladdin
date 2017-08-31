@@ -263,9 +263,11 @@ Search tender
     Execute Javascript    window.scroll(0,-1000)
     aniwait
     Full Click    id=butSimpleSearch
-    Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
+    Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
+    ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
+    Go To    https://test-gov.ald.in.ua/${attributeHref}
     aniwait
-    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a
+    Comment    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[text()="${tender_uaid}"]/../a
     Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
 
 Info OpenUA
@@ -410,6 +412,7 @@ Add Lot
     Wait Until Page Contains Element    ${locator_multilot_title}${lot_number}    30
     Wait Until Element Is Enabled    ${locator_multilot_title}${lot_number}
     Run Keyword And Ignore Error    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
+    Run Keyword If    '${MODE}'=='openeu'    Input Text    id=lotTitle_En_${lot_number}    ${lot.title_en}
     Input Text    id=lotDescription_${lot_number}    ${lot.description}
     Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
     ${budget}=    Get From Dictionary    ${lot.value}    amount
