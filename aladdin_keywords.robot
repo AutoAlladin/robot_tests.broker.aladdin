@@ -228,9 +228,13 @@ Login
     [Arguments]    ${user}
     Full Click    ${locator_cabinetEnter}
     Full Click    ${locator_enter}
-    Wait Until Page Contains Element    Email    40
-    Input Text    Email    ${user.login}
-    Input Text    ${locator_passwordField}    ${user.password}
+    Wait Until Page Contains Element    id=Email    40
+    sleep    2
+    Press Key    id=Email    ${user.login}
+    sleep    2
+    Press Key    id=Password    ${user.password}
+    sleep    2
+    Wait Until Element Is Visible    ${locator_loginButton}    30
     Comment    Full Click    ${locator_loginButton}
     Execute Javascript    $('#submitLogin').click();
 
@@ -253,6 +257,7 @@ Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
     Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Wait Until Page Contains Element    id=butSimpleSearch    40
     Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
@@ -260,13 +265,14 @@ Search tender
     Wait Until Page Contains Element    ${locator_input_search}
     Wait Until Element Is Enabled    ${locator_input_search}
     Input Text    ${locator_input_search}    ${tender_uaid}
-    Execute Javascript    window.scroll(0,-1000)
     aniwait
     Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
     aniwait
-    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a
+    sleep    3
+    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[text()="${tender_uaid}"]/../a
     Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
+    Wait Until Page Contains Element    purchaseProzorroId
 
 Info OpenUA
     [Arguments]    ${tender}
@@ -614,7 +620,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    15
+    Wait Until Page Contains Element    ${lc}    40
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait

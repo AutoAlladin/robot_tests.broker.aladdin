@@ -94,8 +94,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Documentation]    Знаходить тендер по його UAID, відкриває його сторінку
     Go To    ${USERS.users['${username}'].homepage}
     Search tender    ${username}    ${tender_uaid}
-    ${guid}=    Get Text    id=purchaseGuid
-    Comment    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&id=${guid}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -103,12 +101,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${next_page_load_count}    Evaluate    ${page_load_count}+${1}
     Set Suite Variable    ${page_load_count}    ${next_page_load_count}
     ${is_load_before_crash}=    Evaluate    ${page_load_count}>4
+    Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
-    Run Keyword If    ${is_load_before_crash}    sleep    5
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
+    Run Keyword Unless    ${is_load_before_crash}    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Switch Browser    1
     Reload Page
 
