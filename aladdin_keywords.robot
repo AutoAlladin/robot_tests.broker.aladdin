@@ -60,10 +60,11 @@ ${dkkp_id}        ${EMPTY}
     ${item}=    Set Variable    ${ttt[0]}
     Add Item    ${item}    10    1
     Full Click    id=next_step
+    sleep    10
+    Full Click    id=features-tab
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    id=movePurchaseView
     Run Keyword And Return    Publish tender
 
@@ -144,8 +145,10 @@ Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
-    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
+    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Comment    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -176,6 +179,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=10000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -222,7 +226,6 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
 
 Login
     [Arguments]    ${user}
@@ -255,10 +258,8 @@ Load document
 
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
-    Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Wait Until Page Contains Element    id=butSimpleSearch    40
-    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
     Select From List By Value    ${locator_search_type}    1    #По Id
@@ -267,11 +268,11 @@ Search tender
     Input Text    ${locator_input_search}    ${tender_uaid}
     aniwait
     Full Click    id=butSimpleSearch
-    Wait Until Page Contains Element    xpath=//span[@class="hidden"][text()="${tender_uaid}"]/../a    50
+    Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
+    sleep    5
+    ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
+    Go To    ${attributeHref}
     aniwait
-    sleep    3
-    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[text()="${tender_uaid}"]/../a
-    Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
     Wait Until Page Contains Element    purchaseProzorroId
 
 Info OpenUA
@@ -393,7 +394,7 @@ Publish tender
     Run Keyword And Ignore Error    Wait Until Element Is Visible    id=save_changes    5
     Run Keyword And Ignore Error    Click Button    id=save_changes
     ${id}=    Get Location
-    Full Click    ${locator_publish_tender}
+    Full Click    id=publishPurchase
     Wait Until Page Contains Element    id=purchaseProzorroId    50
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     aniwait
@@ -416,6 +417,7 @@ Add Lot
     Wait Until Page Contains Element    ${locator_multilot_title}${lot_number}    30
     Wait Until Element Is Enabled    ${locator_multilot_title}${lot_number}
     Run Keyword And Ignore Error    Input Text    ${locator_multilot_title}${lot_number}    ${lot.title}
+    Run Keyword If    '${MODE}'=='openeu'    Input Text    id=lotTitle_En_${lot_number}    ${lot.title_en}
     Input Text    id=lotDescription_${lot_number}    ${lot.description}
     Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divLotControllerEdit')).scope().lotPurchasePlan.guid='${lot.id}'
     ${budget}=    Get From Dictionary    ${lot.value}    amount
@@ -698,7 +700,8 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}

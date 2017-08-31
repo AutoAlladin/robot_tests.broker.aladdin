@@ -103,6 +103,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
     Reload Page
@@ -178,6 +179,7 @@ Get Satisfied
 
 Open Claim Form
     [Arguments]    ${uaid}
+    Reload Page
     Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
     ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
@@ -197,6 +199,7 @@ Get Bid Status
 
 Get qualification status
     [Arguments]    ${_id}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Sleep    5
     Full Click    prequalification-tab
