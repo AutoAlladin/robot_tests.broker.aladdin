@@ -197,6 +197,7 @@ Get Bid Status
 
 Get qualification status
     [Arguments]    ${_id}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Sleep    5
     Full Click    prequalification-tab

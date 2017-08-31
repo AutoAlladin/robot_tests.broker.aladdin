@@ -181,8 +181,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    id=qualificationStatusValueName_0
     Comment    Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    xpath=.//*[contains(@id,'qualificationStatus_')]//span[@class="ng-binding"]
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    id=qualificationStatusValueName_1
-    #***End Date***
+    #***End Start/Date***
     Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.endDate'    Get Field Date    purchasePeriodQualificationEnd
+    Run Keyword And Return If    '${arguments[1]}'=='qualificationPeriod.startDate'    Get Field Date    purchasePeriodQualificationStart
     [Return]    ${field_value}
 
 Задати запитання на тендер
@@ -811,10 +812,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
-    Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
+    Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    id=prequalification-tab
     sleep    10
     Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
@@ -845,6 +845,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Sleep    5
@@ -877,6 +878,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Click Element    prequalification-tab
     Sleep    5
