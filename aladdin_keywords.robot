@@ -270,10 +270,8 @@ Search tender
     Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
-    Go To    https://test-gov.ald.in.ua/${attributeHref}
+    Go To    ${attributeHref}
     aniwait
-    Comment    ${msg}=    Run Keyword And Ignore Error    Click Element    xpath=//span[text()="${tender_uaid}"]/../a
-    Run Keyword If    '${msg[0]}'=='FAIL'    Capture Page Screenshot    fail_click_link.png
     Wait Until Page Contains Element    purchaseProzorroId
 
 Info OpenUA
@@ -395,7 +393,7 @@ Publish tender
     Run Keyword And Ignore Error    Wait Until Element Is Visible    id=save_changes    5
     Run Keyword And Ignore Error    Click Button    id=save_changes
     ${id}=    Get Location
-    Full Click    ${locator_publish_tender}
+    Full Click    id=publishPurchase
     Wait Until Page Contains Element    id=purchaseProzorroId    50
     Wait Until Element Is Visible    id=purchaseProzorroId    90
     aniwait

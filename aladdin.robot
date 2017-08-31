@@ -926,9 +926,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Додати предмет закупівлі в лот
     [Arguments]    ${username}    @{arguments}
-    Full Click    id=purchaseEdit
     Full Click    id=procurementSubject-tab
-    Add Item    ${arguments[2]}    20    2
+    Add Item    ${arguments[2]}    11    1
+    Publish tender
 
 Створити лот із предметом закупівлі
     [Arguments]    ${username}    @{arguments}
@@ -948,3 +948,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Add Feature    ${fi}    1    0
     Full Click    id=movePurchaseView
     Publish tender
+
+Видалити предмет закупівлі
+    [Arguments]    ${username}    @{arguments}
