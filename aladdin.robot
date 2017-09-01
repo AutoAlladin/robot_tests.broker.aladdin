@@ -795,7 +795,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     sleep    40
-    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit0')]
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click()
@@ -804,7 +804,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
     sleep    40
-    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
+    Comment    Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit1')]
     Execute Javascript    $('#isQualified1').click();
     Execute Javascript    $('#isEligible1').click()
