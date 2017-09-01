@@ -146,8 +146,8 @@ Info Below
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
-    Comment    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=400'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Comment    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
@@ -179,6 +179,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=10000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -225,7 +226,6 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
 
 Login
     [Arguments]    ${user}
@@ -258,9 +258,8 @@ Load document
 
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Wait Until Page Contains Element    id=butSimpleSearch    40
-    Comment    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
     Select From List By Value    ${locator_search_type}    1    #По Id
@@ -270,6 +269,7 @@ Search tender
     aniwait
     Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
+    sleep    5
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
     Go To    ${attributeHref}
     aniwait
@@ -700,7 +700,8 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
