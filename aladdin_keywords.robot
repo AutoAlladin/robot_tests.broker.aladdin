@@ -260,7 +260,6 @@ Search tender
     [Arguments]    ${username}    ${tender_uaid}
     Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Wait Until Page Contains Element    id=butSimpleSearch    40
-    Comment    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
     Select From List By Value    ${locator_search_type}    1    #По Id
