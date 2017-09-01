@@ -179,6 +179,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=10000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -225,7 +226,6 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
 
 Login
     [Arguments]    ${user}
@@ -699,7 +699,8 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
