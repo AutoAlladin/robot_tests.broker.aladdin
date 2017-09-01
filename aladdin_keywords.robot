@@ -60,6 +60,7 @@ ${dkkp_id}        ${EMPTY}
     ${item}=    Set Variable    ${ttt[0]}
     Add Item    ${item}    10    1
     Full Click    id=next_step
+    Full Click    id=features-tab
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
@@ -271,7 +272,7 @@ Search tender
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
     Go To    ${attributeHref}
     aniwait
-    Wait Until Page Contains Element    purchaseProzorroId
+    Run Keyword And Ignore Error    Wait Until Page Contains Element    purchaseProzorroId    40
 
 Info OpenUA
     [Arguments]    ${tender}

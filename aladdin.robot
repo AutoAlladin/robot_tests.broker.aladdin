@@ -402,10 +402,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
+    sleep     20
     Full Click    id=features-tab
     Full Click    xpath=//div[contains(text(),'${arguments[1]}')]/../..//a[contains(@id,'updateOrCreateFeatureDeleteButton')]
     Full Click    xpath=//div[@class='jconfirm-buttons']/button[1]
-    Full Click    id=basicInfo-tab
     Full Click    id=movePurchaseView
     Publish tender
 
@@ -919,7 +919,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Видалити лот
     [Arguments]    ${username}    @{arguments}
     Comment    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[1]}
-    Full Click    id=cancelConfirmLot
+    Full Click    xpath=//h4[contains(text(),'${arguments[1]}')]/../../..//a[contains(@id,'cancelConfirmLot')]
     Select From List By Index    xpath=.//*[contains(@id,'lotSelectCancelReason_')]    1
     Choose File    id=inputUploadCancelLotDocument    ${CURDIR}/LICENSE.txt
     Full Click    id=submitCancelLot
@@ -928,6 +928,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     Full Click    id=procurementSubject-tab
     Add Item    ${arguments[2]}    11    1
+    Full Click    id=movePurchaseView
     Publish tender
 
 Створити лот із предметом закупівлі
@@ -951,3 +952,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Видалити предмет закупівлі
     [Arguments]    ${username}    @{arguments}
+    Full Click    id=purchaseEdit
+    Full Click    id=procurementSubject-tab
+    Full Click    xpath=//h4[contains(text(),'${arguments[1]}')]/../../../..//a[contains(@id,'delete_confirm_procurementSubject')]
+    Full Click    xpath=//div[@class='jconfirm-buttons']/button[1]
+    Full Click    id=movePurchaseView
+    Publish tender
