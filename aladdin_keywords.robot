@@ -60,11 +60,11 @@ ${dkkp_id}        ${EMPTY}
     ${item}=    Set Variable    ${ttt[0]}
     Add Item    ${item}    10    1
     Full Click    id=next_step
+    sleep    10
     Full Click    id=features-tab
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
-    Execute Javascript    window.scroll(-1000, -1000)
     Full Click    id=movePurchaseView
     Run Keyword And Return    Publish tender
 
@@ -145,8 +145,10 @@ Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
-    Log To Console    Execute Javascript    return $('#titleOfTenderForEdit').css('display')
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
+    Comment    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=400'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -256,10 +258,9 @@ Load document
 
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
-    Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
-    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Wait Until Page Contains Element    id=butSimpleSearch    40
-    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
+    Comment    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
     Select From List By Value    ${locator_search_type}    1    #По Id
