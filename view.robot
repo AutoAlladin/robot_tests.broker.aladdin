@@ -103,7 +103,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
-    Run Keyword If    '${status}'=='10'    Return From Keyword     active.pre-qualification
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
 
 Get Contract Status
     Reload Page
@@ -179,6 +179,7 @@ Get Satisfied
 
 Open Claim Form
     [Arguments]    ${uaid}
+    Reload Page
     Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
     ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
@@ -188,7 +189,7 @@ Open Claim Form
     sleep    3
     ${guid}=    Get Text    //span[text()='${uaid}']/..//span[contains(@id,'complaintGuid')]
     Full Click    openComplaintForm_${guid}
-    Wait Until Element Is Enabled    complaintStatus_${guid}
+    Wait Until Element Is Enabled    complaintStatus_${guid}    120
     [Return]    ${guid}
 
 Get Bid Status
