@@ -821,7 +821,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Comment    Full Click    xpath=.//*[contains(@id,'preQualification')][1]
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
@@ -834,7 +834,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     sleep    40
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
@@ -856,7 +856,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
@@ -868,7 +868,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
@@ -889,7 +889,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
     sleep    10
@@ -902,7 +902,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
-    Select From List By Value    xpath=.//*[contains(@id,'fileCategory')]    8192
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
     Full Click    xpath=.//*[contains(@id,'edrIdentification')]
     Full Click    xpath=.//*[contains(@id,'btn_submit')]
