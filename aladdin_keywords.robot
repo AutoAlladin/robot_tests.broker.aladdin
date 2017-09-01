@@ -145,7 +145,8 @@ Info Below
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
-    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=400'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 400
+    Comment    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=400'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
@@ -256,10 +257,9 @@ Load document
 
 Search tender
     [Arguments]    ${username}    ${tender_uaid}
-    Comment    ${url}=    Fetch From Left    ${USERS.users['${username}'].homepage}
     Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
     Wait Until Page Contains Element    id=butSimpleSearch    40
-    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
+    Comment    Execute Javascript    var model=angular.element(document.getElementById('findbykeywords')).scope(); model.autotestignoretestmode=true;
     Wait Until Page Contains Element    ${locator_search_type}
     Wait Until Element Is Visible    ${locator_search_type}
     Select From List By Value    ${locator_search_type}    1    #По Id
