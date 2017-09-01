@@ -451,18 +451,25 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
+    sleep    30
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
+    Fill Date    processingContractDateSigned    ${dateSign}
+    Comment    Log To Console    'signed-'+${signed}+'dateSign-'+${dateSign}
+    Comment    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractStartDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
+    Mouse Down    id=processingContractDateSigned
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
+    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
+    Sleep    10
+    Execute Javascript    $('#publishPurchase').click();
+    Reload Page
+    Comment    Click Button    xpath=.//*[contains(@id,'saveContract_')]
     Publish tender/negotiation
 
 Відповісти на запитання
