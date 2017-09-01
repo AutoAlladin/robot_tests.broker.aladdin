@@ -322,7 +322,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Wait Until Element Is Enabled    id=view-lots-tab
     Full Click    id=view-lots-tab
     Wait Until Element Is Enabled    id=view-lots
-    sleep    5
+    Wait Until Element Is Enabled    //h4[@id='Lot-1-Title']
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//h4[@id='Lot-1-Title'][contains(.,'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='value.amount'    Get Field Amount    id=Lot-1-Budget
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    id=Lot-1-Description
@@ -342,7 +342,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Wait Until Element Is Enabled    id=features
     ${d}=    Set Variable    ${arguments[1]}
     Wait Until Element Is Enabled    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]    30
-    sleep    10
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../div/div/div[contains(@id,'featureDescription')]
     Run Keyword And Return If    '${arguments[2]}'=='featureOf'    Get Element Attribute    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../../../../../..@itemid
@@ -555,7 +554,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Відповісти на вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Full Click    makeDecisionComplaint_${guid}
     Wait Until Page Contains Element    name=ResolutionTypes
@@ -605,7 +603,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Підтвердити вирішення вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Run Keyword If    ${arguments[2].data.satisfied}==${True}    Full Click    complaintYes_${guid}
     Run Keyword If    ${arguments[2].data.satisfied}==${False}    Full Click    complaintNo_${guid}
@@ -674,7 +671,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Скасувати вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Full Click    cancelComplaint_${guid}
     Wait Until Page Contains Element    complaintCancellationReason_${guid}    60
@@ -712,7 +708,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із документа до скарги
     [Arguments]    ${username}    @{arguments}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Run Keyword And Return If    '${arguments[3]}'=='title'    Get Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[2]}')]
 
