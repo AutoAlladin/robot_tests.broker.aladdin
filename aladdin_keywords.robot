@@ -273,7 +273,7 @@ Search tender
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
     Go To    ${attributeHref}
     aniwait
-    Wait Until Page Contains Element    purchaseProzorroId
+    Run Keyword And Ignore Error    Wait Until Page Contains Element    purchaseProzorroId    40
 
 Info OpenUA
     [Arguments]    ${tender}
@@ -700,8 +700,7 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
