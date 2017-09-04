@@ -689,13 +689,10 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
-    #***Contracts***
-    Comment    Sleep    60
-    Comment    Reload Page
-    Comment    Comment    Full Click    id=results-tab
-    Comment    Wait Until Element Is Visible    id=tab-content-3
-    Comment    Sleep    10
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    #ComplaintPeriod222
+    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    md-next-button
+    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Full Click    id=processing-tab
+    Run Keyword And Return If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
