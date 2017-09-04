@@ -419,9 +419,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
-    Comment    ${guid}=    Get Text    id=purchaseGuid
-    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Comment    Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
@@ -432,18 +429,22 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
+    sleep    30
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
+    Fill Date    processingContractDateSigned    ${dateSign}
     Full Click    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractStartDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
+    Mouse Down    id=processingContractDateSigned
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
+    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
+    Sleep    10
+    Execute Javascript    $('#publishPurchase').click();
+    Reload Page
     Publish tender/negotiation
 
 Відповісти на запитання
@@ -469,7 +470,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
-    sleep    5
+    sleep    3
     Return From Keyword    ${title}
 
 Отримати інформацію із пропозиції
