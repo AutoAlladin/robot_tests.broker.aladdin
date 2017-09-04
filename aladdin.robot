@@ -103,7 +103,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
     Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
-    Run Keyword Unless    ${is_load_before_crash}    Load Tender    ${apiUrl}/publish/SearchTenderByGuid?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderid=${tender_uaid}
+    Run Keyword Unless    ${is_load_before_crash}    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Switch Browser    1
     Reload Page
 
@@ -419,9 +419,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
-    Comment    ${guid}=    Get Text    id=purchaseGuid
-    Comment    ${api}=    Fetch From Left    ${USERS.users['${username}'].homepage}    :90
-    Comment    Execute Javascript    $.get('${api}:92/api/sync/purchases/${guid}');
     Full Click    id=processing-tab
     #add contract
     Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
@@ -432,18 +429,22 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
+    sleep    30
     ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
+    Fill Date    processingContractDateSigned    ${dateSign}
     Full Click    id=processingContractDateSigned
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractStartDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    15
+    Mouse Down    id=processingContractDateSigned
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Click Button    xpath=.//*[contains(@id,'saveContract_')]
+    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
+    Sleep    10
+    Execute Javascript    $('#publishPurchase').click();
+    Reload Page
     Publish tender/negotiation
 
 Відповісти на запитання
@@ -469,7 +470,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=documents-tab
     ${title}=    Get Field Text    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]
     Full Click    //div[contains(@id,'docFileName')]/span[contains(.,'${arguments[1]}')]/../../../../../..//a[contains(@id,'strikeDocFileNameBut')]
-    sleep    5
+    sleep    3
     Return From Keyword    ${title}
 
 Отримати інформацію із пропозиції
@@ -550,6 +551,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Відповісти на вимогу про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Full Click    makeDecisionComplaint_${guid}
     Wait Until Page Contains Element    name=ResolutionTypes
@@ -587,6 +589,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Отримати інформацію із скарги
     [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Run Keyword And Return If    '${arguments[2]}'=='status'    Get Claim Status    complaintStatus_${guid}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    complaintTitle_${guid}
@@ -598,6 +601,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Підтвердити вирішення вимоги про виправлення умов закупівлі
     [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     ${guid}=    Open Claim Form    ${arguments[1]}
     Run Keyword If    ${arguments[2].data.satisfied}==${True}    Full Click    complaintYes_${guid}
     Run Keyword If    ${arguments[2].data.satisfied}==${False}    Full Click    complaintNo_${guid}
@@ -605,6 +609,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Створити вимогу про виправлення умов лоту
     [Arguments]    ${username}    @{arguments}
+    Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    id=claim-tab
     Wait Until Element Is Enabled    id=add_claim    60
     Full Click    id=add_claim
@@ -818,6 +823,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Click Element    id=prequalification-tab
     sleep    10
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming')]
+    Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
