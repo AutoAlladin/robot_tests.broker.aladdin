@@ -273,7 +273,7 @@ Search tender
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
     Go To    ${attributeHref}
     aniwait
-    Wait Until Page Contains Element    purchaseProzorroId
+    Run Keyword And Ignore Error    Wait Until Page Contains Element    purchaseProzorroId    40
 
 Info OpenUA
     [Arguments]    ${tender}
