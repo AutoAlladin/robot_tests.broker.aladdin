@@ -103,13 +103,13 @@ Get Tender Status
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
-    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
+    Run Keyword If    '${status}'=='10'    Return From Keyword     active.pre-qualification
 
 Get Contract Status
     Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
-    Run Keyword If    '${contr_status}'=='1'    Return From Keyword    pending
-    Run Keyword If    '${contr_status}'=='2'    Return From Keyword    active
+    Run Keyword If    '${status}'=='1'    Return From Keyword    pending
+    Run Keyword If    '${status}'=='2'    Return From Keyword    active
 
 Get Field question.answer
     [Arguments]    ${x}
