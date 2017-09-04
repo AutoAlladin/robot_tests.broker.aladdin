@@ -179,7 +179,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=10000
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=8000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
