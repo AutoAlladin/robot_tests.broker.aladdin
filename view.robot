@@ -108,8 +108,8 @@ Get Tender Status
 Get Contract Status
     Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
-    Run Keyword If    '${status}'=='1'    Return From Keyword    pending
-    Run Keyword If    '${status}'=='2'    Return From Keyword    active
+    Run Keyword If    ${contr_status}=='1'    Return From Keyword    pending
+    Run Keyword If    ${contr_status}=='2'    Return From Keyword    active
 
 Get Field question.answer
     [Arguments]    ${x}

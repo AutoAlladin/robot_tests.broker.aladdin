@@ -699,8 +699,8 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
