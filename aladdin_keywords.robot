@@ -643,8 +643,9 @@ Add Bid Lot
     ${end}=    Get Element Attribute    xpath=//a[contains(@id,'openLotForm')][contains(text(),'${to_id[0]}')]@id
     ${end}=    Fetch From Right    ${end}    openLotForm
     Wait Until Page Contains Element    id=lotAmount${end}
+    Wait Until Element Is Enabled    id=lotAmount${end}
     ${amount}=    Convert Float To String    ${params[0].data.lotValues[0].value.amount}
-    Input Text    id=lotAmount${end}    ${amount}
+    Press Key    id=lotAmount${end}    ${amount}
     Run Keyword And Ignore Error    Run Keyword If    ${params[0].data.selfEligible}==${True}    Click Element    xpath=//label[@for='isSelfEligible${end}']
     Run Keyword And Ignore Error    Run Keyword If    ${params[0].data.selfQualified}==${True}    Click Element    xpath=//label[@for='isSelfQualified${end}']
     @{fiis}=    Set Variable    ${params[2]}
@@ -700,8 +701,8 @@ Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
+    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
