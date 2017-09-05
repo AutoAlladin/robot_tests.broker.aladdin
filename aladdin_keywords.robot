@@ -665,7 +665,7 @@ Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     #***Award***
     Run Keyword If    '${role}'=='viewer'    Full Click    info-purchase-tab
-    Run Keyword If    '${role}'=='viewer'    Full Click    participants-tab
+    Run Keyword And Ignore Error    Run Keyword If    '${role}'=='viewer'    Full Click    participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
