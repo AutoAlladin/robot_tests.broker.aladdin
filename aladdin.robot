@@ -445,12 +445,11 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Mouse Down    id=processingContractDateSigned
-    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
-    Sleep    10
-    Execute Javascript    $('#publishPurchase').click();
-    Reload Page
-    Publish tender/negotiation
+    Run Keyword And Ignore Error    Full Click    publishContract_0
+    Run Keyword And Ignore Error    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
+    Run Keyword And Ignore Error    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
+    Run Keyword And Ignore Error    Sleep    10
+    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
@@ -790,6 +789,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Click Element    id=prequalification-tab
     sleep    10
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
