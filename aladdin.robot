@@ -802,7 +802,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    Sleep    5
     sleep    40
     Full Click    xpath=.//*[contains(@id,'btn_submit1')]
     Execute Javascript    $('#isQualified1').click();

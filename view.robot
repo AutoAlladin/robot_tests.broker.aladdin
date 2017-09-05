@@ -22,6 +22,8 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${_id}
+    Sleep    180
+    Reload Page
     Wait Until Element Is Enabled    ${_id}    40
     ${value}=    Get Text    ${_id}
     [Return]    ${value}
