@@ -790,6 +790,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Click Element    id=prequalification-tab
     sleep    10
     Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
