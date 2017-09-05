@@ -690,7 +690,7 @@ Get Info Award
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
     #ComplaintPeriod222
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    md-next-button
+    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
 
