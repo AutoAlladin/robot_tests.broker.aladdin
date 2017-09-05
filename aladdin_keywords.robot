@@ -146,8 +146,8 @@ Info Below
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
-    Comment    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=400'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
+    Comment    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
@@ -665,7 +665,7 @@ Get Info Award
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     #***Award***
     Run Keyword If    '${role}'=='viewer'    Full Click    info-purchase-tab
-    Run Keyword If    '${role}'=='viewer'    Full Click    participants-tab
+    Run Keyword And Ignore Error    Run Keyword If    '${role}'=='viewer'    Full Click    participants-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].status'    Get Field Text    id=winner_status
     #***Award Budget***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].value.amount'    Get Field Amount    id=procuringParticipantsAmount_0_0
@@ -685,20 +685,17 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
-    #ComplaintPeriod222
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    md-next-button
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Full Click    id=processing-tab
-    Run Keyword And Return If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Contract Status
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract (owner)
