@@ -98,6 +98,7 @@ Get Tru PDV
 
 Get Tender Status
     Reload Page
+    Sleep    5
     ${status}=    Execute Javascript    return $('#purchaseStatus').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    draft
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
