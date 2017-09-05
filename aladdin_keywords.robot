@@ -685,15 +685,17 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
     #ComplaintPeriod222
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    md-next-button
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Full Click    id=processing-tab
-    Run Keyword And Return If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
+    Comment    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    md-next-button
+    Comment    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Comment    Run Keyword If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Full Click    id=processing-tab
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='awards[-1].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
 
 Get Info Contract
     [Arguments]    ${arguments[0]}    ${arguments[1]}
