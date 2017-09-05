@@ -445,7 +445,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Mouse Down    id=processingContractDateSigned
-    Run Keyword And Ignore Error    publishContract_0
+    Run Keyword And Ignore Error    Full Click    publishContract_0
     Run Keyword And Ignore Error    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Run Keyword And Ignore Error    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
     Run Keyword And Ignore Error    Sleep    10
