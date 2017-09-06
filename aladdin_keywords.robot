@@ -704,3 +704,45 @@ Get Info Contract (owner)
     Run Keyword If    '${role}'=='tender_owner'    Full Click    id=processing-tab
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Field Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#contractStatusName_').text();
+
+doc1qualification
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //md-next-button
+    Click Element    id=prequalification-tab
+    sleep    10
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Comment    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
+
+doc2qualification
+    Sleep    20
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    Sleep    5
+    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
+    Sleep    5
+    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
+    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    sleep    20
+    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+
+Approve qualification1
+    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
+    sleep    40
+    Full Click    xpath=.//*[contains(@id,'btn_submit0')]
+    Execute Javascript    $('#isQualified0').click();
+    Execute Javascript    $('#isEligible0').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
+
+Approve qualification2
+    Sleep    5
+    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
+    sleep    40
+    Full Click    xpath=.//*[contains(@id,'btn_submit1')]
+    Execute Javascript    $('#isQualified1').click();
+    Execute Javascript    $('#isEligible1').click()
+    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming1')]

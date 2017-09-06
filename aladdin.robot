@@ -784,43 +784,13 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    Run Keyword And Ignore Error    Full Click    //md-next-button
-    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword And Ignore Error    Full Click    //md-next-button
-    Click Element    id=prequalification-tab
-    sleep    10
-    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
-    Sleep    5
-    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
-    Sleep    40
-    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    Sleep    5
-    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Sleep    5
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    sleep    20
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Run Keyword If    '${arguments[2]}'==0    Full Click    doc1qualification
+    Run Keyword If    '${arguments[2]}'==1    Full Click    doc2qualification
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
-    sleep    40
-    Full Click    xpath=.//*[contains(@id,'btn_submit0')]
-    Execute Javascript    $('#isQualified0').click();
-    Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
-    Sleep    5
-    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    sleep    40
-    Full Click    xpath=.//*[contains(@id,'btn_submit1')]
-    Execute Javascript    $('#isQualified1').click();
-    Execute Javascript    $('#isEligible1').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming1')]
+    Run Keyword If    '${arguments[1]}'==0    Full Click    Approve qualification1
+    Run Keyword If    '${arguments[1]}'==1    Full Click    Approve qualification2
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
