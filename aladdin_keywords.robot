@@ -685,8 +685,7 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
+    Run Keyword If    '${MODE}'!='negotiation'    Get ComplaintPeriod    ${arguments[0]}    ${arguments[1]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
@@ -704,3 +703,12 @@ Get Info Contract (owner)
     Run Keyword If    '${role}'=='tender_owner'    Full Click    id=processing-tab
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Field Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#contractStatusName_').text();
+
+Get ComplaintPeriod
+    [Arguments]    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
+    Run Keyword And Ignore Error    Full Click    publishContract_0
+    Run Keyword And Ignore Error    Sleep    10
+    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
+

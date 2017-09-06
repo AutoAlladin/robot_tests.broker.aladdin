@@ -438,7 +438,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     sleep    30
-    ${signed}=    Get Text    xpath=.//*[@class="ng-binding"][contains(@id,'ContractComplaintPeriodEnd_')]
+    ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
     Fill Date    processingContractDateSigned    ${dateSign}
     Full Click    id=processingContractDateSigned
@@ -448,11 +448,12 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=processingContractEndDate
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Mouse Down    id=processingContractDateSigned
-    Run Keyword And Ignore Error    Full Click    publishContract_0
-    Run Keyword And Ignore Error    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
-    Run Keyword And Ignore Error    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
-    Run Keyword And Ignore Error    Sleep    10
-    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
+    Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
+    Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
+    Sleep    10
+    Execute Javascript    $('#publishPurchase').click();
+    Reload Page
+    Publish tender/negotiation
 
 Відповісти на запитання
     [Arguments]    ${username}    @{arguments}
