@@ -156,6 +156,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
     Return From Keyword If    '${text}'=='Задоволено'    resolved
+    Return From Keyword If    '${text}'=='Залишена без відповіді'    ignored
 
 Get Answer Status
     [Arguments]    ${_id}
