@@ -149,9 +149,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='procuringEntity.address.countryName'    Get Field Text    ${locator_purchaseAddressCountryName_viewer}
     Run Keyword And Return If    '${arguments[1]}'=='procuringEntity.address.locality'    Get Field Text    ${locator_purchaseAddressLocality_viewer}
     #***Purchase Items ***
-    Run Keyword And Return If    '${arguments[1]}'=='items[0].classification.id'    Get Field Text    id=procurementSubjectCpvTitle_0_0
-    Run Keyword And Return If    '${arguments[1]}'=='items[0].classification.scheme'    Get Field Text    id=procurementSubjectCpvTitle_0_0
-    Run Keyword And Return If    '${arguments[1]}'=='items[1].classification.id'    Get Field Text    id=procurementSubjectCpvTitle_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].classification.scheme'    Get Field Text    id=procurementSubjectCpvTitle_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].description'    Get Field Text    id=procurementSubjectDescription_0_0
     Run Keyword And Return If    '${arguments[1]}'=='items[1].additionalClassifications[0].description'    Get Field Text    id=procurementSubjectOtherClassTitle_0_0
@@ -797,6 +794,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
     Sleep    40
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}

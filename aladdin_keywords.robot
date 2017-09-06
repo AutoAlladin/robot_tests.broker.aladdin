@@ -703,12 +703,3 @@ Get Info Contract (owner)
     Run Keyword If    '${role}'=='tender_owner'    Full Click    id=processing-tab
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Field Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#contractStatusName_').text();
-
-Get ComplaintPeriod
-    [Arguments]    ${arguments[0]}    ${arguments[1]}
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
-    Run Keyword And Ignore Error    Full Click    publishContract_0
-    Run Keyword And Ignore Error    Sleep    10
-    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
-
