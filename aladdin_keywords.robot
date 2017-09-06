@@ -706,6 +706,7 @@ Get Info Contract (owner)
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#contractStatusName_').text();
 
 doc1qualification
+    [Arguments]    ${username}    @{arguments}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    xpath=.//*[@aria-label="Next Page"]
     Run Keyword And Ignore Error    Full Click    //md-next-button
@@ -720,6 +721,7 @@ doc1qualification
     Comment    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
 
 doc2qualification
+    [Arguments]    ${username}    @{arguments}
     Sleep    20
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Sleep    5
