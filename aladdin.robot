@@ -162,7 +162,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get Field Text    xpath=.//div[contains(@id,'questionTitle_')]
+    Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get text field openeu    xpath=.//div[contains(@id,'questionTitle_')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//div[contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
     #***Awards***
@@ -784,41 +784,18 @@ ${apiUrl}         https://test-gov.ald.in.ua
 
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    Run Keyword And Ignore Error    Full Click    //md-next-button
-    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword And Ignore Error    Full Click    //md-next-button
-    Click Element    id=prequalification-tab
-    sleep    10
-    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
-    Sleep    5
-    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[contains(@id,'btn_submit')]
-    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
-    Sleep    40
-    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
-    Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
-    sleep    20
-    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Sleep    20
+    ${qualificationStatus0}=    Get Text    id=qualificationStatusValueName_0
+    Run Keyword If    '${qualificationStatus0}'=='Очікування рішення'    doc1qualification    ${arguments[0]}
+    Sleep    20
+    Run Keyword If    '${qualificationStatus0}'!='Очікування рішення'     doc2qualification    ${arguments[0]}
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
-    Full Click    xpath=.//*[contains(@id,'toggleQualification0')]
-    sleep    40
-    Full Click    xpath=.//*[contains(@id,'btn_submit0')]
-    Execute Javascript    $('#isQualified0').click();
-    Execute Javascript    $('#isEligible0').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
-    Sleep    5
-    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    sleep    40
-    Full Click    xpath=.//*[contains(@id,'btn_submit1')]
-    Execute Javascript    $('#isQualified1').click();
-    Execute Javascript    $('#isEligible1').click()
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming1')]
+    Sleep    20
+    Run Keyword If    '${arguments[1]}'=='0'    Approve qualification1
+    Sleep    20
+    Run Keyword If    '${arguments[1]}'=='1'    Approve qualification2
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}

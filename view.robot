@@ -208,3 +208,11 @@ Get qualification status
     Sleep    5
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
+
+Get text field openeu
+    [Arguments]    ${_id}
+    Sleep    180
+    Reload Page
+    Wait Until Element Is Enabled    ${_id}    40
+    ${value}=    Get Text    ${_id}
+    [Return]    ${value}
