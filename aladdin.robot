@@ -793,6 +793,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[contains(@id,'btn_submit')]
+    Run Keyword And Ignore Error    Full Click    id=btn_changeDecision
     Sleep    40
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
@@ -811,7 +813,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
     Sleep    5
     Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
-    Sleep    5
     sleep    40
     Full Click    xpath=.//*[contains(@id,'btn_submit1')]
     Execute Javascript    $('#isQualified1').click();
