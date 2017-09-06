@@ -785,16 +785,17 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Завантажити документ у кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Sleep    20
-    Run Keyword If    '${arguments[2]}'==0    doc1qualification
+    ${qualificationStatus0}=    Get Text    id=qualificationStatusValueName_0
+    Run Keyword If    '${qualificationStatus0}'=='Очікування рішення'    doc1qualification    ${arguments[0]}
     Sleep    20
-    Run Keyword If    '${arguments[2]}'==1    doc2qualification
+    Run Keyword If    '${qualificationStatus0}'!='Очікування рішення'     doc2qualification    ${arguments[0]}
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
     Sleep    20
-    Run Keyword If    '${arguments[1]}'==0    Approve qualification1
+    Run Keyword If    '${arguments[1]}'=='0'    Approve qualification1
     Sleep    20
-    Run Keyword If    '${arguments[1]}'==1    Approve qualification2
+    Run Keyword If    '${arguments[1]}'=='1'    Approve qualification2
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
