@@ -685,7 +685,8 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //*[@aria-label="Next Page"]
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
