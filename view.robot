@@ -109,8 +109,8 @@ Get Tender Status
 Get Contract Status
     Reload Page
     ${contr_status}=    Execute Javascript    return $('#contractStatusName_').text()
-    Run Keyword If    '${status}'=='1'    Return From Keyword    pending
-    Run Keyword If    '${status}'=='2'    Return From Keyword    active
+    Run Keyword If    '${contr_status}'=='1'    Return From Keyword    pending
+    Run Keyword If    '${contr_status}'=='2'    Return From Keyword    active
 
 Get Field question.answer
     [Arguments]    ${x}
@@ -156,6 +156,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
     Return From Keyword If    '${text}'=='Задоволено'    resolved
+    Return From Keyword If    '${text}'=='Залишена без відповіді'    ignored
 
 Get Answer Status
     [Arguments]    ${_id}
@@ -183,7 +184,7 @@ Open Claim Form
     Reload Page
     Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
-    ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
+    ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //div[@id='claim']//span[contains(.,'${uaid}')]    40
     Run Keyword If    '${status[0]}' == 'FAIL'    Full Click    complaint-tab
     Run Keyword If    '${status[0]}' == 'FAIL'    Log To Console    try complaint-tab
     Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
