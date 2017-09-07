@@ -105,6 +105,7 @@ Get Tender Status
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
     Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
+    Run Keyword If    '${status}'=='13'    Return From Keyword    active.pre-qualification.stand-still
 
 Get Contract Status
     Reload Page
@@ -208,3 +209,11 @@ Get qualification status
     Sleep    5
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
+
+Get text field openeu
+    [Arguments]    ${_id}
+    Sleep    180
+    Reload Page
+    Wait Until Element Is Enabled    ${_id}    40
+    ${value}=    Get Text    ${_id}
+    [Return]    ${value}
