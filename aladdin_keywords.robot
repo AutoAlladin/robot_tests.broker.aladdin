@@ -687,7 +687,8 @@ Get Info Award
     #***Award Period***
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword If    '${MODE}'!='negotiation'    Full Click    id=results-tab
-    Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
+    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
+    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
