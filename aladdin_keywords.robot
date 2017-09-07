@@ -685,9 +685,10 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.postalCode'    Get Field Text    id=procuringParticipantsAddressZipCode_0_0
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
-    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
-    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
+    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
+    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
+    Run Keyword If    '${MODE}'!='negotiation'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
@@ -705,6 +706,12 @@ Get Info Contract (owner)
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Get Field Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#contractStatusName_').text();
 
+Get ComplaintPeriod
+    Run Keyword And Ignore Error    Full Click    xpath=.//*[@aria-label="Next Page"]
+    Run Keyword If    '${role}'=='tender_owner'    Full Click    id=results-tab
+    Run Keyword And Ignore Error    Full Click    publishContract_0
+    Run Keyword And Ignore Error    Sleep    10
+    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
 doc1qualification
     [Arguments]    @{arguments}
     Run Keyword And Ignore Error    Full Click    //md-next-button
