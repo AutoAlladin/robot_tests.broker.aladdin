@@ -734,10 +734,10 @@ doc2qualification
 Approve qualification1
     Execute Javascript    $('#toggleQualification0').click();
     sleep    40
-    Full Click    xpath=.//*[contains(@id,'btn_submit0')]
+    Execute Javascript    $('#btn_submit0').click();
     Execute Javascript    $('#isQualified0').click();
     Execute Javascript    $('#isEligible0').click();
-    Full Click    xpath=.//*[contains(@id,'btn_submit_confirming0')]
+    Execute Javascript    $('#btn_submit_confirming0').click();
 
 Approve qualification2
     Sleep    5
