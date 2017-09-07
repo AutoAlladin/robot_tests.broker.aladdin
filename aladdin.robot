@@ -795,7 +795,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Sleep    20
     Run Keyword If    '${arguments[1]}'=='0'    Approve qualification1
     Sleep    20
-    Run Keyword If    '${arguments[1]}'=='1'    Approve qualification2
+    Run Keyword If    '${arguments[1]}'=='-1'    Approve qualification2
 
 Затвердити остаточне рішення кваліфікації
     [Arguments]    ${username}    @{arguments}
