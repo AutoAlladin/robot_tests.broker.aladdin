@@ -447,7 +447,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
     Mouse Down    id=processingContractDateSigned
     Full Click    id=processingContractContractNumber
-    Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0    ${EMPTY}
+    Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
     Sleep    10
@@ -791,7 +791,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${qualificationStatus0}=    Get Text    id=qualificationStatusValueName_0
     Run Keyword If    '${qualificationStatus0}'=='Очікування рішення'    doc1qualification    ${arguments[0]}
     Sleep    20
-    Run Keyword If    '${qualificationStatus0}'!='Очікування рішення'     doc2qualification    ${arguments[0]}
+    Run Keyword If    '${qualificationStatus0}'!='Очікування рішення'    doc2qualification    ${arguments[0]}
 
 Підтвердити кваліфікацію
     [Arguments]    ${username}    @{arguments}
