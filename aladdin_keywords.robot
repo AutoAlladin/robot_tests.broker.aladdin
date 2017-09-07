@@ -686,7 +686,7 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].suppliers[0].address.streetAddress'    Get Field Text    id=procuringParticipantsAddressStreet_0_0
     #***Award Period***
     Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
-    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
+    Run Keyword And Ignore Error    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Run Keyword If    '${MODE}'!='negotiation'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
@@ -712,6 +712,7 @@ Get ComplaintPeriod
     Run Keyword And Ignore Error    Full Click    publishContract_0
     Run Keyword And Ignore Error    Sleep    10
     Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
+
 doc1qualification
     [Arguments]    @{arguments}
     Run Keyword And Ignore Error    Full Click    //md-next-button
