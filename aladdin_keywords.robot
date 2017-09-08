@@ -712,6 +712,7 @@ Get ComplaintPeriod
     Run Keyword And Ignore Error    Full Click    publishContract_0
     Run Keyword And Ignore Error    Sleep    10
     Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
+
 doc1qualification
     [Arguments]    @{arguments}
     Run Keyword And Ignore Error    Full Click    //md-next-button
@@ -721,16 +722,13 @@ doc1qualification
     sleep    10
     Execute Javascript    $('#toggleQualification0').click();
     Sleep    5
-    Log To Console    ${arguments[0]}
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Log To Console    $('[id^="uploadFile"]').files[0]='${arguments[0]}'
     Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
 
 doc2qualification
     [Arguments]    @{arguments}
     Sleep    20
-    Log To Console    before js
     Execute Javascript    $('#toggleQualification1').click();
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
@@ -748,7 +746,6 @@ Approve qualification1
 
 Approve qualification2
     Sleep    5
-    Comment    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Execute Javascript    $('#toggleQualification1').click();
     sleep    40
     Execute Javascript    $('#btn_submit1').click();
