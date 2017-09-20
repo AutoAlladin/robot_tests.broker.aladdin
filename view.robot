@@ -98,12 +98,14 @@ Get Tru PDV
 
 Get Tender Status
     Reload Page
+    Sleep    5
     ${status}=    Execute Javascript    return $('#purchaseStatus').text()
     Run Keyword If    '${status}'=='1'    Return From Keyword    draft
     Run Keyword If    '${status}'=='2'    Return From Keyword    active.enquiries
     Run Keyword If    '${status}'=='3'    Return From Keyword    active.tendering
     Run Keyword If    '${status}'=='4'    Return From Keyword    active.auction
-    Run Keyword If    '${status}'=='10'    Return From Keyword     active.pre-qualification
+    Run Keyword If    '${status}'=='10'    Return From Keyword    active.pre-qualification
+    Run Keyword If    '${status}'=='13'    Return From Keyword    active.pre-qualification.stand-still
 
 Get Contract Status
     Reload Page
@@ -155,6 +157,7 @@ Get Claim Status
     Return From Keyword If    '${text}'=='Відхилено'    declined
     Return From Keyword If    '${text}'=='Недійсно'    invalid
     Return From Keyword If    '${text}'=='Задоволено'    resolved
+    Return From Keyword If    '${text}'=='Залишена без відповіді'    ignored
 
 Get Answer Status
     [Arguments]    ${_id}
@@ -182,7 +185,7 @@ Open Claim Form
     Reload Page
     Wait Until Page Contains Element    claim-tab    40
     Full Click    claim-tab
-    ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
+    ${status}=    Run Keyword And Ignore Error    Wait Until Page Contains Element    //div[@id='claim']//span[contains(.,'${uaid}')]    40
     Run Keyword If    '${status[0]}' == 'FAIL'    Full Click    complaint-tab
     Run Keyword If    '${status[0]}' == 'FAIL'    Log To Console    try complaint-tab
     Wait Until Page Contains Element    //span[contains(.,'${uaid}')]    40
@@ -206,3 +209,11 @@ Get qualification status
     Sleep    5
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
+
+Get text field openeu
+    [Arguments]    ${_id}
+    Sleep    180
+    Reload Page
+    Wait Until Element Is Enabled    ${_id}    40
+    ${value}=    Get Text    ${_id}
+    [Return]    ${value}
