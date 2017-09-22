@@ -143,6 +143,8 @@ Add Item
 
 Info Below
     [Arguments]    ${tender_data}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
@@ -226,6 +228,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
 
 Login
     [Arguments]    ${user}

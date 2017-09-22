@@ -207,6 +207,7 @@ Get qualification status
     Sleep    5
     Full Click    prequalification-tab
     Sleep    5
+>>>>>>> Temporary merge branch 2
     ${status}=    Get Text    ${_id}
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
 
