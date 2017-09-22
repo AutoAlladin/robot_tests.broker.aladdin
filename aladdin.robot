@@ -287,7 +287,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     sleep    10
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${filepath}
     Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[@class="input-group-btn"]//a[contains(@id,'submitUpload')]
     #save
     Wait Until Page Contains Element    ${locator_finish_edit}
     Full Click    ${locator_finish_edit}
@@ -435,7 +435,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
     sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[@class="input-group-btn"]//a[contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     sleep    30
     ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
