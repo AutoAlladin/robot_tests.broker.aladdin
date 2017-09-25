@@ -271,6 +271,7 @@ Search tender
     Input Text    ${locator_input_search}    ${tender_uaid}
     aniwait
     Full Click    id=butSimpleSearch
+    Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
     sleep    5
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
@@ -363,7 +364,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix_reg}     00
+    Set Region    ${region}    ${id_suffix_reg}    00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
