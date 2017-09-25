@@ -29,6 +29,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Goto    ${user.homepage}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
+    Sleep    10
     Run Keyword If    '${role}'!='viewer'    Login    ${user}
     Set Suite Variable    ${apiUrl}    ${user.homepage}
 
@@ -425,28 +426,36 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=processing-tab
     #add contract
-    Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
+    wait until page contains element    xpath=.//input[contains(@id,'uploadFile')]
     sleep    5
     Choose File    xpath=.//*[contains(@id,'uploadFile')]    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
     sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=//a[contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
-    sleep    30
     ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-    ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
+    sleep    120
+    ${dateSign}=    Add Time To Date    ${signed}    00:01:00    exclude_millis=yes
+    log to console    ${dateSign}
     Fill Date    processingContractDateSigned    ${dateSign}
-    Full Click    id=processingContractDateSigned
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractStartDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractEndDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Mouse Down    id=processingContractDateSigned
-    Full Click    id=processingContractContractNumber
+    ${dateFrom}=    Add Time To Date    ${signed}    10:00:00    exclude_millis=yes
+    log to console    ${dateFrom}
+    Fill Date    processingContractStartDate    ${dateFrom}
+    ${dateTo}=    Add Time To Date    ${signed}    20:01:00    exclude_millis=yes
+    log to console    ${dateTo}
+    Fill Date    processingContractEndDate    ${dateTo}
+#    Full Click    id=processingContractDateSigned
+#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+#    Full Click    id=processingContractStartDate
+#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+#    Full Click    id=processingContractEndDate
+#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+#    Mouse Down    id=processingContractDateSigned
+#    Full Click    id=processingContractContractNumber
     Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
