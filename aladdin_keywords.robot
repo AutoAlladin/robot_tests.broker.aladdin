@@ -268,6 +268,7 @@ Search tender
     Input Text    ${locator_input_search}    ${tender_uaid}
     aniwait
     Full Click    id=butSimpleSearch
+    Full Click    id=butSimpleSearch
     Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
     sleep    5
     ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
