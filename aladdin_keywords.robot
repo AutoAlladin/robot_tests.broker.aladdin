@@ -688,6 +688,7 @@ Get Info Award
     Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
     Run Keyword And Ignore Error    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
+    Run Keyword If    '${MODE}'!='negotiation'    Run Keyword And Ignore Error    Full Click    //md-next-button
     Run Keyword If    '${MODE}'!='negotiation'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
