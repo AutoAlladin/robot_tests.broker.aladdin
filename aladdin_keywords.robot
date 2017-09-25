@@ -25,9 +25,9 @@ ${dkkp_id}        ${EMPTY}
     ${tnd_data}=    Get From Dictionary    ${tender_data}    data
     ${items}=    Get From Dictionary    ${tnd_data}    items
     ${item}=    Get From List    ${items}    0
-    Add item negotiate    ${item}    00    0
+    Add item negotiate    ${item}    00    0    00
     ${item}=    Get From List    ${items}    1
-    Add item negotiate    ${item}    01    0
+    Add item negotiate    ${item}    00    0    01
     Full Click    ${locator_finish_edit}
     ${tender_UID}=    Publish tender/negotiation
     Run Keyword If    ${log_enabled}    Log To Console    End negotiation
@@ -301,7 +301,7 @@ Info OpenUA
     Full Click    id=createOrUpdatePurchase
 
 Add item negotiate
-    [Arguments]    ${item}    ${id_suffix}    ${lot_number}
+    [Arguments]    ${item}    ${id_suffix}    ${lot_number}    ${id_suffix_reg}
     Run Keyword If    ${log_enabled}    Log To Console    start add item negotiation
     #Клик доб позицию
     sleep    3
@@ -318,9 +318,9 @@ Add item negotiate
     Input Text    ${locator_Quantity}${id_suffix}    ${editItemQuant}
     Run Keyword If    ${log_enabled}    Log To Console    Количество товара ${editItemQuant}
     #Выбор ед измерения
-    Wait Until Element Is Enabled    ${locator_code}${id_suffix}
+    Wait Until Element Is Enabled    //*[@id="procurementSubjectUnitWrap00"]//select
     ${code}=    Get From Dictionary    ${item.unit}    code
-    Select From List By Value    ${locator_code}${id_suffix}    ${code}
+    Select From List By Value    //*[@id="procurementSubjectUnitWrap00"]//select    ${code}
     ${name}=    Get From Dictionary    ${item.unit}    name
     Run Keyword If    ${log_enabled}    Log To Console    Выбор ед измерения ${code} ${name}
     #Выбор ДК
@@ -355,12 +355,12 @@ Add item negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Срок поставки (конечная дата) ${date_time}
     #Выбор страны
     ${country}=    Get From Dictionary    ${item.deliveryAddress}    countryName
-    Select From List By Label    ${locator_country_id}${id_suffix}    ${country}
+    Select From List By Label    //*[@id="procurementSubjectCountryWrap00"]//select    ${country}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор страны ${country}
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix}
+    Set Region    ${region}    ${id_suffix_reg}     00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -602,8 +602,8 @@ Select Doc For Lot
     Select From List By Label    id=documentOfLotSelect    ${arg}
 
 Set Region
-    [Arguments]    ${region}    ${item_no}
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions${item_no}')).scope(); autotestmodel.regions.push({id:0,name:'${region}'}); autotestmodel.$apply(); autotestmodel; \ $("#select_regions${item_no} option[value='0']").attr("selected", "selected"); var autotestmodel=angular.element(document.getElementById('procurementSubject_description${item_no}')).scope(); autotestmodel.procurementSubject.region={}; \ autotestmodel.procurementSubject.region.id=0; autotestmodel.procurementSubject.region.name='${region}';
+    [Arguments]    ${region}    ${item_no}    ${id_suffix}
+    Execute Javascript    var autotestmodel=angular.element(document.getElementById('select_regions${item_no}')).scope(); autotestmodel.regions.push({id:0,name:'${region}'}); autotestmodel.$apply(); autotestmodel; \ $("#select_regions${item_no} option[value='0']").attr("selected", "selected"); var autotestmodel=angular.element(document.getElementById('procurementSubject_description${id_suffix}')).scope(); autotestmodel.procurementSubject.region={}; \ autotestmodel.procurementSubject.region.id=0; autotestmodel.procurementSubject.region.name='${region}';
 
 Select Item Param Label
     [Arguments]    ${relatedItem}
@@ -622,7 +622,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    40
+    Wait Until Page Contains Element    ${lc}    60
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
@@ -688,6 +688,7 @@ Get Info Award
     Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Reload Page
     Run Keyword And Ignore Error    Run Keyword If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Full Click    //md-next-button
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
+    Run Keyword If    '${MODE}'!='negotiation'    Run Keyword And Ignore Error    Full Click    //md-next-button
     Run Keyword If    '${MODE}'!='negotiation'    Full Click    id=results-tab
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
@@ -722,22 +723,19 @@ doc1qualification
     sleep    10
     Execute Javascript    $('#toggleQualification0').click();
     Sleep    5
-    Log To Console    ${arguments[0]}
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Log To Console    $('[id^="uploadFile"]').files[0]='${arguments[0]}'
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'submitUpload')]
 
 doc2qualification
     [Arguments]    @{arguments}
     Sleep    20
-    Log To Console    before js
     Execute Javascript    $('#toggleQualification1').click();
     Sleep    5
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${arguments[0]}
     Sleep    5
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'submitUpload')]
 
 Approve qualification1
     Execute Javascript    $('#toggleQualification0').click();
@@ -749,7 +747,6 @@ Approve qualification1
 
 Approve qualification2
     Sleep    5
-    Comment    Full Click    xpath=.//*[contains(@id,'toggleQualification1')]
     Execute Javascript    $('#toggleQualification1').click();
     sleep    40
     Execute Javascript    $('#btn_submit1').click();
