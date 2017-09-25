@@ -29,6 +29,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Goto    ${user.homepage}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
+    Sleep    10
     Run Keyword If    '${role}'!='viewer'    Login    ${user}
     Set Suite Variable    ${apiUrl}    ${user.homepage}
 
@@ -170,7 +171,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${awardInfo}'=='awards'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}    id=resultPurchseContractStatusView_0
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    id=qualificationStatusValueName_0
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    id=qualificationStatusValueName_1
@@ -198,6 +199,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     sleep    15
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -285,7 +287,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     sleep    10
     Choose File    xpath=.//input[contains(@id,'uploadFile')]    ${filepath}
     Select From List By Index    xpath=.//*[@class='form-control b-l-none ng-pristine ng-untouched ng-valid ng-empty'][contains(@id,'fileCategory')]    1
-    Full Click    xpath=.//*[@class='btn btn-success'][contains(@id,'submitUpload')]
+    Full Click    xpath=.//*[contains(@id,'submitUpload')]
     #save
     Wait Until Page Contains Element    ${locator_finish_edit}
     Full Click    ${locator_finish_edit}
@@ -418,40 +420,39 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(.,'${arguments[1]}')]
-    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
+    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(text(),'${arguments[1]}')]
+    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
+    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=.//div[contains(@id,'questionAnswer')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=processing-tab
     #add contract
-    Wait Until Element Is Enabled    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    5
+    wait until page contains element    xpath=.//input[contains(@id,'uploadFile')]
     Choose File    xpath=.//*[contains(@id,'uploadFile')]    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
-    sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    xpath=.//*[@class="btn btn-success"][contains(@id,'submitUpload')]
+    Full Click    xpath=//a[contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
-    sleep    30
     ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-    ${dateSign}=    Add Time To Date    ${signed}    00:01:00:000
+    ${dateSign}=    Add Time To Date    ${signed}    00:01:00    exclude_millis=yes
+    log to console    ${dateSign}
     Fill Date    processingContractDateSigned    ${dateSign}
-    Full Click    id=processingContractDateSigned
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractStartDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Full Click    id=processingContractEndDate
-    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    Mouse Down    id=processingContractDateSigned
-    Full Click    id=processingContractContractNumber
+    ${dateFrom}=    Add Time To Date    ${signed}    10:00:00    exclude_millis=yes
+    log to console    ${dateFrom}
+    Fill Date    processingContractStartDate    ${dateFrom}
+    ${dateTo}=    Add Time To Date    ${signed}    20:01:00    exclude_millis=yes
+    log to console    ${dateTo}
+    Fill Date    processingContractEndDate    ${dateTo}
     Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
     Sleep    10
     Execute Javascript    $('#publishPurchase').click();
+    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
     Reload Page
     Publish tender/negotiation
 
