@@ -111,6 +111,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
 Отримати інформацію із тендера
     [Arguments]    ${username}    @{arguments}
     [Documentation]    Return значення поля field_name, яке бачить користувач username
+    aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     #***Purchase***
     Run Keyword And Return If    '${arguments[1]}'=='tenderID'    Get Field Text    id=purchaseProzorroId
     Run Keyword And Return If    '${arguments[1]}'=='status'    Get Tender Status
@@ -171,7 +172,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${awardInfo}'=='awards'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}    id=resultPurchseContractStatusView_0
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    id=qualificationStatusValueName_0
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    id=qualificationStatusValueName_1
@@ -435,11 +436,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
     sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    sleep    60
     Full Click    xpath=//a[contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
-    sleep    30
     ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
-    sleep    120
     ${dateSign}=    Add Time To Date    ${signed}    00:01:00    exclude_millis=yes
     log to console    ${dateSign}
     Fill Date    processingContractDateSigned    ${dateSign}
@@ -449,14 +449,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${dateTo}=    Add Time To Date    ${signed}    20:01:00    exclude_millis=yes
     log to console    ${dateTo}
     Fill Date    processingContractEndDate    ${dateTo}
-#    Full Click    id=processingContractDateSigned
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Full Click    id=processingContractStartDate
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Full Click    id=processingContractEndDate
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Mouse Down    id=processingContractDateSigned
-#    Full Click    id=processingContractContractNumber
     Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );

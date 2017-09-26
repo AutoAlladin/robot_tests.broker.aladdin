@@ -181,7 +181,6 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=8000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -228,7 +227,7 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
     Run Keyword If    ${log_enabled}    Log To Console    end info negotiation
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 10000
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 8000
 
 Login
     [Arguments]    ${user}
@@ -706,10 +705,16 @@ Get Info Award
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
-    [Arguments]    ${arguments[0]}    ${arguments[1]}
+    [Arguments]    ${ua_id}    ${contract_status}    ${id_status}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Sleep    20
-    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
+    ${status}=    Get Text    ${id_status}
+    sleep    300
+    Reload Page
+    Return From Keyword If    '${status}'=='Очікування рішення'    pending
+    Return From Keyword If    '${status}'=='Активний'    active
+    Run Keyword And Return If    '${contract_status}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatusView_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
