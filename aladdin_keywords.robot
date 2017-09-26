@@ -124,7 +124,7 @@ Add Item
     Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
     Wait Until Element Is Enabled    id=select_regions${item_suffix}
-    Set Region    ${item.deliveryAddress.region}    ${item_suffix}
+    Set Region    ${item.deliveryAddress.region}    ${item_suffix}    10
     Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
     Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
@@ -361,7 +361,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix_reg}     00
+    Set Region    ${region}    ${id_suffix_reg}    00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode

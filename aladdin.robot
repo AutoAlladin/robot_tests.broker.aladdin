@@ -165,7 +165,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #***Questions***
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get text field openeu    xpath=.//div[contains(@id,'questionTitle_')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//div[contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
+    Comment    Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
     #***Awards***
     ${awardInfo}=    Get Substring    ${arguments[1]}    0    6
     Run Keyword And Return If    '${awardInfo}'=='awards'    Get Info Award    ${arguments[0]}    ${arguments[1]}
@@ -199,6 +199,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     sleep    15
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -421,7 +422,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(text(),'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
+    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=.//div[contains(@id,'questionAnswer')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
@@ -448,14 +450,14 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${dateTo}=    Add Time To Date    ${signed}    20:01:00    exclude_millis=yes
     log to console    ${dateTo}
     Fill Date    processingContractEndDate    ${dateTo}
-#    Full Click    id=processingContractDateSigned
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Full Click    id=processingContractStartDate
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Full Click    id=processingContractEndDate
-#    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-#    Mouse Down    id=processingContractDateSigned
-#    Full Click    id=processingContractContractNumber
+    #    Full Click    id=processingContractDateSigned
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Full Click    id=processingContractStartDate
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Full Click    id=processingContractEndDate
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Mouse Down    id=processingContractDateSigned
+    #    Full Click    id=processingContractContractNumber
     Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
