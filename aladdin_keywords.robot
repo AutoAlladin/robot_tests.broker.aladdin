@@ -706,18 +706,17 @@ Get Info Award
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
-    [Arguments]    ${ua_id}    ${contract_status}    ${id_status}    ${username}    @{arguments}
+    [Arguments]    ${ua_id}    ${contract_status}    ${id_status}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Sleep    20
+    Comment    Sleep    20
     Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
     ${status}=    Get Text    ${id_status}
-    sleep    300
+    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${ua_id}
     Reload Page
-    Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
     Return From Keyword If    '${status}'=='Активний'    active
-    Run Keyword And Return If    '${contract_status}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatusView_0').text();
+    Comment    Run Keyword And Return If    '${contract_status}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatusView_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
