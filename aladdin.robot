@@ -170,7 +170,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${awardInfo}'=='awards'    Get Info Award    ${arguments[0]}    ${arguments[1]}
     #***Contracts***
     ${contractInfo}=    Get Substring    ${arguments[1]}    0    12
-    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}
+    Run Keyword And Return If    '${contractInfo}'=='contracts[0]'    Get Info Contract    ${arguments[0]}    ${arguments[1]}    id=resultPurchseContractStatusView_0
     #***Status***
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[0].status'    Get qualification status    id=qualificationStatusValueName_0
     Run Keyword And Return If    '${arguments[1]}'=='qualifications[1].status'    Get qualification status    id=qualificationStatusValueName_1
