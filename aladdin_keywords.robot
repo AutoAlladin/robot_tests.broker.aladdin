@@ -123,8 +123,9 @@ Add Item
     Select From List By Label    xpath=.//*[@id='select_countries${item_suffix}']    ${item.deliveryAddress.countryName}
     Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
-    Wait Until Element Is Enabled    id=select_regions${item_suffix}
-    Set Region    ${item.deliveryAddress.region}    ${item_suffix}    10
+    Wait Until Element Is Enabled    id=select_regions10
+    sleep    2
+    Set Region    ${item.deliveryAddress.region}    10    10
     Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
     Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
