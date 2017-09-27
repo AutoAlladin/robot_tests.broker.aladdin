@@ -164,7 +164,6 @@ ${apiUrl}         https://test-gov.ald.in.ua
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
-    Run Keyword If    '${arguments[1]}'=='questions[0]'    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].title'    Get text field openeu    xpath=.//div[contains(@id,'questionTitle_')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].description'    Get Field Text    xpath=.//div[contains(@id,'questionDescription')]
     Run Keyword And Return If    '${arguments[1]}'=='questions[0].answer'    Get Field Text    xpath=.//div[contains(@id,'questionAnswer')]
@@ -201,6 +200,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${tender_uaid}
     Run Keyword And Ignore Error    Full Click    //md-next-button
     sleep    15
+    Run Keyword And Ignore Error    Full Click    //md-next-button
     Full Click    id=do-proposition-tab
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
@@ -432,12 +432,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=processing-tab
     #add contract
     wait until page contains element    xpath=.//input[contains(@id,'uploadFile')]
-    sleep    5
     Choose File    xpath=.//*[contains(@id,'uploadFile')]    ${CURDIR}/LICENSE.txt
     Select From List By Index    xpath=.//*[contains(@id,'fileCategory')]    2
-    sleep    10
     Mouse Down    xpath=.//*[@id='processingContract0']/div/div
-    sleep    60
     Full Click    xpath=//a[contains(@id,'submitUpload')]
     Input Text    id=processingContractContractNumber    777
     ${signed}=    Get Text    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
@@ -455,6 +452,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );
     Sleep    10
     Execute Javascript    $('#publishPurchase').click();
+    Run Keyword And Ignore Error    Execute Javascript    $('#publishPurchase').click();
     Reload Page
     Publish tender/negotiation
 

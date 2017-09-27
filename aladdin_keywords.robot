@@ -144,8 +144,6 @@ Add Item
 
 Info Below
     [Arguments]    ${tender_data}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 1
-    Execute Javascript    var autotestmodel=angular.element(document.getElementById('title')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
@@ -186,8 +184,6 @@ Info Negotiate
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
     ${title_ru}=    Get From Dictionary    ${tender_data.data}    title_ru
-    Log To Console    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
-    sleep    10
     Execute Javascript    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
     ${title_en}=    Get From Dictionary    ${tender_data.data}    title_en
     Execute Javascript    angular.element(document.getElementById('title_En')).scope().purchase.title_En='${title_en}'
@@ -329,9 +325,7 @@ Add item negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Выбор ед измерения ${code} ${name}
     #Выбор ДК
     ${status}=    Run Keyword And Ignore Error    Click Button    ${locator_button_add_cpv}
-    Comment    Run Keyword If    '${status[0]}'=='FAIL'    sleep    5000
-    Sleep    5
-    Wait Until Element Is Enabled    ${locator_cpv_search}    30
+    Wait Until Element Is Visible    ${locator_cpv_search}    30
     ${cpv}=    Get From Dictionary    ${item.classification}    id
     Press Key    ${locator_cpv_search}    ${cpv}
     Wait Until Element Is Enabled    //*[@id='tree']//li[@aria-selected="true"]    30
@@ -340,14 +334,11 @@ Add item negotiate
     #Выбор др ДК
     sleep    1
     ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${item}    additionalClassifications
-    Log To Console    is DKKP - \ ${is_dkpp[0]} \ - \ ${is_dkpp[1]}
-    Log To Console    cpv ${cpv}
     Set Suite Variable    ${dkkp_id}    000
     Run Keyword If    '${is_dkpp[0]}'=='PASS'    Get OtherDK    ${item}
     Set DKKP
     Run Keyword If    ${log_enabled}    Log To Console    Выбор др ДК ${is_dkpp}
     #Срок поставки (начальная дата)
-    sleep    10
     ${delivery_Date_start}=    Get From Dictionary    ${item.deliveryDate}    startDate
     ${date_time}=    get_aladdin_formated_date    ${delivery_Date_start}
     Fill Date    ${locator_date_delivery_start}${id_suffix}    ${date_time}
@@ -376,7 +367,6 @@ Add item negotiate
     ${street}=    Get From Dictionary    ${item.deliveryAddress}    streetAddress
     Press Key    ${locator_street}${id_suffix}    ${street}
     Run Keyword If    ${log_enabled}    Log To Console    Адрес ${street}
-    sleep    3
     ${deliveryLocation_latitude}=    Get From Dictionary    ${item.deliveryLocation}    latitude
     ${deliveryLocation_latitude}    Convert Float To String    ${deliveryLocation_latitude}
     ${deliveryLocation_latitude}    String.Replace String    ${deliveryLocation_latitude}    decimal    string
@@ -388,10 +378,8 @@ Add item negotiate
     Press Key    ${locator_deliveryLocation_longitude}${id_suffix}    ${deliveryLocation_longitude}
     Run Keyword If    ${log_enabled}    Log To Console    Долгота ${deliveryLocation_longitude}
     Execute Javascript    window.scroll(1000, 1000)
-    sleep    2
     #Клик кнопку "Створити"
     Full Click    ${locator_button_create_item}${id_suffix}
-    sleep    2
     Run Keyword If    ${log_enabled}    Log To Console    end add item negotiation
 
 Publish tender
@@ -626,7 +614,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    60
+    Wait Until Page Contains Element    ${lc}    40
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
@@ -697,26 +685,16 @@ Get Info Award
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].complaintPeriod.endDate'    Get Field Date    xpath=.//*[contains(@id,'ContractComplaintPeriodEnd_')]
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='awards[0].documents[0].title'    Get Field Doc for paticipant    xpath=.//*[@class="ng-binding"][contains(@id,'awardsdoc')]
-    #***Contracts***
-    Comment    Sleep    60
-    Comment    Reload Page
-    Comment    Comment    Full Click    id=results-tab
-    Comment    Wait Until Element Is Visible    id=tab-content-3
-    Comment    Sleep    10
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
 
 Get Info Contract
     [Arguments]    ${ua_id}    ${contract_status}    ${id_status}
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
-    Comment    Sleep    20
-    Comment    Run Keyword And Return If    '${arguments[1]}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatus_0').text();
     ${status}=    Get Text    ${id_status}
     Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${ua_id}
     Reload Page
     Run Keyword If    '${role}'=='viewer'    Full Click    id=results-tab
     Return From Keyword If    '${status}'=='Очікування рішення'    pending
     Return From Keyword If    '${status}'=='Активний'    active
-    Comment    Run Keyword And Return If    '${contract_status}'=='contracts[0].status'    Execute Javascript    return $('#resultPurchseContractStatusView_0').text();
 
 Get Info Contract (owner)
     [Arguments]    @{arguments}
