@@ -123,9 +123,9 @@ Add Item
     Select From List By Label    xpath=.//*[@id='select_countries${item_suffix}']    ${item.deliveryAddress.countryName}
     Press Key    ${locator_postal_code}${item_suffix}    ${item.deliveryAddress.postalCode}
     aniwait
-    Wait Until Element Is Enabled    id=select_regions10
+    Wait Until Element Is Enabled    id=select_regions${item_suffix}
     sleep    2
-    Set Region    ${item.deliveryAddress.region}    10    10
+    Set Region    ${item.deliveryAddress.region}    ${item_suffix}    ${item_suffix}
     Press Key    ${locator_street}${item_suffix}    ${item.deliveryAddress.streetAddress}
     Press Key    ${locator_locality}${item_suffix}    ${item.deliveryAddress.locality}
     #Koordinate
@@ -180,7 +180,6 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
-    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=8000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
@@ -354,7 +353,7 @@ Add item negotiate
     Select From List By Label    //*[@id="procurementSubjectCountryWrap00"]//select    ${country}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор страны ${country}
     #Выбор региона
-    sleep    3
+    sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
     Set Region    ${region}    ${id_suffix_reg}    00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
