@@ -158,9 +158,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='items[0].additionalClassifications[0].id'    Get Field Text    id=procurementSubjectOtherClassCode_1_0
     #***Purchase Features ***
     Run Keyword And Return If    '${arguments[1]}'=='features[0].title'    Get Field feature.title    0_0
-    Run Keyword And Return If    '${arguments[1]}'=='features[1].title'    Get Field feature.title    1_0
-    Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
-    Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
+    Run Keyword And Return If    '${arguments[1]}'=='features[1].title'    Get Field feature.title    0_1
+    Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    0_2
+    Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    0_3
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***

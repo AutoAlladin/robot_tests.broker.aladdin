@@ -22,7 +22,7 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${_id}
-    Wait Until Element Is Enabled    ${_id}    120
+    Wait Until Element Is Enabled    ${_id}    200
     ${value}=    Get Text    ${_id}
     [Return]    ${value}
 
@@ -40,7 +40,7 @@ Get Field feature.title
     Full Click    id=features-tab
     Wait Until Page Contains Element    id=Feature_0_0_Title    30
     Execute Javascript    window.scroll(0, 150)
-    Get Field Text    id=Feature_'${id}'_Title
+    Get Field Text    id=Feature_${id}_Title
 
 Get Field Date
     [Arguments]    ${id}
