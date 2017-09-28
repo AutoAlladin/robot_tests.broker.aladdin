@@ -157,9 +157,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Run Keyword And Return If    '${arguments[1]}'=='items[0].additionalClassifications[0].id'    Get Field Text    id=procurementSubjectOtherClassCode_1_0
     #***Purchase Features ***
     Run Keyword And Return If    '${arguments[1]}'=='features[0].title'    Get Field feature.title    0_0
-    Run Keyword And Return If    '${arguments[1]}'=='features[1].title'    Get Field feature.title    1_0
-    Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    1_1
-    Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    1_2
+    Run Keyword And Return If    '${arguments[1]}'=='features[1].title'    Get Field feature.title    0_1
+    Run Keyword And Return If    '${arguments[1]}'=='features[2].title'    Get Field feature.title    0_2
+    Run Keyword And Return If    '${arguments[1]}'=='features[3].title'    Get Field feature.title    0_3
     #***Documents***
     Run Keyword And Return If    '${arguments[1]}'=='documents[0].title'    Get Field Doc    xpath=.//*[contains(@id,'docFileName')]
     #***Questions***
@@ -422,8 +422,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(text(),'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=.//div[contains(@id,'questionAnswer')]
-    Comment    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=.//div[contains(@id,'questionAnswer')]
+    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}

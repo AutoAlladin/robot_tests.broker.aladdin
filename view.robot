@@ -38,9 +38,10 @@ Get Field feature.title
     [Arguments]    ${id}
     Wait Until Element Is Enabled    id=features-tab
     Full Click    id=features-tab
-    Wait Until Page Contains Element    id=Feature_1_0_Title    30
+    Wait Until Page Contains Element    id=Feature_0_0_Title    30
     Execute Javascript    window.scroll(0, 150)
-    Get Field Text    xpath=//form[contains(@id,'updateOrCreateFeature_${id}')]
+    Get Field Text    id=Feature_${id}_Title
+    Comment    Get Field Text    xpath=//form[contains(@id,'updateOrCreateFeature_${id}')]
 
 Get Field Date
     [Arguments]    ${id}
