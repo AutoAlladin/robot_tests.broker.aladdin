@@ -624,7 +624,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    60
+    Wait Until Page Contains Element    ${lc}    30
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
