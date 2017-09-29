@@ -22,7 +22,7 @@ Get Field Amount
 
 Get Field Text
     [Arguments]    ${_id}
-    Wait Until Element Is Enabled    ${_id}    40
+    Wait Until Element Is Enabled    ${_id}    120
     ${value}=    Get Text    ${_id}
     [Return]    ${value}
 
@@ -38,9 +38,9 @@ Get Field feature.title
     [Arguments]    ${id}
     Wait Until Element Is Enabled    id=features-tab
     Full Click    id=features-tab
-    Wait Until Page Contains Element    id=Feature_1_0_Title    30
+    Wait Until Page Contains Element    id=Feature_0_0_Title    30
     Execute Javascript    window.scroll(0, 150)
-    Get Field Text    xpath=//form[contains(@id,'updateOrCreateFeature_${id}')]
+    Get Field Text    id=Feature_${id}_Title
 
 Get Field Date
     [Arguments]    ${id}
@@ -84,7 +84,7 @@ Set Field Text
 
 Get Field Question
     [Arguments]    ${x}    ${field}
-    sleep    5
+    sleep    60
     Full Click    id=questions-tab
     Wait Until Page Contains    ${x}    60
     ${txt}=    Get Text    ${field}
