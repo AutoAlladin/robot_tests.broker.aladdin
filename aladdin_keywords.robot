@@ -149,7 +149,7 @@ Info Below
     Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
     Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Comment    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
-    Run Keyword And Ignore Error    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
+    Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
     Input Text    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
@@ -325,7 +325,9 @@ Add item negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Выбор ед измерения ${code} ${name}
     #Выбор ДК
     ${status}=    Run Keyword And Ignore Error    Click Button    ${locator_button_add_cpv}
-    Wait Until Element Is Visible    ${locator_cpv_search}    30
+    Comment    Run Keyword If    '${status[0]}'=='FAIL'    sleep    5000
+    Sleep    5
+    Wait Until Element Is Enabled    ${locator_cpv_search}    30
     ${cpv}=    Get From Dictionary    ${item.classification}    id
     Press Key    ${locator_cpv_search}    ${cpv}
     Wait Until Element Is Enabled    //*[@id='tree']//li[@aria-selected="true"]    30
@@ -355,7 +357,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix_reg}    00
+    Set Region    ${region}    ${id_suffix_reg}     00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -380,6 +382,7 @@ Add item negotiate
     Execute Javascript    window.scroll(1000, 1000)
     #Клик кнопку "Створити"
     Full Click    ${locator_button_create_item}${id_suffix}
+    sleep    2
     Run Keyword If    ${log_enabled}    Log To Console    end add item negotiation
 
 Publish tender

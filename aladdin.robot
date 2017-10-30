@@ -422,9 +422,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     [Arguments]    ${username}    @{arguments}
     sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(.,'${arguments[1]}')]
-    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
-    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(.,'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
+    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(text(),'${arguments[1]}')]
+    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
+    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=.//div[contains(@id,'questionAnswer')]
+    Comment    Run Keyword And Return If    '${arguments[2]}'=='answer'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]//div[contains(@id,'questionAnswer')]
 
 Підтвердити підписання контракту
     [Arguments]    ${username}    @{arguments}
@@ -633,7 +634,9 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Input Text    claim_descriptions    ${arguments[1].data.description}
     Choose File    add_file_complaint    ${arguments[3]}
     Full Click    save_claim
-    sleep    15
+    Capture Page Screenshot
+    sleep    30
+    Capture Page Screenshot
     ${claim_guid}=    Get Text    complaintProzorroId_0
     Log To Console    new lot claim ${claim_guid}
     Return From Keyword    ${claim_guid}
