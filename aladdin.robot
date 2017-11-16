@@ -39,10 +39,10 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Set Suite Variable    ${log_enabled}    ${False}
     #замена названия компании
     ${tender_data}=    Set Variable    ${arguments[0]}
-    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
-    Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Тестовая компания    id=11111111
-    Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=м. Київ    streetAddress=ул. 2я тестовая    postalCode=12312
-    Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Тестовый Закупщик    telephone=+380504597894    url=http://192.168.80.169:90/Profile#/company
+    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Автотестирование БУМЦ
+    Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Автотестирование БУМЦ    id=32165498
+    Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=Іванків    streetAddress=Re-Ru-Go    postalCode=111111
+    Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Самий Главный Автотест    telephone=380975478547    url=procuringEntity.contactPoint.url
     ${items}=    Get From Dictionary    ${tender_data.data}    items
     ${item}=    Get From List    ${items}    0
     : FOR    ${en}    IN    @{items}
