@@ -241,7 +241,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Input Text    ${locator_amount}    ${amount}
     #Выбрать участника
     Click Element    xpath=.//*[@id='createOrUpdateProcuringParticipantNegotiation_0_0']/div/div[3]/div[2]/label
-    Click Element    xpath=.//*[@id='awardEligible_0_0']/div[1]/div[2]/div
+    Execute Javascript    $('#awardEligible_0_0').click()
     #Код
     ${sup}=    Get From List    ${s.data.suppliers}    0
     ${code_edrpou}=    Get From Dictionary    ${sup.identifier}    id
@@ -250,7 +250,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Press Key    ${locator_code_edrpou}    ${sup.identifier.id}
     #Нац реестр
     ${reestr}=    Get From Dictionary    ${sup.identifier}    scheme
-    Select From List By Value    ${locator_reestr}    UA-EDR
+    Select From List By Value    ${locator_reestr}    string:UA-EDR
     Press Key    ${locator_reestr}    ${reestr}
     #Наименование участника (legalName)
     ${legalName}=    Get From Dictionary    ${sup.identifier}    legalName
