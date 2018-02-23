@@ -82,8 +82,7 @@ ${apiUrl}         http://192.168.95.153:92
 Пошук тендера по ідентифікатору
     [Arguments]    ${username}    ${tender_uaid}
     [Documentation]    Знаходить тендер по його UAID, відкриває його сторінку
-    Go To    ${USERS.users['${username}'].homepage}
-    Search tender    ${username}    ${tender_uaid}
+    Search tender    ${username}    ${tender_uaid}    ${USERS.users['${username}'].homepage}
 
 Оновити сторінку з тендером
     [Arguments]    ${username}    ${tender_uaid}
@@ -94,7 +93,7 @@ ${apiUrl}         http://192.168.95.153:92
     Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
-    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}
+    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}    ${USERS.users['${username}'].homepage}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
     Switch Browser    1
     Reload Page

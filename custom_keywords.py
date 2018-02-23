@@ -110,8 +110,9 @@ def set_aladdin_data(tender_data):
                 d["description"]="Спеціальні норми та інше"
 
 
-def search_tender(username,tender_uaid):
-    
+def search_tender(username,tender_uaid,home):
+    get_webdriver().get(home)
+
     urllib2.urlopen(apiUrl+"/api/sync/purchase/purchaseID/purchaseID="+tender_uaid+"?test=true").read()
     btnSearch = WebDriverWait(get_webdriver(), 10).until(
                 expected_conditions.visibility_of_element_located((By.ID,"butSimpleSearch")))
@@ -141,8 +142,8 @@ def search_tender(username,tender_uaid):
         else:            
             break
 
-    url = get_webdriver().execute_script("$(\"a[id*='href-purchase']\").attr('href')")
-    get_webdriver().get(url)
+    url = get_webdriver().execute_script("return $(\"a[id*='href-purchase']\").attr('href')")
+    get_webdriver().get(home+"/"+url)
 
     WebDriverWait(get_webdriver(), 20).until(
                     expected_conditions.visibility_of_element_located((By.ID,"purchaseGuid")))
