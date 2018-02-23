@@ -437,6 +437,14 @@ ${apiUrl}         http://192.168.95.153:92
     ${dateTo}=    Add Time To Date    ${signed}    20:01:00    exclude_millis=yes
     log to console    ${dateTo}
     Fill Date    processingContractEndDate    ${dateTo}
+    #    Full Click    id=processingContractDateSigned
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Full Click    id=processingContractStartDate
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Full Click    id=processingContractEndDate
+    #    Mouse Down    xpath=.//*[@id='processingContract0']/div/div
+    #    Mouse Down    id=processingContractDateSigned
+    #    Full Click    id=processingContractContractNumber
     Run Keyword And Return If    '${MODE}'!='negotiation'    Full Click    publishContract_0
     Element Should Be Enabled    xpath=.//*[contains(@id,'saveContract_')]
     Execute Javascript    var dateSign=new Date($('#processingContractDateSigned').val()); \ var dateNow=new Date();function publishWait(){ \ \ \ \ \ publishPurchase(); \ \ \ }; \ \ $('#saveContract_0').removeAttr('disabled');$('#saveContract_0').click(); window.setTimeout( publishWait, 5000 );

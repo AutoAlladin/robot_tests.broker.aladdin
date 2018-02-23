@@ -179,10 +179,13 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=8000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
     ${title_ru}=    Get From Dictionary    ${tender_data.data}    title_ru
+    Log To Console    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    sleep    10
     Execute Javascript    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
     ${title_en}=    Get From Dictionary    ${tender_data.data}    title_en
     Execute Javascript    angular.element(document.getElementById('title_En')).scope().purchase.title_En='${title_en}'
@@ -333,7 +336,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix_reg}     00
+    Set Region    ${region}    ${id_suffix_reg}    00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -584,7 +587,7 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    40
+    Wait Until Page Contains Element    ${lc}    30
     Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
     Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
     aniwait
