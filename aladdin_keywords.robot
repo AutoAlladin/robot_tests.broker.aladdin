@@ -6,7 +6,7 @@ Resource          ../../op_robot_tests/tests_files/keywords.robot
 Resource          ../../op_robot_tests/tests_files/resource.robot
 Resource          Locators.robot
 Library           DateTime
-Library           conv_timeDate.py
+Library           custom_keywords.py
 Resource          aladdin.robot
 
 *** Variables ***
@@ -91,7 +91,7 @@ Add Item
     Full Click    ${locator_add_item_button}${d_lot}
     Full Click    ${locator_item_description}${item_suffix}
     #Название предмета закупки
-    Input Text    ${locator_item_description}${item_suffix}    ${item.description}
+    Press Key    ${locator_item_description}${item_suffix}    ${item.description}
     Run Keyword And Ignore Error    Execute Javascript    angular.element(document.getElementById('divProcurementSubjectControllerEdit')).scope().procurementSubject.guid='${item.id}'
     #Количество товара
     Wait Until Element Is Enabled    ${locator_Quantity}${item_suffix}
@@ -106,10 +106,7 @@ Add Item
     Press Key    ${locator_cpv_search}    ${item.classification.id}
     Wait Until Element Is Enabled    //*[@id='tree']//li[@aria-selected="true"]    30
     Full Click    ${locator_add_classfier}
-    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${item}    additionalClassifications
-    Set Suite Variable    ${dkkp_id}    000
-    Run Keyword If    '${is_dkpp[0]}'=='PASS'    Get OtherDK    ${item}
-    Set DKKP
+    set mnn and other    ${item}
     Run Keyword And Ignore Error    Wait Until Element Is Not Visible    xpath=//div[@class="modal-backdrop fade"]    10
     #Срок поставки (начальная дата)
     ${date_time}=    get_aladdin_formated_date    ${item.deliveryDate.startDate}
@@ -146,12 +143,12 @@ Info Below
     [Arguments]    ${tender_data}
     #Ввод названия тендера
     Run Keyword And Ignore Error    Full Click    ${locator_tenderTitle}
-    Input Text    ${locator_tenderTitle}    ${tender_data.data.title}
+    Press Key    ${locator_tenderTitle}    ${tender_data.data.title}
     Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Comment    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator = 100
     Run Keyword If    '${tender_data.data.procurementMethodDetails}'=='quick, accelerator=100'    Execute Javascript    var autotestmodel=angular.element(document.getElementById('titleOfTenderForEdit')).scope(); autotestmodel.purchase.modeFastForward=true;
     #Ввод описания
-    Input Text    ${locator_description}    ${tender_data.data.description}
+    Press Key    ${locator_description}    ${tender_data.data.description}
     #Выбор НДС
     ${PDV}=    Get From Dictionary    ${tender_data.data.value}    valueAddedTaxIncluded
     Run Keyword If    '${PDV}'=='True'    Click Element    ${locator_pdv}
@@ -255,26 +252,6 @@ Load document
     Choose File    id=fileInput    ${filepath}
     Full Click    id=save_file
 
-Search tender
-    [Arguments]    ${username}    ${tender_uaid}
-    Load Tender    ${apiUrl}/publish/SearchTenderById?guid=ac8dd2f8-1039-4e27-8d98-3ef50a728ebf&tenderId=${tender_uaid}
-    Wait Until Page Contains Element    id=butSimpleSearch    40
-    Wait Until Page Contains Element    ${locator_search_type}
-    Wait Until Element Is Visible    ${locator_search_type}
-    Select From List By Value    ${locator_search_type}    1    #По Id
-    Wait Until Page Contains Element    ${locator_input_search}
-    Wait Until Element Is Enabled    ${locator_input_search}
-    Input Text    ${locator_input_search}    ${tender_uaid}
-    aniwait
-    Full Click    id=butSimpleSearch
-    Full Click    id=butSimpleSearch
-    Wait Until Page Contains Element    xpath=//span[text()="${tender_uaid}"]/../a    50
-    sleep    5
-    ${attributeHref}=    Get Element Attribute    //span[text()="${tender_uaid}"]/../a@href
-    Go To    ${attributeHref}
-    aniwait
-    Run Keyword And Ignore Error    Wait Until Page Contains Element    purchaseProzorroId    40
-
 Info OpenUA
     [Arguments]    ${tender}
     #Ввод названия закупки
@@ -335,10 +312,7 @@ Add item negotiate
     Run Keyword If    ${log_enabled}    Log To Console    Выбор ДК ${cpv}
     #Выбор др ДК
     sleep    1
-    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${item}    additionalClassifications
-    Set Suite Variable    ${dkkp_id}    000
-    Run Keyword If    '${is_dkpp[0]}'=='PASS'    Get OtherDK    ${item}
-    Set DKKP
+    set mnn and other    ${item}
     Run Keyword If    ${log_enabled}    Log To Console    Выбор др ДК ${is_dkpp}
     #Срок поставки (начальная дата)
     ${delivery_Date_start}=    Get From Dictionary    ${item.deliveryDate}    startDate
@@ -531,18 +505,6 @@ Add Feature
     \    Run Keyword If    (${val}==0)&('${MODE}'=='openeu')    Input Text    id=featureEnumTitleEn_${lot_n}_${f_id}_0    flowers
     Wait Until Element Is Enabled    id=updateFeature_${lot_n}_${f_id}
     Full Click    id=updateFeature_${lot_n}_${f_id}
-
-Set DKKP
-    #Выбор др ДК
-    sleep    1
-    Wait Until Element Is Enabled    ${locator_button_add_dkpp}
-    Click Button    ${locator_button_add_dkpp}
-    Wait Until Element Is Visible    ${locator_dkpp_search}
-    Clear Element Text    ${locator_dkpp_search}
-    Press Key    ${locator_dkpp_search}    ${dkkp_id}
-    Wait Until Element Is Enabled    //*[@id='tree']//li[@aria-selected="true"]    30
-    Wait Until Element Is Enabled    ${locator_add_classfier}
-    Click Button    ${locator_add_classfier}
 
 Add Enum
     [Arguments]    ${enum}    ${p}
