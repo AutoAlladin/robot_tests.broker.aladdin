@@ -6,7 +6,7 @@ Resource          ../../op_robot_tests/tests_files/keywords.robot
 Resource          ../../op_robot_tests/tests_files/resource.robot
 Resource          Locators.robot
 Library           DateTime
-Library           conv_timeDate.py
+Library           custom_keywords.py
 Resource          aladdin_keywords.robot
 Resource          view.robot
 
@@ -15,7 +15,7 @@ ${js}             ${EMPTY}
 ${log_enabled}    ${EMPTY}
 ${start_date}     ${EMPTY}
 ${page_load_count}    ${0}
-${apiUrl}         https://test-gov.ald.in.ua
+${apiUrl}         http://192.168.95.153:92
 
 *** Keywords ***
 Підготувати клієнт для користувача
@@ -38,19 +38,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Set Suite Variable    ${log_enabled}    ${False}
     #замена названия компании
     ${tender_data}=    Set Variable    ${arguments[0]}
-    Set To Dictionary    ${tender_data.data.procuringEntity}    name=Тестовая компания
-    Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Тестовая компания    id=11111111
-    Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=м. Київ    streetAddress=ул. 2я тестовая    postalCode=12312
-    Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Тестовый Закупщик    telephone=+380504597894    url=http://192.168.80.169:90/Profile#/company
-    ${items}=    Get From Dictionary    ${tender_data.data}    items
-    ${item}=    Get From List    ${items}    0
-    : FOR    ${en}    IN    @{items}
-    \    ${is_dkpp}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${en}    additionalClassifications
-    \    Run Keyword If    ('${is_dkpp[0]}'=='PASS')    Set To Dictionary    ${en.additionalClassifications[0]}    id=7242    description=Монтажники електронного устаткування
-    \    ...    scheme=ДК003
-    Set List Value    ${items}    0    ${item}
-    Set To Dictionary    ${tender_data.data}    items    ${items}
-    Return From Keyword    ${tender_data}
+    set aladdin data    ${tender_data}
     [Return]    ${tender_data}
 
 Створити тендер
@@ -188,7 +176,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Full Click    id=questions-tab
     Full Click    id=add_discussion
     Wait Until Page Contains Element    id=confirm_creationForm
-    Select From List By Value    name=OfOptions    0
+    Select From List By Value    name=OfOptions    string:Tender
     Input Text    name=Title    ${question.data.title}
     Input Text    name=Description    ${question.data.description}
     Full Click    id=confirm_creationForm
@@ -204,6 +192,8 @@ ${apiUrl}         https://test-gov.ald.in.ua
     ${msg}=    Run Keyword And Ignore Error    Dictionary Should Contain Key    ${bid.data}    lotValues
     Run Keyword If    '${msg[0]}'=='FAIL'    Add Bid Tender    ${bid.data.value.amount}
     Run Keyword If    '${msg[0]}'!='FAIL'    Add Bid Lot    ${bid}    ${to_id}    ${params}
+    Wait Until Page Contains Element    xpath=//div[contains(@class,'jconfirm-box')]//button[1]
+    Full Click    xpath=//div[contains(@class,'jconfirm-box')]//button[1]
 
 Змінити цінову пропозицію
     [Arguments]    ${username}    ${tender_uaid}    ${fieldname}    ${fieldvalue}
@@ -300,7 +290,7 @@ ${apiUrl}         https://test-gov.ald.in.ua
     Wait Until Element Is Enabled    id=procurement-subject
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_ru'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameRu')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
-    ${item_path}=    Set Variable    xpath=//h4[contains(@id,'procurementSubjectDescription')][contains(.,\'${arguments[1]}\')]
+    ${item_path}=    Set Variable    xpath=//h5[@title-value='procurementSubject.description']/div/div[contains(.,\'${arguments[1]}\')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    ${item_path}
     Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.startDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryStart')]
     Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.endDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryEnd')]

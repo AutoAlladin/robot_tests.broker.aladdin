@@ -7,6 +7,7 @@ Resource          ../../op_robot_tests/tests_files/resource.robot
 Resource          Locators.robot
 Library           DateTime
 Library           conv_timeDate.py
+Library           custom_keywords.py
 Resource          aladdin.robot
 
 *** Keywords ***
@@ -53,8 +54,9 @@ Get Field Date
 
 Set Field tenderPeriod.endDate
     [Arguments]    ${value}
-    ${date_time_ten_end}=    Replace String    ${value}    T    ${SPACE}
-    ${date_time_ten_end}=    Fetch From Left    ${date_time_ten_end}    +0
+    ${date_time_ten_end}=    Fetch From Left    ${value}    +0
+    ${date_time_ten_end}=    Set Variable    ${date_time_ten_end}.000+02
+    ${date_time_ten_end}=    get aladdin formated_date    ${date_time_ten_end}
     Wait Until Element Is Enabled    ${locator_bidDate_end}
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    id=createOrUpdatePurchase
