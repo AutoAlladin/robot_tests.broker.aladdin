@@ -1,5 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/local/bin/python
+# coding: utf-8
+
+#-v BROKERS_PARAMS:{"aladdin":{"intervals":{"belowThreshold":{"enquiry":[0,60],"tender":[0,15]}}}}
+
 from robot.libraries.BuiltIn import BuiltIn
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -22,6 +25,11 @@ def get_aladdin_formated_date(var_date):
     date_str = conv_dt.strftime('%d-%m-%Y %H:%M:%S')
     return date_str
 
+def get_aladdin_to_prozorro_date(var_date): 
+
+    conv_dt = datetime.strptime( var_date.strip(), '%d-%m-%Y %H:%M:%S')
+    date_str = conv_dt.strftime('%Y-%m-%dT%H:%M:%S')+".000000+0"+str(get_local_tz())+":00"
+    return date_str
 
 def get_local_tz():
     """Return offset of local zone from GMT, either at present or at time t."""
@@ -109,27 +117,27 @@ def set_aladdin_data(tender_data):
                 d["id"]="000"
                 d["description"]="Спеціальні норми та інше"
 
-
 def search_tender(username,tender_uaid,home):
     get_webdriver().get(home)
 
-    urllib2.urlopen(apiUrl+"/api/sync/purchase/purchaseID/purchaseID="+tender_uaid+"?test=true").read()
-    btnSearch = WebDriverWait(get_webdriver(), 10).until(
+    print urllib2.urlopen(apiUrl+"/api/sync/purchase/purchaseID/purchaseID="+tender_uaid+"?test=true").read()
+    
+    #select_searchType = WebDriverWait(get_webdriver(), 10).until(
+    #            expected_conditions.visibility_of_element_located((By.ID,"searchType")))
+    #Select(select_searchType).select_by_value("1")  https://test-gov.ald.in.ua/purchases#?page=1&filter=%7Ckeywords:UA-2018-03-02-000081-b:%7Csort:dateDown
+    
+    link = None
+    for i in range(20):
+        try:
+            btnSearch = WebDriverWait(get_webdriver(), 10).until(
                 expected_conditions.visibility_of_element_located((By.ID,"butSimpleSearch")))
 
-    select_searchType = WebDriverWait(get_webdriver(), 10).until(
-                expected_conditions.visibility_of_element_located((By.ID,"searchType")))
-
-    txt_search = WebDriverWait(get_webdriver(), 10).until(
+            txt_search = WebDriverWait(get_webdriver(), 10).until(
                 expected_conditions.visibility_of_element_located((By.ID,"findbykeywords")))
 
-    Select(select_searchType).select_by_value("1")
-    txt_search.clear()
-    txt_search.send_keys(tender_uaid)
-
-    link = None
-    for i in range(10):
-        try:
+            txt_search.clear()
+            txt_search.send_keys(tender_uaid.strip())
+            sleep(1)
             btnSearch.click()            
             link = WebDriverWait(get_webdriver(), 5).until(
                     expected_conditions.presence_of_element_located((By.XPATH,"//span[contains(text(),'"+tender_uaid+"')]/../a")))
@@ -137,15 +145,73 @@ def search_tender(username,tender_uaid,home):
             print e
             pass
 
-        if link is None:
-            sleep(10)            
-        else:            
-            break
+        if link is not None: break
 
+    print get_webdriver().current_url
     url = get_webdriver().execute_script("return $(\"a[id*='href-purchase']\").attr('href')")
-    get_webdriver().get(home+"/"+url)
+    get_webdriver().get(home+url)
 
     WebDriverWait(get_webdriver(), 20).until(
                     expected_conditions.visibility_of_element_located((By.ID,"purchaseGuid")))
 
+def delete_feature(feature):
+    WebDriverWait(get_webdriver(), 10).until(
+    expected_conditions.visibility_of_element_located((By.ID,"purchaseEdit"))).\
+    click()
+    
+    WebDriverWait(get_webdriver(), 10).until(
+                    expected_conditions.visibility_of_element_located((By.ID,"features-tab"))).\
+    click()
 
+    btn=WebDriverWait(get_webdriver(), 10).until(
+    expected_conditions.visibility_of_element_located((By.XPATH,
+    "//div[contains(text(),'"+feature+"')]/../..//a[contains(@id,'updateOrCreateFeatureDeleteButton')]")))
+
+    idd = btn.get_attribute("id") 
+
+    get_webdriver().execute_script("$('#"+idd+"').click()")
+
+    WebDriverWait(get_webdriver(), 10).until(
+    expected_conditions.visibility_of_element_located((By.XPATH,
+    "//div[@class='jconfirm-buttons']/button[1]"))).\
+    click()
+
+    WebDriverWait(get_webdriver(), 10).until(
+    expected_conditions.visibility_of_element_located((By.ID,"basicInfo-tab"))).\
+    click()
+
+    WebDriverWait(get_webdriver(), 10).until(
+    expected_conditions.visibility_of_element_located((By.ID,"movePurchaseView"))).\
+    click()
+
+
+def get_question_field(locator):
+    txt= None
+    for i in range(1,15):
+        get_webdriver().refresh()
+
+        WebDriverWait(get_webdriver(), 10).until(
+        expected_conditions.presence_of_element_located((By.ID,"questions-tab"))).\
+        click()
+
+        el = WebDriverWait(get_webdriver(), 10).until(
+        expected_conditions.presence_of_element_located((By.XPATH, locator)))
+        txt = el.text
+        if txt is not None:
+            break
+    return txt
+
+def  wait_feature(d):
+    for i in range(1,15):
+        get_webdriver().refresh()
+
+        WebDriverWait(get_webdriver(), 10).until(
+        expected_conditions.visibility_of_element_located((By.ID,"features-tab"))).\
+        click()    
+
+        try:
+            WebDriverWait(get_webdriver(), 10).until(
+            expected_conditions.visibility_of_element_located((By.XPATH,"//div[contains(@id,'_Title')][contains(.,'"+d+"')]")))
+            break
+        except:
+            pass

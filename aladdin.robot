@@ -93,8 +93,8 @@ ${apiUrl}         http://192.168.95.153:92
     Run Keyword If    ${is_load_before_crash}    Run Keyword And Ignore Error    Full Click    butLogoutPartial
     Run Keyword If    ${is_load_before_crash}    Close All Browsers
     Run Keyword If    ${is_load_before_crash}    Aladdin.Підготувати клієнт для користувача    ${username}
-    Run Keyword If    ${is_load_before_crash}    Search tender    ${username}    ${tender_uaid}    ${USERS.users['${username}'].homepage}
     Run Keyword If    ${is_load_before_crash}    Set Suite Variable    ${page_load_count}    ${1}
+    Search tender    ${username}    ${tender_uaid}    ${USERS.users['${username}'].homepage}
     Switch Browser    1
     Reload Page
 
@@ -252,7 +252,7 @@ ${apiUrl}         http://192.168.95.153:92
     #Выбор региона
     ${region}=    Get From Dictionary    ${sup.address}    region
     Execute Javascript    var autotestmodel=angular.element(document.getElementById('procuringParticipantLegalName_0_0')).scope(); autotestmodel.procuringParticipant.procuringParticipants.region=autotestmodel.procuringParticipant.procuringParticipants.country; autotestmodel.procuringParticipant.procuringParticipants.region={id:0,name:'${region}',initName:'${region}'};
-    Execute Javascript    window.scroll(1000, 1000)
+    Execute Javascript    window.scroll(0, 1000)
     #Индекс
     ${post_code}=    Get From Dictionary    ${sup.address}    postalCode
     Press Key    ${locator_post_code}    ${post_code}
@@ -295,25 +295,25 @@ ${apiUrl}         http://192.168.95.153:92
     Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    xpath=.//*[contains(@id,'procurementSubjectCounrtyNameEn')]
     ${item_path}=    Set Variable    xpath=//h5[@title-value='procurementSubject.description']/div/div[contains(.,\'${arguments[1]}\')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    ${item_path}
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.startDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryStart')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.endDate'    Get Field Date    ${item_path}/../../..//div[contains(@id,'procurementSubjectDeliveryEnd')]
-    Run Keyword And Return If    '${arguments[2]}'=='classification.scheme'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectCpvSheme')]
-    Run Keyword And Return If    '${arguments[2]}'=='classification.id'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectCpvCode')]
-    Run Keyword And Return If    '${arguments[2]}'=='classification.description'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectCpvTitle')]
-    Run Keyword And Return If    '${arguments[2]}'=='unit.name'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectUnitName')]
-    Run Keyword And Return If    '${arguments[2]}'=='unit.code'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectUnitCode')]
-    Run Keyword And Return If    '${arguments[2]}'=='quantity'    Get Field Amount    ${item_path}/../../..//span[contains(@id,'procurementSubjectQuantity')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.longitude'    Get Field Amount    ${item_path}/../../..//div[contains(@id,'procurementSubjectLongitude')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.latitude'    Get Field Amount    ${item_path}/../../..//div[contains(@id,'procurementSubjectLatitude')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyName')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectCounrtyNameEn')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.postalCode'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectZipCode')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.region'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectRegionName')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.locality'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectLocality')]
-    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.streetAddress'    Get Field Text    ${item_path}/../../..//div[contains(@id,'procurementSubjectStreet')]
-    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].scheme'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassSheme')]
-    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].id'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassCode')]
-    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].description'    Get Field Text    ${item_path}/../../..//span[contains(@id,'procurementSubjectOtherClassTitle')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.startDate'    Get Field Date    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectDeliveryStart')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryDate.endDate'    Get Field Date    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectDeliveryEnd')]
+    Run Keyword And Return If    '${arguments[2]}'=='classification.scheme'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectCpvSheme')]
+    Run Keyword And Return If    '${arguments[2]}'=='classification.id'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectCpvCode')]
+    Run Keyword And Return If    '${arguments[2]}'=='classification.description'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectCpvTitle')]
+    Run Keyword And Return If    '${arguments[2]}'=='unit.name'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectUnitName')]
+    Run Keyword And Return If    '${arguments[2]}'=='unit.code'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectUnitCode')]
+    Run Keyword And Return If    '${arguments[2]}'=='quantity'    Get Field Amount    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectQuantity')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.longitude'    Get Field Amount    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectLongitude')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryLocation.latitude'    Get Field Amount    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectLatitude')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectCounrtyName')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.countryName_en'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectCounrtyNameEn')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.postalCode'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectZipCode')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.region'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectRegionName')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.locality'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectLocality')]
+    Run Keyword And Return If    '${arguments[2]}'=='deliveryAddress.streetAddress'    Get Field Text    ${item_path}/../../../../..//div[contains(@id,'procurementSubjectStreet')]
+    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].scheme'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectOtherClassSheme')]
+    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].id'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectOtherClassCode')]
+    Run Keyword And Return If    '${arguments[2]}'=='additionalClassifications[0].description'    Get Field Text    ${item_path}/../../../../..//span[contains(@id,'procurementSubjectOtherClassTitle')]
 
 Отримати інформацію із лоту
     [Arguments]    ${username}    @{arguments}
@@ -334,16 +334,11 @@ ${apiUrl}         http://192.168.95.153:92
 
 Отримати інформацію із нецінового показника
     [Arguments]    ${username}    @{arguments}
-    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
-    Full Click    id=features-tab
-    Wait Until Element Is Enabled    id=features
-    ${d}=    Set Variable    ${arguments[1]}
-    Wait Until Element Is Enabled    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]    60
-    sleep    10
-    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]
-    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../div/div/div[contains(@id,'featureDescription')]
-    Run Keyword And Return If    '${arguments[2]}'=='featureOf'    Get Element Attribute    xpath=//div[contains(@id,'_Title')][contains(.,'${d}')]/../../../../../../../..@itemid
+    wait feature    ${arguments[1]}
+    Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${arguments[1]}')]
+    Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Text    xpath=//div[contains(@id,'_Title')][contains(.,'${arguments[1]}')]/../../../div/div/div[contains(@id,'featureDescription')]
+    Run Keyword And Return If    '${arguments[2]}'=='featureOf'    Get Element Attribute    xpath=//div[contains(@id,'_Title')][contains(.,'${arguments[1]}')]/../../../../../../../..@itemid
 
 Завантажити документ в лот
     [Arguments]    ${username}    ${file}    ${ua_id}    ${lot_id}
@@ -354,7 +349,7 @@ ${apiUrl}         http://192.168.95.153:92
 
 Змінити лот
     [Arguments]    ${username}    ${ua_id}    ${lot_id}    ${field_name}    ${field_value}
-    Aladdin.Оновити сторінку з тендером    ${username}    ${ua_id}
+    #Aladdin.Оновити сторінку з тендером    ${username}    ${ua_id}
     Full Click    id=purchaseEdit
     Wait Until Page Contains Element    id=save_changes
     Full Click    id=lots-tab
@@ -377,17 +372,11 @@ ${apiUrl}         http://192.168.95.153:92
     Full Click    id=basicInfo-tab
     Full Click    id=movePurchaseView
     Publish tender
+    sleep    1
 
 Видалити неціновий показник
     [Arguments]    ${username}    @{arguments}
-    Full Click    id=purchaseEdit
-    Wait Until Page Contains Element    id=save_changes
-    sleep    10
-    Full Click    id=features-tab
-    Full Click    xpath=//div[contains(text(),'${arguments[1]}')]/../..//a[contains(@id,'updateOrCreateFeatureDeleteButton')]
-    Full Click    xpath=//div[@class='jconfirm-buttons']/button[1]
-    Full Click    id=basicInfo-tab
-    Full Click    id=movePurchaseView
+    delete feature    ${arguments[1]}
     Publish tender
 
 Створити вимогу про виправлення умов закупівлі
@@ -411,7 +400,6 @@ ${apiUrl}         http://192.168.95.153:92
 
 Отримати інформацію із запитання
     [Arguments]    ${username}    @{arguments}
-    sleep    5
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Field Question    ${arguments[1]}    xpath=//div[contains(@id,'questionTitle')][contains(text(),'${arguments[1]}')]
     Run Keyword And Return If    '${arguments[2]}'=='description'    Get Field Question    ${arguments[1]}    xpath=//div[contains(text(),'${arguments[1]}')]/div/div[contains(@id,'questionDescription')]
@@ -461,10 +449,11 @@ ${apiUrl}         http://192.168.95.153:92
 
 Отримати інформацію із документа
     [Arguments]    ${username}    @{arguments}
+    Log To Console    ${arguments[0]}
     Aladdin.Оновити сторінку з тендером    ${username}    ${arguments[0]}
     Full Click    info-purchase-tab
     Full Click    id=documents-tab
-    sleep    15
+    sleep    10
     Run Keyword And Return If    '${arguments[2]}'=='title'    Get Text    //div[contains(@id,'docFileName')]/span[contains(text(),'${arguments[1]}')]
 
 Отримати документ
@@ -489,6 +478,7 @@ ${apiUrl}         http://192.168.95.153:92
 
 Завантажити документ в ставку
     [Arguments]    ${username}    @{arguments}
+    Execute Javascript    window.scroll(0, -1000)
     Full Click    id=do-proposition-tab
     Run Keyword And Ignore Error    Full Click    //a[contains(@id,'openLotForm')]
     Run Keyword And Ignore Error    Full Click    id=editLotButton_0

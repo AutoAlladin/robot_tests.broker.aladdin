@@ -23,7 +23,8 @@ Get Field Amount
 Get Field Text
     [Arguments]    ${_id}
     Wait Until Element Is Enabled    ${_id}    40
-    ${value}=    Get Text    ${_id}
+    ${tmp_val}=    Get Text    ${_id}
+    ${value}=    Replace String    ${tmp_val}    Лот${SPACE}    ${EMPTY}
     [Return]    ${value}
 
 Prepare View
@@ -46,9 +47,7 @@ Get Field Date
     [Arguments]    ${id}
     Wait Until Page Contains Element    ${id}    40
     ${startDate}=    Get Text    ${id}
-    ${startDate}    Replace String    ${startDate}    ${SPACE}    T
-    ${tz}=    Get Local TZ
-    ${startDate}=    Set Variable    ${startDate}.000000+0${tz}:00
+    ${startDate}=    get aladdin to prozorro date    ${startDate}
     Return From Keyword    ${startDate}
 
 Set Field tenderPeriod.endDate
@@ -85,11 +84,8 @@ Set Field Text
 
 Get Field Question
     [Arguments]    ${x}    ${field}
-    sleep    60
-    Full Click    id=questions-tab
-    Wait Until Page Contains    ${x}    60
-    ${txt}=    Get Text    ${field}
-    Return From Keyword    ${txt}
+    ${q}=    get question field    ${field}
+    Return From Keyword    ${q}
 
 Get Tru PDV
     [Arguments]    ${rrr}

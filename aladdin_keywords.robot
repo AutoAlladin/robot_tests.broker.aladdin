@@ -48,6 +48,7 @@ ${dkkp_id}        ${EMPTY}
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
+    Execute Javascript    window.scroll(0, -2000)
     Full Click    id=movePurchaseView
     Run Keyword And Return    Publish tender
 
@@ -65,6 +66,7 @@ ${dkkp_id}        ${EMPTY}
     Add Feature    ${tender.data.features[1]}    0    0
     Add Feature    ${tender.data.features[0]}    1    0
     Add Feature    ${tender.data.features[2]}    1    0
+    Execute Javascript    window.scroll(1000, 0)
     Full Click    id=movePurchaseView
     Run Keyword And Return    Publish tender
 
@@ -136,6 +138,7 @@ Add Item
     #Клик кнопку "Створити"
     Run Keyword And Ignore Error    Wait Until Element Is Not Visible    xpath=.//div[@class='page-loader animated fadeIn']    5
     Wait Until Element Is Enabled    ${locator_button_create_item}${item_suffix}
+    Execute Javascript    window.scroll(1000, 1000)
     Full Click    ${locator_button_create_item}${item_suffix}
     Log To Console    finish item ${item_suffix}
 
@@ -177,10 +180,13 @@ Info Negotiate
     Run Keyword If    ${log_enabled}    Log To Console    start info negotiation
     #Ввод названия закупки
     Full Click    ${locator_tenderTitle}
+    Execute Javascript    angular.element(document.getElementById('purchaseAccelerator')).scope().purchase.accelerator=8000
     ${title}=    Get From Dictionary    ${tender_data.data}    title
     Press Key    ${locator_tenderTitle}    ${title}
     Run Keyword If    ${log_enabled}    Log To Console    Ввод названия закупки ${title}
     ${title_ru}=    Get From Dictionary    ${tender_data.data}    title_ru
+    Log To Console    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
+    sleep    10
     Execute Javascript    angular.element(document.getElementById('title_Ru')).scope().purchase.title_Ru='${title_ru}'
     ${title_en}=    Get From Dictionary    ${tender_data.data}    title_en
     Execute Javascript    angular.element(document.getElementById('title_En')).scope().purchase.title_En='${title_en}'
@@ -331,7 +337,7 @@ Add item negotiate
     #Выбор региона
     sleep    5
     ${region}=    Get From Dictionary    ${item.deliveryAddress}    region
-    Set Region    ${region}    ${id_suffix_reg}     00
+    Set Region    ${region}    ${id_suffix_reg}    00
     Run Keyword If    ${log_enabled}    Log To Console    Выбор региона ${region}
     #Индекс
     ${post_code}=    Get From Dictionary    ${item.deliveryAddress}    postalCode
@@ -392,6 +398,7 @@ Add Lot
     ${budget}=    Get From Dictionary    ${lot.value}    amount
     ${text}=    Convert Float To String    ${budget}
     ${text}=    String.Replace String    ${text}    .    ,
+    Execute Javascript    window.scroll(0, 1000)
     Input Text    id=lotBudget_${lot_number}    ${text}
     ${step}=    Get From Dictionary    ${lot.minimalStep}    amount
     ${text}=    Convert Float To String    ${step}
@@ -399,6 +406,7 @@ Add Lot
     Press Key    id=lotMinStep_${lot_number}    ${text}
     Press Key    id=lotMinStep_${lot_number}    00
     #Input Text    id=lotGuarantee_${d}
+    Execute Javascript    window.scroll(0, 1000)
     Full Click    xpath=.//*[@id='updateOrCreateLot_1']//button[@class="btn btn-success"]
     Log To Console    finish lot ${lot_number}
 
@@ -478,7 +486,6 @@ Add Item Eng
     #Название предмета закупки
     Wait Until Element Is Enabled    ${locator_item_descriptionEng}${d}
     ${add_classifEng}=    Get From Dictionary    ${item}    description_en
-    Log To Console    ${add_classifEng} \ \ \ \ \ \ ${locator_item_descriptionEng}${d}
     Input Text    ${locator_item_descriptionEng}${d}    ${add_classifEng}
 
 Add Feature
@@ -504,7 +511,9 @@ Add Feature
     \    Run Keyword If    ${val}==0    Input Text    id=featureEnumTitle_${lot_n}_${f_id}_0    ${enum.title}
     \    Run Keyword If    (${val}==0)&('${MODE}'=='openeu')    Input Text    id=featureEnumTitleEn_${lot_n}_${f_id}_0    flowers
     Wait Until Element Is Enabled    id=updateFeature_${lot_n}_${f_id}
+    Execute Javascript    window.scroll(0, 2000)
     Full Click    id=updateFeature_${lot_n}_${f_id}
+    Execute Javascript    window.scroll(0, -2000)
 
 Add Enum
     [Arguments]    ${enum}    ${p}
@@ -579,16 +588,16 @@ aniwait
 
 Full Click
     [Arguments]    ${lc}
-    Wait Until Page Contains Element    ${lc}    40
-    Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    15
-    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    15
+    Wait Until Page Contains Element    ${lc}    20
+    Run Keyword And Ignore Error    Wait Until Element Is Enabled    ${lc}    5
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${lc}    5
     aniwait
     Click Element    ${lc}
 
 Add Bid Tender
     [Arguments]    ${amount}
-    Wait Until Page Contains Element    id=bidAmount    60
-    Wait Until Element Is Enabled    id=bidAmount
+    Wait Until Page Contains Element    id=bidAmount    20
+    Wait Until Element Is Enabled    id=bidAmount     20
     ${text}=    Convert Float To String    ${amount}
     Input Text    id=bidAmount    ${text}
     Full Click    id=submitBid
@@ -599,8 +608,8 @@ Add Bid Lot
     Full Click    //a[contains(@id,'openLotForm')][contains(text(),'${to_id[0]}')]
     ${end}=    Get Element Attribute    xpath=//a[contains(@id,'openLotForm')][contains(text(),'${to_id[0]}')]@id
     ${end}=    Fetch From Right    ${end}    openLotForm
-    Wait Until Page Contains Element    id=lotAmount${end}
-    Wait Until Element Is Enabled    id=lotAmount${end}
+    Wait Until Page Contains Element    id=lotAmount${end}    20
+    Wait Until Element Is Enabled    id=lotAmount${end}    20
     ${amount}=    Convert Float To String    ${params[0].data.lotValues[0].value.amount}
     Press Key    id=lotAmount${end}    ${amount}
     Run Keyword And Ignore Error    Run Keyword If    ${params[0].data.selfEligible}==${True}    Click Element    xpath=//label[@for='isSelfEligible${end}']
@@ -611,6 +620,7 @@ Add Bid Lot
     \    ${value}=    Get Param By Id    ${code}    ${params[0].data.parameters}
     \    Select From List By Value    xpath=//h6[contains(text(),'${fi}')]/../select    string:${value}
     Comment    Input Text    id=lotSubInfo${end}    text
+    Execute Javascript    window.scroll(0, 1000)
     Full Click    id=lotSubmit${end}
 
 Get Param By Id
