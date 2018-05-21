@@ -16,12 +16,17 @@ import urllib2
 apiUrl="http://192.168.95.153:92"
 
 
-def get_aladdin_formated_date(var_date): 
+def get_aladdin_formated_date(var_date=""):
     poss = var_date.find('+')-1
-        
+    #2018-05-24T00:00:0' does not match format '%Y-%m-%dT%H:%M:%S.%f
     var_date = var_date[:poss]
-    
-    conv_dt = datetime.strptime(var_date, '%Y-%m-%dT%H:%M:%S.%f')
+
+    if var_date.endswith("00:0"):
+        var_date+="0"
+        conv_dt = datetime.strptime(var_date, '%Y-%m-%dT%H:%M:%S')
+    else:
+        conv_dt = datetime.strptime(var_date, '%Y-%m-%dT%H:%M:%S.%f')
+
     date_str = conv_dt.strftime('%d-%m-%Y %H:%M:%S')
     return date_str
 
@@ -32,8 +37,6 @@ def get_aladdin_to_prozorro_date(var_date):
     return date_str
 
 def get_local_tz():
-    """Return offset of local zone from GMT, either at present or at time t."""
-    # python2.3 localtime() can't take None
     t = time.time()
 
     if time.localtime(t).tm_isdst and time.daylight:
@@ -73,23 +76,25 @@ def set_mnn_and_other(item):
         btn_add =  WebDriverWait(drv, 10).until(
                 expected_conditions.visibility_of_element_located((By.ID,"add-classifier")))
         btn_add.click()
+        try:
+            WebDriverWait(drv, 10).until(
+                expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'atc_click_')]")))
 
-        WebDriverWait(drv, 10).until(
-            expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'atc_click_')]")))
+            #atc
+            btn_atc = WebDriverWait(drv, 10).until(
+                expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'atc_click_')]")))
+            btn_atc.click()
+            txt_search = WebDriverWait(drv, 10).until(
+                expected_conditions.visibility_of_element_located((By.ID, "search-classifier-text")))
+            txt_search.send_keys(atc)
+            btn_add = WebDriverWait(drv, 10).until(
+                expected_conditions.visibility_of_element_located((By.ID, "add-classifier")))
+            btn_add.click()
 
-        #atc
-        btn_atc = WebDriverWait(drv, 10).until(
-            expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'atc_click_')]")))
-        btn_atc.click()
-        txt_search = WebDriverWait(drv, 10).until(
-            expected_conditions.visibility_of_element_located((By.ID, "search-classifier-text")))
-        txt_search.send_keys(atc)
-        btn_add = WebDriverWait(drv, 10).until(
-            expected_conditions.visibility_of_element_located((By.ID, "add-classifier")))
-        btn_add.click()
-
-        WebDriverWait(drv, 10).until(
-                expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'inn_click_')]")))
+            WebDriverWait(drv, 10).until(
+                    expected_conditions.visibility_of_element_located((By.XPATH,"//button[contains(@id,'inn_click_')]")))
+        except:
+            pass
 
     dkpp = "000" #item["additionalClassifications"][0]["id"]
     #dkpp

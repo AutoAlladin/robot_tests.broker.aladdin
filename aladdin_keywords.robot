@@ -173,6 +173,7 @@ Info Below
     Fill Date    ${locator_bidDate_start}    ${date_time_ten_st}
     Fill Date    ${locator_bidDate_end}    ${date_time_ten_end}
     Full Click    id=createOrUpdatePurchase
+    execute javascript    "window.scroll(0,300)"
     Full Click    ${locator_button_next_step}
 
 Info Negotiate
@@ -222,7 +223,7 @@ Info Negotiate
     #Стоимость закупки
     ${budget}=    Get From Dictionary    ${tender_data.data.value}    amount
     ${text}=    Convert Float To String    ${budget}
-    ${text}=    String.Replace String    ${text}    .    ,
+    ${text}=    Replace String    ${text}    .    ,
     Press Key    ${locator_budget}    ${text}
     Run Keyword If    ${log_enabled}    Log To Console    Стоимость закупки ${text}
     Full Click    ${locator_next_step}
@@ -231,7 +232,6 @@ Info Negotiate
 
 Login
     [Arguments]    ${user}
-    Full Click    ${locator_cabinetEnter}
     Full Click    ${locator_enter}
     Wait Until Page Contains Element    id=Email    40
     sleep    2
