@@ -220,3 +220,20 @@ def  wait_feature(d):
             break
         except:
             pass
+
+def kill_toaster():
+    drv = get_webdriver()
+
+    try:
+        WebDriverWait(drv, 0.1).until(
+            expected_conditions.visibility_of_element_located((By.ID, "toast-container")))
+
+        toast_close_button = WebDriverWait(drv, 0.1).until(
+            expected_conditions.visibility_of_element_located((By.CLASS_NAME, "toast-close-button")))
+
+        toast_close_button.click()
+
+        WebDriverWait(drv, 0.1).until(
+            expected_conditions.invisibility_of_element_located((By.ID, "toast-container")))
+    except:
+        pass

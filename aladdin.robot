@@ -26,7 +26,7 @@ ${apiUrl}         http://192.168.95.153:92
     ${prefs}    Create Dictionary    prompt_for_download=false    download.default_directory=${OUTPUT_DIR}    download.directory_update=True
     Call Method    ${chrome options}    add_experimental_option    prefs    ${prefs}
     Create Webdriver    Chrome    chrome_options=${chrome options}
-    go to   ${user.homepage}
+    go to    ${user.homepage}
     Set Window Position    @{user.position}
     Set Window Size    @{user.size}
     Run Keyword If    '${role}'!='viewer'    Login    ${user}
@@ -42,7 +42,6 @@ ${apiUrl}         http://192.168.95.153:92
     Set To Dictionary    ${tender_data.data.procuringEntity.identifier}    legalName=Тестовая компания    id=11111111
     Set To Dictionary    ${tender_data.data.procuringEntity.address}    region=Київська    countryName=Україна    locality=м. Київ    streetAddress=ул. 2я тестовая    postalCode=12312
     Set To Dictionary    ${tender_data.data.procuringEntity.contactPoint}    name=Тестовый Закупщик    telephone=+380504597894    url=http://192.168.80.169:90/Profile#/company
-
     set aladdin data    ${tender_data}
     [Return]    ${tender_data}
 
@@ -63,6 +62,7 @@ ${apiUrl}         http://192.168.95.153:92
     Run Keyword If    '${field_name}'=='tenderPeriod.endDate'    Set Field tenderPeriod.endDate    ${field_value}
     Run Keyword If    '${field_name}'=='description'    Set Field Text    id=description    ${field_value}
     Full Click    id=save_changes
+    kill toaster
     Full Click    id=movePurchaseView
     Run Keyword If    '${MODE}'=='negotiation'    Publish tender/negotiation
     Run Keyword If    '${MODE}'!='negotiation'    Publish tender

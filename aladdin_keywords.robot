@@ -597,7 +597,7 @@ Full Click
 Add Bid Tender
     [Arguments]    ${amount}
     Wait Until Page Contains Element    id=bidAmount    20
-    Wait Until Element Is Enabled    id=bidAmount     20
+    Wait Until Element Is Enabled    id=bidAmount    20
     ${text}=    Convert Float To String    ${amount}
     Input Text    id=bidAmount    ${text}
     Full Click    id=submitBid
