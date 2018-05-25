@@ -822,10 +822,11 @@ ${apiUrl}         http://192.168.95.153:92
     Sleep    30
     Add Lot    1    ${arguments[1].data}
     Full Click    procurementSubject-tab
-    Add Item    ${arguments[2]}    20    2
+    Add Item    ${arguments[2]}    10    1
 
 Додати неціновий показник на тендер
     [Arguments]    ${username}    @{arguments}
+    Comment    kill toaster
     Full Click    id=purchaseEdit
     Full Click    id=features-tab
     ${fi}=    Set Variable    ${arguments[1]}

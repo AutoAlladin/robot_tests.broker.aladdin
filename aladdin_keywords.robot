@@ -99,6 +99,7 @@ Add Item
     Wait Until Element Is Enabled    ${locator_Quantity}${item_suffix}
     Input Text    ${locator_Quantity}${item_suffix}    ${item.quantity}
     #Выбор ед измерения
+    Wait Until Page Contains Element    ${locator_code}${item_suffix}
     Wait Until Element Is Enabled    ${locator_code}${item_suffix}
     Select From List By Value    ${locator_code}${item_suffix}    ${item.unit.code}
     ${name}=    Get From Dictionary    ${item.unit}    name
